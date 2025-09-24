@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/presentation/user/add_car/select_car_details.dart';
 
 class VehiclePlugSelectionScreen extends StatefulWidget {
   const VehiclePlugSelectionScreen({super.key});
@@ -23,7 +25,7 @@ class _VehiclePlugSelectionScreenState
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            // Handle back button press
+            Navigator.pop(context);
           },
         ),
       ),
@@ -97,38 +99,30 @@ class _VehiclePlugSelectionScreenState
               const SizedBox(height: 20.0),
 
               // Plug Options
-              GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 1.5,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildPlugChip('Type A'),
-                  _buildPlugChip('CHAdeMO'),
-                  _buildPlugChip('Type B'),
-                  _buildPlugChip('CCS-cable'),
+                  _buildPlugChip('Type A', "assets/icon/typeA.svg"),
+                  _buildPlugChip('CHAdeMO', "assets/icon/chademo.svg"),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildPlugChip('Type B', "assets/icon/typeB.svg"),
+                  _buildPlugChip('CCS-cable', "assets/icon/csscable.svg"),
                 ],
               ),
               const SizedBox(height: 50.0),
 
-              // Submit Button
-              ElevatedButton(
+              PrimaryButton(
+                text: "Submit",
                 onPressed: () {
-                  // Handle submit button press
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SelectCarDetails()),
+                  );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff01CC01),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
               ),
               const SizedBox(height: 20.0),
             ],
@@ -138,7 +132,7 @@ class _VehiclePlugSelectionScreenState
     );
   }
 
-  Widget _buildPlugChip(String type) {
+  Widget _buildPlugChip(String type, String iconUrl) {
     bool isSelected = selectedPlug == type;
     return GestureDetector(
       onTap: () {
@@ -146,32 +140,41 @@ class _VehiclePlugSelectionScreenState
           selectedPlug = type;
         });
       },
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xff01CC01) : const Color(0xFF293933),
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-            color: isSelected ? Colors.transparent : const Color(0xFF4B5563),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: 100,
+          height: 100,
+          padding: const EdgeInsets.all(15),
+          decoration: ShapeDecoration(
+            color: isSelected
+                ? const Color(0xFF01CC01)
+                : const Color(0x7FC4C4C4),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Placeholder for the plug icon
-            Icon(
-              Icons.bolt,
-              color: isSelected ? Colors.white : const Color(0xFF787878),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              type,
-              style: TextStyle(
-                color: isSelected ? Colors.white : const Color(0xFF787878),
-                fontSize: 16,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Placeholder for the plug icon
+              SvgPicture.asset(
+                iconUrl,
+                color: isSelected ? Colors.black : null,
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                type,
+                style: TextStyle(
+                  color: Colors.black.withOpacity(0.60),
+                  fontSize: 14,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w800,
+                  height: 2,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

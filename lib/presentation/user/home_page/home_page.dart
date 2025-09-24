@@ -204,6 +204,7 @@ class HomePage extends StatelessWidget {
               ),
 
               vPad10,
+             
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -277,6 +278,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
+              
+              
               vPad10,
               Stack(
                 clipBehavior: Clip.none,

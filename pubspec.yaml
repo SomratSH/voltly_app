@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   flutter_svg: ^2.2.1
+  mobile_scanner: ^7.1.2
+  url_launcher: ^6.3.2
+  qr_code_scanner_plus: ^2.0.12
+  lottie: ^3.0.0
 
 dev_dependencies:
   flutter_test:

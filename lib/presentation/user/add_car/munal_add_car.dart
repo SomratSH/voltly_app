@@ -74,6 +74,7 @@ class _MunalAddCarState extends State<MunalAddCar> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             // Handle back button press
+            Navigator.pop(context);
           },
         ),
       ),
@@ -198,9 +199,17 @@ class _MunalAddCarState extends State<MunalAddCar> {
               vPad20,
 
               // Proceed Button
-              PrimaryButton(text: "Proceed", onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => VehiclePlugSelectionScreen()));
-              }),
+              PrimaryButton(
+                text: "Proceed",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VehiclePlugSelectionScreen(),
+                    ),
+                  );
+                },
+              ),
               vPad20,
             ],
           ),
@@ -271,5 +280,4 @@ class _MunalAddCarState extends State<MunalAddCar> {
   }
 }
 
-class AddCarChargers {
-}
+class AddCarChargers {}
