@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/presentation/common_page/authentication/forgot_password.dart';
 import 'package:voltly_app/presentation/common_page/authentication/signup_screen.dart';
+import 'package:voltly_app/presentation/station_owner/landing_page/landing_owner_page.dart';
+import 'package:voltly_app/presentation/user/landing_page/landing_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -316,7 +318,20 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 32),
 
               // Login Button
-              PrimaryButton(text: "Login", onPressed: () {}),
+              PrimaryButton(
+                text: "Login",
+                onPressed: () {
+                  _isDriverSelected
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => LandingPage()),
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => LandingOwnerPage()),
+                        );
+                },
+              ),
 
               const SizedBox(height: 16),
 

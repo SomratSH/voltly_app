@@ -257,9 +257,14 @@ class StationDetails extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: Colors.white,
                 ),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.arrow_back, color: Colors.black),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.arrow_back, color: Colors.black),
+                  ),
                 ),
               ),
               Padding(
@@ -743,7 +748,12 @@ class _RescheduleSessionDialogState extends State<_RescheduleSessionDialog> {
   }
 
   Widget _buildRescheduleButton(BuildContext context) {
-    return PrimaryButton(text: "Reschedule Session", onPressed: () {});
+    return PrimaryButton(
+      text: "Reschedule Session",
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
   }
 }
 
@@ -886,6 +896,11 @@ class SeviceFeeState extends State<SeviceFee> {
   }
 
   Widget _buildRescheduleButton(BuildContext context) {
-    return PrimaryButton(text: "Extend Session", onPressed: () {});
+    return PrimaryButton(
+      text: "Extend Session",
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
   }
 }

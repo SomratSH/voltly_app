@@ -15,15 +15,51 @@ class MapScreen extends StatelessWidget {
           ),
 
           // Top Bar Icons
-          const Positioned(
+          Positioned(
             top: 50,
             left: 20,
             right: 20,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.flash_on, size: 30, color: Colors.white),
-                Icon(Icons.notifications_none, size: 30, color: Colors.white),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: DecoratedBox(
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFFF5F5F5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                    ),
+
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.arrow_back,
+                        size: 24,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFFF5F5F5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgPicture.asset("assets/icon/ph_bell.svg"),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

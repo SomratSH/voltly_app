@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/presentation/common_page/authentication/login_screen.dart';
 
 Future<void> showLogoutDialog(BuildContext context) {
   return showDialog(
@@ -46,7 +47,11 @@ Future<void> showLogoutDialog(BuildContext context) {
               PrimaryButton(
                 text: "Confirm",
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => LoginScreen()),
+                    result: false,
+                  );
                 },
               ),
             ],

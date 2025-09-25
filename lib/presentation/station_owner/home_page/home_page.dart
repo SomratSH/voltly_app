@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/presentation/common_page/notification.dart';
+import 'package:voltly_app/presentation/station_owner/charging/add_charger_owner.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/station_map.dart';
+import 'package:voltly_app/presentation/station_owner/profile/profile_owner.dart';
+import 'package:voltly_app/presentation/user/profile/profile_page.dart';
 
 class HomePageOwner extends StatelessWidget {
   const HomePageOwner({super.key});
@@ -9,7 +14,56 @@ class HomePageOwner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF121C24),
+        elevation: 0,
+        leading: SvgPicture.asset(
+          "assets/icon/logo.svg",
+          width: 20,
+          height: 20,
+          fit: BoxFit.scaleDown,
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => NotificationScreen()),
+                );
+              },
+              child: Container(
+                decoration: ShapeDecoration(
+                  color: const Color(0xFFF5F5F5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: SvgPicture.asset("assets/icon/ph_bell.svg"),
+              ),
+            ),
+          ),
+          hPad10,
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ProfileOwner()),
+                );
+              },
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s",
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -49,7 +103,7 @@ class HomePageOwner extends StatelessWidget {
               const SizedBox(height: 24),
               _buildChargerStatus(),
               const SizedBox(height: 24),
-              _buildQuickActions(),
+              _buildQuickActions(context),
               const SizedBox(height: 100),
             ],
           ),
@@ -421,7 +475,7 @@ class HomePageOwner extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickActions() {
+  Widget _buildQuickActions(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -439,10 +493,16 @@ class HomePageOwner extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildQuickActionButton(
-              color: Color(0xff01CC01),
-              icon: Icons.add,
-              label: 'Add New\nCharger',
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => AddChargerOwner()),
+              ),
+              child: _buildQuickActionButton(
+                color: Color(0xff01CC01),
+                icon: Icons.add,
+                label: 'Add New\nCharger',
+              ),
             ),
             _buildQuickActionButton(
               color: Color(0xff2563EB),

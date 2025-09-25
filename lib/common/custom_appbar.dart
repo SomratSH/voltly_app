@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:voltly_app/presentation/common_page/notification.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String logoPath;
@@ -28,7 +29,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: GestureDetector(
-            onTap: onNotificationTap,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => NotificationScreen()),
+              );
+            },
             child: Container(
               decoration: ShapeDecoration(
                 color: const Color(0xFFF5F5F5),

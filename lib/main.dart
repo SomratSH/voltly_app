@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color(0xFF121C24),
         fontFamily: 'Roboto',
       ),
-      home: LandingOwnerPage(),
+      home: SplashScreen(),
     );
   }
 }

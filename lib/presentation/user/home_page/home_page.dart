@@ -22,16 +22,19 @@ class HomePage extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: Container(
-              decoration: ShapeDecoration(
-                color: const Color(0xFFF5F5F5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
+            child: InkWell(
+              onTap: () => const Color(0xFF182724),
+              child: Container(
+                decoration: ShapeDecoration(
+                  color: const Color(0xFFF5F5F5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SvgPicture.asset("assets/icon/ph_bell.svg"),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SvgPicture.asset("assets/icon/ph_bell.svg"),
+                ),
               ),
             ),
           ),
@@ -204,7 +207,7 @@ class HomePage extends StatelessWidget {
               ),
 
               vPad10,
-             
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -278,8 +281,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              
-              
+
               vPad10,
               Stack(
                 clipBehavior: Clip.none,
