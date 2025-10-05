@@ -9,7 +9,7 @@ class OnboardingScreenSecond extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF57726D),
+      backgroundColor: Color(0xFF0B1A24),
       body: SafeArea(
         child: Column(
           children: [
@@ -18,16 +18,12 @@ class OnboardingScreenSecond extends StatelessWidget {
               flex: 2,
               child: Container(
                 width: double.infinity,
-                color: const Color(0xFF57726D),
+                color: Color(0xFF0B1A24),
 
                 child: Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Image.asset(
-                      "assets/image/car_image_onboarding_second.png",
-                    ),
+                  child: Image.asset(
+                    "assets/image/new_image.png",
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:voltly_app/common/custom_padding.dart';
 import 'package:lottie/lottie.dart';
 import 'package:voltly_app/common/custom_timer.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/station/charging_information.dart';
 
 class ChargingPage extends StatelessWidget {
@@ -76,10 +77,7 @@ class ChargingPage extends StatelessWidget {
                   child: DecoratedBox(
                     decoration: ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 1,
-                          color: const Color(0xFF00AB82),
-                        ),
+                        side: BorderSide(width: 1, color: primaryColor),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -106,7 +104,7 @@ class ChargingPage extends StatelessWidget {
                                 '500',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: const Color(0xFF01CC01),
+                                  color: primaryColor,
                                   fontSize: 24,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -166,7 +164,7 @@ class ChargingPage extends StatelessWidget {
                                 '500',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: const Color(0xFF01CC01),
+                                  color: primaryColor,
                                   fontSize: 24,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -201,10 +199,7 @@ class ChargingPage extends StatelessWidget {
                   child: DecoratedBox(
                     decoration: ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 1,
-                          color: const Color(0xFF00AB82),
-                        ),
+                        side: BorderSide(width: 1, color: primaryColor),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -231,7 +226,7 @@ class ChargingPage extends StatelessWidget {
                                 '500',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: const Color(0xFF01CC01),
+                                  color: primaryColor,
                                   fontSize: 24,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -291,7 +286,7 @@ class ChargingPage extends StatelessWidget {
                                 '500',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: const Color(0xFF01CC01),
+                                  color: primaryColor,
                                   fontSize: 24,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -382,7 +377,7 @@ Widget _buildCarInfoCard() {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: ShapeDecoration(
-            color: const Color(0xFF01CC01),
+            color: primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),

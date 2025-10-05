@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/add_car/select_car_details.dart';
 
 class VehiclePlugSelectionScreen extends StatefulWidget {
@@ -20,8 +21,7 @@ class _VehiclePlugSelectionScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF121C24),
-
+        
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -147,9 +147,7 @@ class _VehiclePlugSelectionScreenState
           height: 100,
           padding: const EdgeInsets.all(15),
           decoration: ShapeDecoration(
-            color: isSelected
-                ? const Color(0xFF01CC01)
-                : const Color(0x7FC4C4C4),
+            color: isSelected ? primaryColor : const Color(0x7FC4C4C4),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
@@ -160,7 +158,7 @@ class _VehiclePlugSelectionScreenState
               // Placeholder for the plug icon
               SvgPicture.asset(
                 iconUrl,
-                color: isSelected ? Colors.black : null,
+                color: isSelected ? Colors.black : Colors.white,
               ),
               const SizedBox(height: 8),
               Text(

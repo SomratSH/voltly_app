@@ -2,9 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/presentation/user/station/add_charing.dart';
 
-class ConnectCharger extends StatelessWidget {
+class ConnectCharger extends StatefulWidget {
   const ConnectCharger({super.key});
+
+  @override
+  State<ConnectCharger> createState() => _ConnectChargerState();
+}
+
+class _ConnectChargerState extends State<ConnectCharger> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(
+      Duration(seconds: 3),
+      () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => AddCharing()),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 
 class ReservationPage extends StatelessWidget {
   const ReservationPage({super.key});
@@ -29,14 +30,14 @@ class ReservationPage extends StatelessWidget {
                   child: _buildAllButton(
                     "All",
                     const Color(0x1901CC01),
-                    const Color(0xFF01CC01),
+                    primaryColor,
                   ),
                 ),
                 Expanded(
                   child: _buildAllButton(
                     "Confirmed",
                     const Color(0x1901CC01),
-                    const Color(0xFF01CC01),
+                    primaryColor,
                   ),
                 ),
                 Expanded(

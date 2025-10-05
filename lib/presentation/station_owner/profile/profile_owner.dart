@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/custom_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/station_owner/profile/contact_us.dart';
 import 'package:voltly_app/presentation/station_owner/profile/review_page.dart';
 import 'package:voltly_app/presentation/station_owner/profile/subscription_page.dart';
@@ -66,7 +67,7 @@ class ProfileOwner extends StatelessWidget {
                             'Edit Info',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: const Color(0xFF01CC01),
+                              color: primaryColor,
                               fontSize: 14,
                               fontFamily: 'Roboto',
                               fontWeight: FontWeight.w400,
@@ -197,7 +198,7 @@ class ProfileOwner extends StatelessWidget {
                               Text(
                                 'Verified',
                                 style: TextStyle(
-                                  color: const Color(0xFF01CC01),
+                                  color: primaryColor,
                                   fontSize: 16,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -257,7 +258,7 @@ class ProfileOwner extends StatelessWidget {
                           Text(
                             'Pro Host',
                             style: TextStyle(
-                              color: const Color(0xFF01CC01),
+                              color: primaryColor,
                               fontSize: 16,
                               fontFamily: 'Roboto',
                               fontWeight: FontWeight.w400,
@@ -338,7 +339,7 @@ class ProfileOwner extends StatelessWidget {
                                 '3',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: const Color(0xFF01CC01),
+                                  color: primaryColor,
                                   fontSize: 24,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -460,10 +461,7 @@ class ProfileOwner extends StatelessWidget {
                             decoration: ShapeDecoration(
                               color: Colors.black.withValues(alpha: 0),
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                  width: 1,
-                                  color: const Color(0xFF01CC01),
-                                ),
+                                side: BorderSide(width: 1, color: primaryColor),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
@@ -473,7 +471,7 @@ class ProfileOwner extends StatelessWidget {
                                 'View All Feedback',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: const Color(0xFF01CC01),
+                                  color: primaryColor,
                                   fontSize: 16,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -619,16 +617,16 @@ class ProfileOwner extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1, color: const Color(0xFF01CC01)),
+              side: BorderSide(width: 1, color: primaryColor),
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
               'Logout',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: const Color(0xFF01CC01),
+                color: primaryColor,
                 fontSize: 16,
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w500,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/custom_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/profile/changed_password.dart';
 import 'package:voltly_app/presentation/user/profile/charging_history.dart';
 import 'package:voltly_app/presentation/user/profile/message_page.dart';
@@ -64,7 +65,7 @@ class ProfilePage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: ShapeDecoration(
-        color: const Color(0xFF01CC01),
+        color: primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Row(
@@ -182,10 +183,7 @@ class ProfilePage extends StatelessWidget {
     return DecoratedBox(
       decoration: ShapeDecoration(
         color: const Color(0xFF182724),
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: const Color(0xFFE5E7EB)),
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -281,16 +279,16 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1, color: const Color(0xFF01CC01)),
+              side: BorderSide(width: 1, color: primaryColor),
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
               'Logout',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: const Color(0xFF01CC01),
+                color: primaryColor,
                 fontSize: 16,
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w500,
@@ -328,7 +326,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: SvgPicture.asset(icon),
+                    child: SvgPicture.asset(icon, color: primaryColor),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -408,7 +406,7 @@ class ProfilePage extends StatelessWidget {
           Switch(
             value: true,
             onChanged: (bool value) {},
-            activeColor: const Color(0xFF33D933),
+            activeColor: primaryColor,
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: Colors.white10,
           ),

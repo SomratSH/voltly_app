@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
+import 'package:voltly_app/presentation/user/station/connect_charger.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key});
@@ -22,13 +23,26 @@ class _ScannerScreenState extends State<ScannerScreen> {
     controller!.disposed;
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   void _onQRViewCreated(QRViewController ctrl) {
     this.controller = ctrl;
-    ctrl.scannedDataStream.listen((scanData) {
-      if (!scanned) {
-        scanned = true;
-      }
-    });
+    // ctrl.scannedDataStream.listen((scanData) {
+    //   if (!scanned) {
+    //     scanned = true;
+    //   }
+    // });
+    Future.delayed(
+      Duration(seconds: 2),
+      () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => ConnectCharger()),
+      ),
+    );
   }
 
   @override

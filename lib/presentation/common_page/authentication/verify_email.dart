@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/presentation/common_page/authentication/update_password.dart';
 
 class VerifyEmail extends StatefulWidget {
@@ -189,7 +190,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   style: TextStyle(
                     fontSize: 18,
                     color: _secondsRemaining > 0
-                        ? const Color(0xFFFF9500)
+                        ? const Color(0xFFFF5F00)
                         : Colors.red,
                     fontWeight: FontWeight.w600,
                   ),
@@ -202,29 +203,14 @@ class _VerifyEmailState extends State<VerifyEmail> {
               SizedBox(
                 width: double.infinity,
                 height: 56,
-                child: ElevatedButton(
-                  onPressed: _isOTPComplete
-                      ? () {
-                          // Handle OTP verification
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => UpdatePassword()),
-                          );
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0x3301CC01),
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    disabledBackgroundColor: Colors.grey[700],
-                  ),
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
+                child: PrimaryButton(
+                  text: "Continue",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => UpdatePassword()),
+                    );
+                  },
                 ),
               ),
 
@@ -249,7 +235,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                     'Resend',
                     style: TextStyle(
                       color: _secondsRemaining == 0
-                          ? Colors.red
+                          ? Color(0xffFF5F00)
                           : Colors.grey[600],
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

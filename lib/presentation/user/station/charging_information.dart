@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/station/payment_success.dart';
 
 class ChargingInformation extends StatelessWidget {
@@ -43,7 +44,7 @@ class ChargingInformation extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Divider(color: Color(0xff00AB82)),
+            Divider(color: primaryColor),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -79,7 +80,7 @@ class ChargingInformation extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Divider(color: Color(0xff00AB82)),
+            Divider(color: primaryColor),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -141,7 +142,7 @@ class ChargingInformation extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Divider(color: Color(0xff00AB82)),
+            Divider(color: primaryColor),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

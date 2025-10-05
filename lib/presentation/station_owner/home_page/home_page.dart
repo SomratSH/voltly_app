@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/common_page/notification.dart';
 import 'package:voltly_app/presentation/station_owner/charging/add_charger_owner.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/station_map.dart';
@@ -168,7 +169,7 @@ class HomePageOwner extends StatelessWidget {
               Text(
                 'Go Now',
                 style: TextStyle(
-                  color: const Color(0xFF01CC01),
+                  color: primaryColor,
                   fontSize: 14,
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
@@ -259,7 +260,7 @@ class HomePageOwner extends StatelessWidget {
         Text(
           amount,
           style: TextStyle(
-            color: const Color(0xFF01CC01),
+            color: primaryColor,
             fontSize: 20,
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w700,
@@ -281,7 +282,7 @@ class HomePageOwner extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: const Color(0xFF01CC01)),
+          side: BorderSide(width: 1, color: primaryColor),
           borderRadius: BorderRadius.circular(12),
         ),
         shadows: [
@@ -386,7 +387,7 @@ class HomePageOwner extends StatelessWidget {
             Text(
               'See all',
               style: TextStyle(
-                color: const Color(0xFF01CC01),
+                color: primaryColor,
                 fontSize: 12,
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w700,
@@ -400,7 +401,7 @@ class HomePageOwner extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1, color: const Color(0xFF01CC01)),
+              side: BorderSide(width: 1, color: primaryColor),
               borderRadius: BorderRadius.circular(12),
             ),
             shadows: [
@@ -443,16 +444,16 @@ class HomePageOwner extends StatelessWidget {
                         Container(
                           width: 8,
                           height: 8,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF33D933),
+                          decoration: BoxDecoration(
+                            color: primaryColor,
                             shape: BoxShape.circle,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           'Active',
                           style: TextStyle(
-                            color: Color(0xFF33D933),
+                            color: primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -464,7 +465,7 @@ class HomePageOwner extends StatelessWidget {
               Switch(
                 value: true,
                 onChanged: (bool value) {},
-                activeColor: const Color(0xFF33D933),
+                activeColor: primaryColor,
                 inactiveThumbColor: Colors.white,
                 inactiveTrackColor: Colors.white10,
               ),

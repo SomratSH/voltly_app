@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/add_car/add_car.dart';
 import 'package:voltly_app/presentation/user/find_station/find_station.dart';
 import 'package:voltly_app/presentation/user/home_page/home_page.dart';
@@ -78,6 +79,7 @@ class _LandingPageState extends State<LandingPage> {
                                 setState(() {});
                               },
                               child: SvgPicture.asset(
+                                color: bottomNavBarIconColor,
                                 navItem[index].icon.toString(),
                               ),
                             ),
@@ -90,7 +92,7 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 40, left: 30, right: 30),
+        padding: EdgeInsets.only(bottom: 40, left: 30, right: 30),
         child: InkWell(
           onTap: () => Navigator.push(
             context,
@@ -100,7 +102,7 @@ class _LandingPageState extends State<LandingPage> {
             height: 60,
             width: 60,
             decoration: ShapeDecoration(
-              color: const Color(0xFF01CC01),
+              color: bottomNavBarIconColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

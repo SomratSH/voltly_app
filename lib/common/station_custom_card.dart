@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 
 class EvStationCard extends StatelessWidget {
   final String iconPath;
@@ -35,12 +36,17 @@ class EvStationCard extends StatelessWidget {
               children: [
                 DecoratedBox(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green, width: 1),
+                    border: Border.all(color: primaryColor, width: 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
-                    child: SvgPicture.asset(iconPath, width: 28, height: 28),
+                    child: SvgPicture.asset(
+                      iconPath,
+                      width: 28,
+                      height: 28,
+                      color: primaryColor,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),

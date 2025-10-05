@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/common_page/onboarding/splash_screen.dart';
 import 'package:voltly_app/presentation/station_owner/landing_page/landing_owner_page.dart';
 import 'package:voltly_app/presentation/user/landing_page/landing_page.dart';
@@ -20,8 +21,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFF121C24),
+        scaffoldBackgroundColor: Color(0xFF0B1A24),
         fontFamily: 'Roboto',
+        appBarTheme: AppBarTheme(backgroundColor: Color(0xFF0B1A24)),
       ),
       home: SplashScreen(),
     );

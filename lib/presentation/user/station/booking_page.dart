@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/station/scanner_screen.dart';
 
 class ChargingSummaryPage extends StatelessWidget {
@@ -41,7 +42,7 @@ class ChargingSummaryPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildStationInfoCard(),
-              Divider(color: Color(0xFF1F8D3C)),
+              Divider(color: primaryColor),
               vPad10,
               _buildSessionDetails(),
               const SizedBox(height: 24),
@@ -102,7 +103,7 @@ class ChargingSummaryPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: ShapeDecoration(
-              color: const Color(0xFF01CC01),
+              color: primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -153,7 +154,7 @@ class ChargingSummaryPage extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -183,7 +184,7 @@ class ChargingSummaryPage extends StatelessWidget {
                     Text(
                       'Open',
                       style: TextStyle(
-                        color: Color(0xFF33D933),
+                        color: primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -213,7 +214,7 @@ class ChargingSummaryPage extends StatelessWidget {
           colors: [const Color(0x33182724), const Color(0x192ECC71)],
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: const Color(0x4C2ECC71)),
+          side: BorderSide(width: 1, color: primaryColor),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
@@ -239,7 +240,7 @@ class ChargingSummaryPage extends StatelessWidget {
           colors: [const Color(0x33182724), const Color(0x192ECC71)],
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: const Color(0x4C2ECC71)),
+          side: BorderSide(width: 1, color: primaryColor),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
@@ -295,7 +296,7 @@ class ChargingSummaryPage extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: ShapeDecoration(
-          color: const Color(0xFF01CC01),
+          color: primaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           shadows: [
             BoxShadow(

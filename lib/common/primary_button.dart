@@ -14,12 +14,12 @@ class PrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0x3301CC01), // Solid green
+          backgroundColor: const Color(0x3347CACC), // Solid green
           foregroundColor: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: Colors.green, width: 0.4),
+            side: BorderSide(color: Colors.white, width: 0.4),
           ),
         ),
         child: Text(

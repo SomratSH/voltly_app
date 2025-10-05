@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 
 class EarningPage extends StatelessWidget {
   const EarningPage({super.key});
@@ -10,7 +11,6 @@ class EarningPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF121C24),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -124,7 +124,7 @@ class EarningPage extends StatelessWidget {
         Text(
           amount,
           style: TextStyle(
-            color: const Color(0xFF01CC01),
+            color: primaryColor,
             fontSize: 20,
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w700,
@@ -190,10 +190,10 @@ class EarningPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Sep 20, 2025',
                 style: TextStyle(
-                  color: const Color(0xFF2ECC71),
+                  color: primaryColor,
                   fontSize: 16,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w700,
@@ -258,12 +258,9 @@ class EarningPage extends StatelessWidget {
       child: TextButton.icon(
         onPressed: () {},
         icon: const Icon(Icons.download, color: Color(0xFF01CC01)),
-        label: const Text(
+        label: Text(
           'Export Report',
-          style: TextStyle(
-            color: Color(0xFF01CC01),
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -326,10 +323,10 @@ class EarningPage extends StatelessWidget {
                   child: Text(
                     status,
                     style: TextStyle(
-                      color: const Color(0xFF2ECC71),
+                      color: primaryColor,
                       fontSize: 14,
                       fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

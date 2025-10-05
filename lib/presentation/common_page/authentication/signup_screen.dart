@@ -193,7 +193,6 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
                 ),
               ),
 
-
               const SizedBox(height: 16),
 
               // Password Field
@@ -307,7 +306,7 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
                             TextSpan(
                               text: 'Terms & Conditions',
                               style: const TextStyle(
-                                color: Color(0xFF01CC01),
+                                color: Color(0xFF007F5F),
                                 decoration: TextDecoration.underline,
                               ),
                             ),
@@ -315,7 +314,7 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
                             TextSpan(
                               text: 'Privacy Policy',
                               style: const TextStyle(
-                                color: const Color(0xFF01CC01),
+                                color: const Color(0xFF007F5F),
                                 decoration: TextDecoration.underline,
                               ),
                             ),
@@ -357,7 +356,7 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
                             content: Text(
                               'Please agree to the terms to proceed',
                             ),
-                            backgroundColor: Color(0xFF4CAF50),
+                            backgroundColor: Color(0xFF007F5F),
                           ),
                         );
                       },
@@ -486,7 +485,7 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
                   Text(
                     ' Login',
                     style: TextStyle(
-                      color: const Color(0xFF01CC01),
+                      color: const Color(0xFF007F5F),
                       fontSize: 16,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w500,

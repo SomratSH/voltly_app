@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/add_car/add_car_chargers.dart';
 
 // class MunalAddCar extends StatelessWidget {
@@ -149,7 +150,7 @@ class _MunalAddCarState extends State<MunalAddCar> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xff01CC01),
+                              color: primaryColor,
                               blurRadius: 100,
                               spreadRadius: 50,
                             ),
@@ -229,7 +230,7 @@ class _MunalAddCarState extends State<MunalAddCar> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xff01CC01) : const Color(0xFF293933),
+          color: isSelected ? primaryColor : const Color(0xFF293933),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
             color: isSelected ? Colors.transparent : const Color(0xFF8B9B95),

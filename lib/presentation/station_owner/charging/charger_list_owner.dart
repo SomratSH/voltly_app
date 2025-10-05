@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 
 class ChargerListOwner extends StatefulWidget {
   const ChargerListOwner({super.key});
@@ -67,9 +68,7 @@ class _ChargerListOwnerState extends State<ChargerListOwner> {
     required String price,
     required bool isActive,
   }) {
-    Color statusColor = isActive
-        ? const Color(0xFF2ECC71)
-        : const Color(0xFF888888);
+    Color statusColor = isActive ? primaryColor : const Color(0xFF888888);
     String statusText = isActive ? 'Active' : 'Inactive';
 
     return Container(
@@ -103,7 +102,10 @@ class _ChargerListOwnerState extends State<ChargerListOwner> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: SvgPicture.asset("assets/icon/first_charger.svg"),
+            child: SvgPicture.asset(
+              "assets/icon/first_charger.svg",
+              color: primaryColor,
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -160,7 +162,7 @@ class _ChargerListOwnerState extends State<ChargerListOwner> {
                   Switch(
                     value: isActive,
                     onChanged: (bool value) {},
-                    activeColor: const Color(0xFF01CC01),
+                    activeColor: primaryColor,
                   ),
                 ],
               ),

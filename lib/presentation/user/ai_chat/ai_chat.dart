@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 
 class AiChat extends StatefulWidget {
   const AiChat({super.key});
@@ -88,10 +89,10 @@ class _AiChatState extends State<AiChat> {
                         width: 94,
                         height: 73,
                         decoration: ShapeDecoration(
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment(0.50, 0.10),
                             end: Alignment(0.50, 0.50),
-                            colors: [Color(0xFF1F8D3C), Color(0xFF121C24)],
+                            colors: [primaryColor, Color(0xFF121C24)],
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(44)),
@@ -190,7 +191,7 @@ class _AiChatState extends State<AiChat> {
                                       ),
                                     )
                                   : ShapeDecoration(
-                                      color: const Color(0xFF01CC01),
+                                      color: const Color(0xFF007F5F),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(10),
@@ -293,6 +294,7 @@ class _AiChatState extends State<AiChat> {
                             icon: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
+                                color: Color(0xff007F5F),
                                 'assets/icon/send-2.svg',
                                 height: 20,
                                 width: 20,

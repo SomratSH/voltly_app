@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/station_owner/charging/charger_list_owner.dart';
 
 class AddChargerOwner extends StatefulWidget {
@@ -196,7 +197,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Icon(Icons.location_on, size: 50, color: Colors.green),
+          Icon(Icons.location_on, size: 50, color: primaryColor),
           const Positioned(
             bottom: 20,
             child: Text(
@@ -293,7 +294,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
       child: DecoratedBox(
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: const Color(0xFF00AB82)),
+            side: BorderSide(width: 1, color: primaryColor),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
@@ -321,7 +322,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
                     value,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: const Color(0xFF01CC01),
+                      color: primaryColor,
                       fontSize: 24,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
@@ -370,7 +371,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
               _isAvailable = value;
             });
           },
-          activeColor: const Color(0xFF01CC01),
+          activeColor: primaryColor,
         ),
       ],
     );

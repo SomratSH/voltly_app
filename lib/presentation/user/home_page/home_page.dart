@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/ai_chat/ai_chat.dart';
 
 class HomePage extends StatelessWidget {
@@ -196,7 +197,7 @@ class HomePage extends StatelessWidget {
                   Text(
                     'See all',
                     style: TextStyle(
-                      color: const Color(0xFF01CC01),
+                      color: primaryColor,
                       fontSize: 12,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w500,
@@ -215,13 +216,17 @@ class HomePage extends StatelessWidget {
                     children: [
                       DecoratedBox(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.green, width: 1),
+                          border: Border.all(
+                            color: Color(0xff007F5F),
+                            width: 1,
+                          ),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: SvgPicture.asset(
                             "assets/icon/bi_ev-station.svg",
+                            color: Color(0xff007F5F),
                           ),
                         ),
                       ),
@@ -308,10 +313,10 @@ class HomePage extends StatelessWidget {
                         width: 60,
                         height: 46,
                         decoration: ShapeDecoration(
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment(0.50, 0.10),
                             end: Alignment(0.50, 0.50),
-                            colors: [Color(0xFF1F8D3C), Color(0xFF121C24)],
+                            colors: [primaryColor, Color(0xFF121C24)],
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(44)),
@@ -357,7 +362,7 @@ class HomePage extends StatelessWidget {
                   Text(
                     'See all',
                     style: TextStyle(
-                      color: const Color(0xFF01CC01),
+                      color: primaryColor,
                       fontSize: 12,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
@@ -388,6 +393,7 @@ class HomePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
+                                color: primaryColor,
                                 "assets/icon/standard+charge.svg",
                               ),
                             ),
@@ -397,7 +403,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Standard Charger',
                           style: TextStyle(
-                            color: const Color(0xFF01CC01),
+                            color: primaryColor,
                             fontSize: 10,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
@@ -424,6 +430,7 @@ class HomePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
+                                color: primaryColor,
                                 "assets/icon/first_charger.svg",
                               ),
                             ),
@@ -433,7 +440,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Fast Charger',
                           style: TextStyle(
-                            color: const Color(0xFF01CC01),
+                            color: primaryColor,
                             fontSize: 10,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
@@ -461,6 +468,7 @@ class HomePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
+                                color: primaryColor,
                                 "assets/icon/rapid_charger.svg",
                               ),
                             ),
@@ -470,7 +478,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Rapid Charger',
                           style: TextStyle(
-                            color: const Color(0xFF01CC01),
+                            color: primaryColor,
                             fontSize: 10,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
@@ -498,6 +506,7 @@ class HomePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
+                                color: primaryColor,
                                 "assets/icon/tesla_chargers.svg",
                               ),
                             ),
@@ -507,7 +516,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Tesla chargers',
                           style: TextStyle(
-                            color: const Color(0xFF01CC01),
+                            color: primaryColor,
                             fontSize: 10,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
@@ -519,7 +528,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              vPad70,
+              SizedBox(height: 90),
             ],
           ),
         ),

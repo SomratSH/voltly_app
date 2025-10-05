@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         decoration: BoxDecoration(
                           color: _isDriverSelected
-                              ? const Color(0xFF4CAF50)
+                              ? const Color(0xFF007F5F)
                               : Color(0xFF374151),
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         decoration: BoxDecoration(
                           color: !_isDriverSelected
-                              ? const Color(0xFF4CAF50)
+                              ? const Color(0xFF007F5F)
                               : const Color(0xFF374151),
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -397,7 +397,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text(
                   'Forgot Password?',
                   style: TextStyle(
-                    color: Color(0xFF4CAF50),
+                    color: Color(0xFF007F5F),
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),

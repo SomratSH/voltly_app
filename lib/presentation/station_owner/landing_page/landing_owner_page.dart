@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/station_owner/charging/charging_page.dart';
 import 'package:voltly_app/presentation/station_owner/earning/earning_page.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/home_page.dart';
@@ -83,6 +84,7 @@ class _LandingOwnerPageState extends State<LandingOwnerPage> {
                                 setState(() {});
                               },
                               child: SvgPicture.asset(
+                                color: bottomNavBarIconColor,
                                 navItem[index].icon.toString(),
                               ),
                             ),
@@ -105,7 +107,7 @@ class _LandingOwnerPageState extends State<LandingOwnerPage> {
             height: 60,
             width: 60,
             decoration: ShapeDecoration(
-              color: const Color(0xFF01CC01),
+              color: bottomNavBarIconColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

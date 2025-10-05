@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key});
@@ -12,7 +13,9 @@ class SubscriptionScreen extends StatelessWidget {
         backgroundColor: Color(0xFF121C24),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: const Text(
           'Subscription',
@@ -138,7 +141,7 @@ class SubscriptionScreen extends StatelessWidget {
         ? const Color(0xFF2E5431)
         : const Color(0xFF282828);
     Color buttonColor = isMostPopular || isBestForBusiness
-        ? Color(0xFF01E601)
+        ? primaryColor
         : const Color(0xFF333333);
     Color buttonTextColor = isMostPopular || isBestForBusiness
         ? Colors.white
@@ -169,7 +172,7 @@ class SubscriptionScreen extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Color(0xFF01E601),
+                    color: primaryColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
@@ -191,7 +194,7 @@ class SubscriptionScreen extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Color(0xFF01E601),
+                    color: primaryColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
@@ -247,7 +250,7 @@ class SubscriptionScreen extends StatelessWidget {
                       Icon(
                         feature['isIncluded'] ? Icons.check : Icons.close,
                         color: feature['isIncluded']
-                            ? Color(0xFF01E601)
+                            ? primaryColor
                             : Colors.red,
                         size: 16,
                       ),

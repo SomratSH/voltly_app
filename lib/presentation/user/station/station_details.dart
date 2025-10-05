@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/station/booking_page.dart';
 import 'package:voltly_app/presentation/user/station/scanner_screen.dart';
 
@@ -57,12 +58,8 @@ class StationDetails extends StatelessWidget {
                             ),
 
                             Row(
-                              children: const [
-                                Icon(
-                                  Icons.star,
-                                  color: Color(0xFF33D933),
-                                  size: 16,
-                                ),
+                              children: [
+                                Icon(Icons.star, color: primaryColor, size: 16),
                                 SizedBox(width: 4),
                                 Text(
                                   'High score 5/5',
@@ -77,11 +74,11 @@ class StationDetails extends StatelessWidget {
                             ),
 
                             Row(
-                              children: const [
+                              children: [
                                 Text(
                                   'Open',
                                   style: TextStyle(
-                                    color: const Color(0xFF01CC01),
+                                    color: primaryColor,
                                     fontSize: 18,
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w500,
@@ -113,11 +110,7 @@ class StationDetails extends StatelessWidget {
                   vPad10,
                   Row(
                     children: [
-                      Icon(
-                        Icons.location_on,
-                        color: Color(0xff01CC01),
-                        size: 16,
-                      ),
+                      Icon(Icons.location_on, color: primaryColor, size: 16),
                       SizedBox(width: 8),
                       Text(
                         '10 Km.',
@@ -154,7 +147,7 @@ class StationDetails extends StatelessWidget {
             vPad15,
 
             _buildSectionTitle('Connector Type'),
-            Divider(color: Color(0xff00AB82)),
+            Divider(color: primaryColor),
             _buildConnectorType(
               iconPath: 'assets/icon_type1.png',
               type: 'Type 1 (AC)',
@@ -317,7 +310,7 @@ class StationDetails extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Color(0xff00AB82)),
+        border: Border.all(color: primaryColor),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -332,6 +325,7 @@ class StationDetails extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: SvgPicture.asset(
+                  color: primaryColor,
                   "assets/icon/first_charger.svg",
                 ), // Using a generic icon
               ),
@@ -372,7 +366,7 @@ class StationDetails extends StatelessWidget {
           Text(
             status,
             style: TextStyle(
-              color: isAvailable ? const Color(0xFF33D933) : Colors.red,
+              color: isAvailable ? primaryColor : Colors.red,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -396,7 +390,7 @@ class StationDetails extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          SvgPicture.asset("assets/icon/arrow.svg"),
+          SvgPicture.asset("assets/icon/arrow.svg", color: primaryColor),
         ],
       ),
     );
@@ -479,7 +473,7 @@ class StationDetails extends StatelessWidget {
           ),
           Icon(Icons.photo_library_outlined, color: Colors.white70),
           SizedBox(width: 8),
-          SvgPicture.asset("assets/icon/send-2.svg"),
+          SvgPicture.asset("assets/icon/send-2.svg", color: primaryColor),
         ],
       ),
     );
@@ -521,7 +515,7 @@ class _ScanToChargeButton extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16),
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFF01CC01),
+          color: primaryColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: const Row(
