@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:voltly_app/presentation/common_page/onboarding/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: SvgPicture.asset('assets/icon/splash_logo.svg')),
+      body: Center(child: Lottie.asset("assets/image/Voltz.json")),
     );
   }
 }
