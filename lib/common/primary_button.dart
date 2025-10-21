@@ -12,7 +12,7 @@ class PrimaryButton extends StatelessWidget {
       width: double.infinity,
       height: 56,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: () => onPressed(),
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0x3347CACC), // Solid green
           foregroundColor: Colors.white,

@@ -1,10 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/presentation/common_page/authentication/auth_provider.dart';
 import 'package:voltly_app/presentation/common_page/authentication/update_password.dart';
 
 class VerifyEmail extends StatefulWidget {
+  String email;
+  VerifyEmail({super.key, required this.email});
   @override
   _VerifyEmailState createState() => _VerifyEmailState();
 }
@@ -23,12 +31,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
       _controllers.add(TextEditingController());
       _focusNodes.add(FocusNode());
     }
-
-    // Set initial values as shown in the image
-    _controllers[0].text = '6';
-    _controllers[1].text = '0';
-    _controllers[2].text = '9';
-    _controllers[3].text = '9';
 
     startTimer();
   }
@@ -103,6 +105,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<AuthProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF121C24),
@@ -205,11 +208,30 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 height: 56,
                 child: PrimaryButton(
                   text: "Continue",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => UpdatePassword()),
+                  onPressed: () async {
+                    LoadingDialog.show(context);
+                    final status = await provider.signUpVerifyUserForgot(
+                      email: widget.email,
+                      otp: _otpValue,
                     );
+                    if (status['message'].isNotEmpty) {
+                      LoadingDialog.hide(context);
+                      CustomSnackbar.show(
+                        context,
+                        message: status["message"],
+                        backgroundColor: Colors.green,
+                        textColor: Colors.white,
+                      );
+                      context.push(RouterPath.resetPassword);
+                    } else if (status["error"].isNotEmpty) {
+                      LoadingDialog.hide(context);
+                      CustomSnackbar.show(
+                        context,
+                        message: status["error"],
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                      );
+                    }
                   },
                 ),
               ),

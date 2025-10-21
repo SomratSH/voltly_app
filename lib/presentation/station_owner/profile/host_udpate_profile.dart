@@ -3,20 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_urls.dart';
+import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
 
-class UpdateProfile extends StatelessWidget {
-  const UpdateProfile({super.key});
+class HostUpdateProfile extends StatelessWidget {
+  const HostUpdateProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProfileProvider()..getProfile(),
+      create: (_) => HostProfileProvider()..getProfileHost(),
       child: const _Layout(),
     );
   }
@@ -98,8 +100,8 @@ class _LayoutState extends State<_Layout> {
 
   @override
   Widget build(BuildContext context) {
-    final profileProvider = context.watch<ProfileProvider>();
-    final profile = profileProvider.profileModel.data;
+    final profileProvider = context.watch<HostProfileProvider>();
+    final profile = profileProvider.hostProfileModel.data;
 
     // Initialize controllers when profile loads (only once)
     if (profile != null && _nameController.text.isEmpty) {
@@ -110,7 +112,7 @@ class _LayoutState extends State<_Layout> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => context.go("/profile"),
+          onPressed: () => context.go(RouterPath.profileHost),
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         centerTitle: true,
@@ -167,7 +169,7 @@ class _LayoutState extends State<_Layout> {
                       controller: _nameController,
                       icon: Icons.person_outline,
                       hint: 'Full Name',
-                      onChanged: profileProvider.updateName,
+                      onChanged: profileProvider.updateNameHost,
                     ),
                     vPad10,
 
@@ -176,7 +178,7 @@ class _LayoutState extends State<_Layout> {
                       controller: _phoneController,
                       icon: Icons.phone_outlined,
                       hint: 'Phone Number',
-                      onChanged: profileProvider.updatePhone,
+                      onChanged: profileProvider.updatePhoneHost,
                       keyboardType: TextInputType.phone,
                     ),
                     vPad20,
@@ -188,7 +190,7 @@ class _LayoutState extends State<_Layout> {
                         FocusScope.of(context).unfocus();
 
                         LoadingDialog.show(context);
-                        final status = await profileProvider.updateProfile(
+                        final status = await profileProvider.updateProfileHost(
                           name: _nameController.text,
                           phone: _phoneController.text,
                           image: _selectedImage,

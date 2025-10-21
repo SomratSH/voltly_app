@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/presentation/common_page/authentication/auth_provider.dart';
 
 class VoltlyCreateAccountPage extends StatefulWidget {
-  const VoltlyCreateAccountPage({super.key});
+  bool isDriver;
+  VoltlyCreateAccountPage({super.key, required this.isDriver});
 
   @override
   _VoltlyCreateAccountPageState createState() =>
@@ -27,6 +33,7 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<AuthProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF121C24),
@@ -332,15 +339,38 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
               PrimaryButton(
                 text: "Sign Up",
                 onPressed: _agreeToTerms
-                    ? () {
+                    ? () async {
                         if (_passwordController.text ==
                             _confirmPasswordController.text) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Account created successfully!'),
-                              backgroundColor: Color(0xFF4CAF50),
-                            ),
+                          LoadingDialog.show(context);
+                          final reseponse = await provider.signUp(
+                            name: _nameController.text,
+                            email: _emailController.text,
+                            phone: _phoneController.text,
+                            role: widget.isDriver ? "driver" : "host",
+                            password: _passwordController.text,
+                            confirmPassword: _confirmPasswordController.text,
+                            isTerms: _agreeToTerms,
                           );
+
+                          if (reseponse['message'] != null) {
+                            LoadingDialog.hide(context);
+                            CustomSnackbar.show(
+                              context,
+                              message: reseponse["message"],
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                            );
+                            context.push("/login");
+                          } else if (reseponse["email"] != null) {
+                            LoadingDialog.hide(context);
+                            CustomSnackbar.show(
+                              context,
+                              message: reseponse["email"][0],
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                            );
+                          }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

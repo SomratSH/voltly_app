@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/presentation/common_page/authentication/auth_provider.dart';
 import 'package:voltly_app/presentation/common_page/authentication/verify_email.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -7,6 +13,8 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<AuthProvider>();
+    TextEditingController emailController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF121C24),
@@ -53,7 +61,7 @@ class ForgotPassword extends StatelessWidget {
                 ),
               ),
               child: TextField(
-                controller: TextEditingController(),
+                controller: emailController,
                 style: const TextStyle(color: Colors.white),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -71,10 +79,31 @@ class ForgotPassword extends StatelessWidget {
             const SizedBox(height: 24),
             PrimaryButton(
               text: "Recover Account",
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => VerifyEmail()),
-              ),
+              onPressed: () async {
+                LoadingDialog.show(context);
+                final status = await provider.sendOtp(
+                  email: emailController.text,
+                );
+                if (status["message"] != null) {
+                  LoadingDialog.hide(context);
+                  CustomSnackbar.show(
+                    context,
+                    message: status["message"],
+                    backgroundColor: Colors.green,
+                  );
+                  context.push(
+                    RouterPath.verifyOtp,
+                    extra: emailController.text,
+                  );
+                } else if (status["errors"] != null) {
+                  LoadingDialog.hide(context);
+                  CustomSnackbar.show(
+                    context,
+                    message: status["errors"],
+                    backgroundColor: Colors.red,
+                  );
+                }
+              },
             ),
           ],
         ),

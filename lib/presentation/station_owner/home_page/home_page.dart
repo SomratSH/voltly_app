@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/common_page/notification.dart';
 import 'package:voltly_app/presentation/station_owner/charging/add_charger_owner.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/station_map.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_owner.dart';
+import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/profile/profile_page.dart';
 
 class HomePageOwner extends StatelessWidget {
@@ -14,6 +19,7 @@ class HomePageOwner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = context.watch<HostProfileProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF121C24),
@@ -51,14 +57,14 @@ class HomePageOwner extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ProfileOwner()),
-                );
+                context.push(RouterPath.profileHost);
               },
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s",
+                  profileProvider.hostProfileModel.data == null ||
+                          profileProvider.hostProfileModel.data!.picture == null
+                      ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s"
+                      : "${AppUrls.imageUrl}${profileProvider.hostProfileModel.data!.picture}",
                 ),
               ),
             ),
@@ -71,7 +77,7 @@ class HomePageOwner extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(context),
+              _buildHeader(context, profileProvider),
               const SizedBox(height: 24),
               _buildEarningsOverview(),
               const SizedBox(height: 24),
@@ -113,7 +119,10 @@ class HomePageOwner extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(
+    BuildContext context,
+    HostProfileProvider profileProvider,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -126,12 +135,20 @@ class HomePageOwner extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s",
+                      profileProvider.hostProfileModel.data == null ||
+                              profileProvider.hostProfileModel.data!.picture ==
+                                  null
+                          ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s"
+                          : "${AppUrls.imageUrl}${profileProvider.hostProfileModel.data!.picture}",
                     ),
                   ),
                   hPad5,
                   Text(
-                    'Welcome back,\nMd. Julian!!',
+                    profileProvider.hostProfileModel.data == null ||
+                            profileProvider.hostProfileModel.data!.fullName ==
+                                null
+                        ? 'Welcome back,\nN/A!!'
+                        : 'Welcome back,\n${profileProvider.hostProfileModel.data!.fullName}!!',
                     style: TextStyle(
                       color: const Color(0xFFD1D5DB),
                       fontSize: 16,

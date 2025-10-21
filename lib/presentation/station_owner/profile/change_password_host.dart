@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:voltly_app/application/host/profile/repo/host_profile_repo.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
 import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/custom_loading_dialog.dart';
 
-class ChangedPassword extends StatelessWidget {
-  const ChangedPassword({super.key});
+class ChangePasswordHost extends StatelessWidget {
+  const ChangePasswordHost({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProfileProvider(),
+      create: (_) => HostProfileProvider()..getProfileHost(),
       child: const _Layout(),
     );
   }
@@ -47,7 +49,7 @@ class _LayoutState extends State<_Layout> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<ProfileProvider>();
+    final provider = context.watch<HostProfileProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -131,7 +133,7 @@ class _LayoutState extends State<_Layout> {
                   }
 
                   LoadingDialog.show(context);
-                  final result = await provider.changePassword(
+                  final result = await provider.changePasswordHost(
                     oldPassword: oldPassword,
                     password: newPassword,
                     confirmPassword: confirmPassword,

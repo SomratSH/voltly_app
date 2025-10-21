@@ -40,6 +40,10 @@ dependencies:
   url_launcher: ^6.3.2
   qr_code_scanner_plus: ^2.0.12
   lottie: ^3.0.0
+  go_router: ^16.2.4
+  shared_preferences: ^2.5.3
+  provider: ^6.1.5+1
+  image_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/add_car/add_car.dart';
 import 'package:voltly_app/presentation/user/find_station/find_station.dart';
@@ -8,7 +10,8 @@ import 'package:voltly_app/presentation/user/profile/profile_page.dart';
 import 'package:voltly_app/presentation/user/station/station_page.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  final Widget? child;
+  const LandingPage({super.key, this.child});
 
   @override
   _LandingPageState createState() => _LandingPageState();
@@ -17,12 +20,12 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   int _currentIndex = 0;
 
-  // Define your icons and colors
-  final List<Widget> _pages = [
-    const HomePage(), // First page
-    const AddCar(),
-    StationPage(), // Second page
-    const ProfilePage(), // Third page
+  final List<String> _pagesUrl = [
+    RouterPath.home, // First page
+    RouterPath.addCar,
+    RouterPath.stationPage,
+    RouterPath.profile,
+    // Third page
   ];
 
   final List<CustomNavBarItem> navItem = [
@@ -38,7 +41,7 @@ class _LandingPageState extends State<LandingPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            _pages[_currentIndex],
+            widget.child ?? const SizedBox.shrink(),
             Positioned(
               bottom: 0,
               left: 0,
@@ -77,6 +80,7 @@ class _LandingPageState extends State<LandingPage> {
                               onTap: () {
                                 _currentIndex = index;
                                 setState(() {});
+                                context.push(_pagesUrl[index]);
                               },
                               child: SvgPicture.asset(
                                 color: bottomNavBarIconColor,

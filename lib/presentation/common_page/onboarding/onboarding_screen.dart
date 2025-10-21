@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/presentation/common_page/onboarding/onboarding_screen_second.dart';
 
@@ -84,12 +86,7 @@ class OnboardingScreen extends StatelessWidget {
                       PrimaryButton(
                         text: "Let's Go",
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OnboardingScreenSecond(),
-                            ),
-                          );
+                          context.push(RouterPath.onBoardingTow);
                         },
                       ),
 

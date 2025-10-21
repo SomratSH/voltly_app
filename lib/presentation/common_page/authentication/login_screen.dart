@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:voltly_app/app_router.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/presentation/common_page/authentication/auth_provider.dart';
 import 'package:voltly_app/presentation/common_page/authentication/forgot_password.dart';
 import 'package:voltly_app/presentation/common_page/authentication/signup_screen.dart';
 import 'package:voltly_app/presentation/station_owner/landing_page/landing_owner_page.dart';
@@ -21,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<AuthProvider>();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -320,16 +328,40 @@ class _LoginScreenState extends State<LoginScreen> {
               // Login Button
               PrimaryButton(
                 text: "Login",
-                onPressed: () {
-                  _isDriverSelected
-                      ? Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => LandingPage()),
-                        )
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => LandingOwnerPage()),
-                        );
+                onPressed: () async {
+                  LoadingDialog.show(context);
+                  final status = await provider.login(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                  );
+                  if (status['message'] != null) {
+                    LoadingDialog.hide(context);
+                    CustomSnackbar.show(
+                      context,
+                      message: status["message"],
+                      textColor: Colors.white,
+                    );
+                    if (status["data"]["role"] == "Host") {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setBool('isHost', true);
+                      await prefs.setBool('isDriver', false);
+                      context.go(RouterPath.homeOwner);
+                    } else if ((status["data"]["role"] == "Driver")) {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setBool('isHost', false);
+                      await prefs.setBool('isDriver', true);
+                      context.go(RouterPath.home);
+                    }
+                  } else if (status["error"] != null) {
+                    LoadingDialog.hide(context);
+                    CustomSnackbar.show(
+                      context,
+                      message: status["error"][0],
+                      backgroundColor: Colors.red,
+                    );
+                  }
                 },
               ),
 
@@ -344,7 +376,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => VoltlyCreateAccountPage(),
+                        builder: (_) => VoltlyCreateAccountPage(
+                          isDriver: _isDriverSelected,
+                        ),
                       ),
                     );
                   },
@@ -379,20 +413,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Forgot Password Link
               GestureDetector(
-                onTap: () {
-                  // Handle forgot password
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   const SnackBar(
-                  //     content: Text(
-                  //       'Forgot password functionality to be implemented',
-                  //     ),
-                  //     backgroundColor: Color(0xFF4CAF50),
-                  //   ),
-                  // );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ForgotPassword()),
-                  );
+                onTap: () async {
+                  context.push(RouterPath.forgotPassword);
                 },
                 child: const Text(
                   'Forgot Password?',

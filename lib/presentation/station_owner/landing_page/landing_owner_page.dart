@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/station_owner/charging/charging_page.dart';
 import 'package:voltly_app/presentation/station_owner/earning/earning_page.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/home_page.dart';
 import 'package:voltly_app/presentation/station_owner/resevation/reservation_page.dart';
-import 'package:voltly_app/presentation/user/add_car/add_car.dart';
 import 'package:voltly_app/presentation/user/find_station/find_station.dart';
-import 'package:voltly_app/presentation/user/home_page/home_page.dart';
-import 'package:voltly_app/presentation/user/profile/profile_page.dart';
-import 'package:voltly_app/presentation/user/station/charging_page.dart';
-import 'package:voltly_app/presentation/user/station/station_page.dart';
 
 class LandingOwnerPage extends StatefulWidget {
-  const LandingOwnerPage({super.key});
+  final Widget? child;
+  const LandingOwnerPage({super.key, this.child});
 
   @override
   _LandingOwnerPageState createState() => _LandingOwnerPageState();
@@ -23,11 +21,11 @@ class _LandingOwnerPageState extends State<LandingOwnerPage> {
   int _currentIndex = 0;
 
   // Define your icons and colors
-  final List<Widget> _pages = [
-    const HomePageOwner(), // First page
-    const ReservationPage(),
-    ChargingPageOwner(), // Second page
-    const EarningPage(), // Third page
+  final List<String> _pages = [
+    RouterPath.homeOwner, // First page
+    RouterPath.reservationHost,
+    RouterPath.chargingHost, // Second page
+    RouterPath.earningHost, // Third page
   ];
 
   final List<CustomNavBarItem> navItem = [
@@ -43,7 +41,7 @@ class _LandingOwnerPageState extends State<LandingOwnerPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            _pages[_currentIndex],
+            widget.child ?? const SizedBox.shrink(),
             Positioned(
               bottom: 0,
               left: 0,
@@ -82,6 +80,7 @@ class _LandingOwnerPageState extends State<LandingOwnerPage> {
                               onTap: () {
                                 _currentIndex = index;
                                 setState(() {});
+                                context.push(_pages[index]);
                               },
                               child: SvgPicture.asset(
                                 color: bottomNavBarIconColor,

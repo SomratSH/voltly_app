@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
+import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart' show CustomSnackbar;
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/presentation/common_page/authentication/auth_provider.dart';
 import 'package:voltly_app/presentation/common_page/authentication/login_screen.dart';
 
 class UpdatePassword extends StatefulWidget {
@@ -12,11 +19,13 @@ class UpdatePassword extends StatefulWidget {
 class _UpdatePasswordState extends State<UpdatePassword> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<AuthProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF121C24),
@@ -55,6 +64,31 @@ class _UpdatePasswordState extends State<UpdatePassword> {
             ),
 
             SizedBox(height: 55),
+            Container(
+              decoration: ShapeDecoration(
+                color: Colors.black.withValues(alpha: 0),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: const Color(0xFF4B5563)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: TextField(
+                controller: _emailController,
+                style: const TextStyle(color: Colors.white),
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  prefixIcon: Icon(
+                    Icons.email_outlined,
+                    color: Colors.grey[400],
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.all(16),
+                ),
+              ),
+            ),
+            vPad15,
             Container(
               decoration: ShapeDecoration(
                 color: Colors.black.withValues(alpha: 0),
@@ -130,12 +164,25 @@ class _UpdatePasswordState extends State<UpdatePassword> {
             SizedBox(height: 20),
             PrimaryButton(
               text: "Confirm Password",
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                  (route) => false,
+              onPressed: () async {
+                LoadingDialog.show(context);
+                final status = await provider.resetPassword(
+                  confirmPassword: _confirmPasswordController.text,
+                  password: _passwordController.text,
+                  email: _emailController.text,
                 );
+                if (status["message"] != null) {
+                  LoadingDialog.hide(context);
+                  CustomSnackbar.show(context, message: status["message"]);
+                  context.go(RouterPath.login);
+                } else if (status["errors"] != null) {
+                  LoadingDialog.hide(context);
+                  CustomSnackbar.show(
+                    context,
+                    message: status["errors"],
+                    backgroundColor: Colors.red,
+                  );
+                }
               },
             ),
           ],

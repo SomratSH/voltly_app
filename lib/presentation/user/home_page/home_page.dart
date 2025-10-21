@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/constant/app_urls.dart';
+import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/ai_chat/ai_chat.dart';
+import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = context.watch<ProfileProvider>();
     return Scaffold(
       backgroundColor: const Color(0xFF121C24),
       appBar: AppBar(
@@ -42,7 +47,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -57,9 +62,16 @@ class HomePage extends StatelessWidget {
                         height: 48,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          image: const DecorationImage(
+                          image: DecorationImage(
                             image: NetworkImage(
-                              "https://marketplace.canva.com/EAFSZhFumYM/2/0/1600w/canva-dark-red-neon-futuristic-instagram-profile-picture-1u1wshkWxIM.jpg",
+                              profileProvider.profileModel.data == null ||
+                                      profileProvider
+                                              .profileModel
+                                              .data!
+                                              .picture ==
+                                          null
+                                  ? "https://marketplace.canva.com/EAFSZhFumYM/2/0/1600w/canva-dark-red-neon-futuristic-instagram-profile-picture-1u1wshkWxIM.jpg"
+                                  : "${AppUrls.imageUrl}${profileProvider.profileModel.data!.picture}",
                             ),
                             fit: BoxFit.cover,
                           ),
@@ -69,8 +81,12 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       hPad10,
-                      const Text(
-                        'Rafsan\nMahmud',
+                      Text(
+                        profileProvider.profileModel.data == null ||
+                                profileProvider.profileModel.data!.fullName ==
+                                    null
+                            ? 'N/A'
+                            : profileProvider.profileModel.data!.fullName!,
                         style: TextStyle(
                           color: Color(0xFFC7BEBE),
                           fontSize: 16,
