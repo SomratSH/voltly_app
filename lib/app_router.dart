@@ -15,11 +15,14 @@ import 'package:voltly_app/presentation/station_owner/profile/host_udpate_profil
 import 'package:voltly_app/presentation/station_owner/profile/profile_owner.dart';
 import 'package:voltly_app/presentation/station_owner/resevation/reservation_page.dart';
 import 'package:voltly_app/presentation/user/add_car/add_car.dart';
+import 'package:voltly_app/presentation/user/add_car/car_details.dart';
+import 'package:voltly_app/presentation/user/add_car/munal_add_car.dart';
 import 'package:voltly_app/presentation/user/home_page/home_page.dart';
 import 'package:voltly_app/presentation/user/landing_page/landing_page.dart';
 import 'package:voltly_app/presentation/user/profile/changed_password.dart';
 import 'package:voltly_app/presentation/user/profile/profile_page.dart';
 import 'package:voltly_app/presentation/user/profile/update_profile.dart';
+import 'package:voltly_app/presentation/user/station/station_details.dart';
 import 'package:voltly_app/presentation/user/station/station_page.dart';
 
 class AppRouter {
@@ -76,14 +79,26 @@ class AppRouter {
         path: RouterPath.changePassword,
         builder: (context, state) => ChangedPassword(),
       ),
-
+      GoRoute(
+        path: RouterPath.manualAddCar,
+        builder: (context, state) => MunalAddCar(),
+      ),
+      GoRoute(
+        path: RouterPath.carDetails,
+        builder: (context, state) => VehicleDetails(),
+      ),
+      GoRoute(
+        path: RouterPath.stationDetails,
+        builder: (context, state) => StationDetails(),
+      ),
       //host
       GoRoute(
         path: RouterPath.updateProfileHost,
         builder: (context, state) => HostUpdateProfile(),
       ),
+
       GoRoute(
-        path: RouterPath.profileHost,
+        path: RouterPath.stationDetails,
         builder: (context, state) => ProfileOwner(),
       ),
       // Shell routing for protected pages driver
@@ -163,4 +178,10 @@ class RouterPath {
   static String updateProfileHost = "/update-profile-host";
 
   static String profileHost = "/profile-host";
+
+  static String manualAddCar = "/manual-add-car";
+
+  static String carDetails = "/car-details";
+
+  static String stationDetails = "/station-details";
 }

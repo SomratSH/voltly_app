@@ -13,4 +13,10 @@ class AppUrls {
   static String profileUpdate = "/profile/update/";
 
   static String changePassword = "/change-password/";
+
+  static String getVehicleUrl = "/driver/vehicles/";
+
+  static String getVehicleDetails = "/driver/vehicles/";
+
+  static String getStationListUrl = "/driver/stations/nearby/";
 }

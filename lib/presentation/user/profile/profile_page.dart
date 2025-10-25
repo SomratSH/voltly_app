@@ -67,7 +67,7 @@ class _Layout extends StatelessWidget {
                 const SizedBox(height: 16),
                 _buildUserInfoCard(
                   email: profileProvider.profileModel.data?.email ?? "N/A",
-                  name: profileProvider.profileModel.data!.fullName ?? "N/A",
+                  name: profileProvider.profileModel.data?.fullName ?? "N/A",
                   phone: profileProvider.profileModel.data?.phone ?? "N/A",
                   picture: profileProvider.profileModel.data?.picture ?? "",
                 ),

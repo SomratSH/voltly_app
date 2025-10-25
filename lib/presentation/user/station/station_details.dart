@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/station/booking_page.dart';
 import 'package:voltly_app/presentation/user/station/scanner_screen.dart';
+import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
 class StationDetails extends StatelessWidget {
   const StationDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<StationProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -48,7 +51,7 @@ class StationDetails extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'ABC charging station',
+                              provider.selectedStation.name!,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -113,7 +116,7 @@ class StationDetails extends StatelessWidget {
                       Icon(Icons.location_on, color: primaryColor, size: 16),
                       SizedBox(width: 8),
                       Text(
-                        '10 Km.',
+                        '${provider.selectedStation.distanceKm} Km.',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -124,7 +127,7 @@ class StationDetails extends StatelessWidget {
                       SizedBox(width: 16),
                       Expanded(
                         child: Text(
-                          'Midtown expressway',
+                          provider.selectedStation.address!,
                           style: TextStyle(
                             color: const Color(0xFFF2F2F2),
                             fontSize: 16,
