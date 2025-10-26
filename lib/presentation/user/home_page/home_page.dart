@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/station_custom_card.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/ai_chat/ai_chat.dart';
 import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
+import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,6 +18,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileProvider = context.watch<ProfileProvider>();
+    final stationProvider = context.watch<StationProvider>();
     return Scaffold(
       backgroundColor: const Color(0xFF121C24),
       appBar: AppBar(
@@ -210,99 +215,51 @@ class HomePage extends StatelessWidget {
                       height: 1.50,
                     ),
                   ),
-                  Text(
-                    'See all',
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontSize: 12,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      height: 1.50,
+                  InkWell(
+                    onTap: () => context.push(RouterPath.stationPage),
+                    child: Text(
+                      'See all',
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 12,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w500,
+                        height: 1.50,
+                      ),
                     ),
                   ),
                 ],
               ),
 
               vPad10,
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xff007F5F),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: SvgPicture.asset(
-                            "assets/icon/bi_ev-station.svg",
-                            color: Color(0xff007F5F),
-                          ),
-                        ),
-                      ),
-                      hPad20,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Midtown expressway',
-                            style: TextStyle(
-                              color: const Color(0xFFD1D5DB),
-                              fontSize: 16,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w700,
-                              height: 1.50,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.schedule_rounded,
-                                color: const Color(0xFFD1D5DB),
-                                size: 12,
-                              ),
-                              Text(
-                                '10mins drive',
-                                style: TextStyle(
-                                  color: const Color(0xFFD1D5DB),
-                                  fontSize: 12,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                ),
-                              ),
-                              hPad10,
-                              Icon(Icons.star, color: Colors.amber, size: 12),
-                              Text(
-                                '4.5',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: const Color(0xFFD1D5DB),
-                    size: 12,
-                  ),
-                ],
+              EvStationCard(
+                iconPath:
+                    "${AppUrls.imageUrl}${stationProvider.stationList[0].details!.image}",
+                title: "${stationProvider.stationList[0].name}",
+                subtitle:
+                    "${stationProvider.stationList[0].timeToReachMin}mins drive",
+                rating: "4.5",
+                onTap: () {
+                  stationProvider.selectedStationFunc(
+                    stationProvider.stationList[0],
+                  );
+                  context.push(RouterPath.stationDetails);
+                },
               ),
-
+              EvStationCard(
+                iconPath:
+                    "${AppUrls.imageUrl}${stationProvider.stationList[1].details!.image}",
+                title: "${stationProvider.stationList[1].name}",
+                subtitle:
+                    "${stationProvider.stationList[1].timeToReachMin}mins drive",
+                rating: "4.5",
+                onTap: () {
+                  stationProvider.selectedStationFunc(
+                    stationProvider.stationList[1],
+                  );
+                  context.push(RouterPath.stationDetails);
+                },
+              ),
               vPad10,
               Stack(
                 clipBehavior: Clip.none,
@@ -321,10 +278,7 @@ class HomePage extends StatelessWidget {
                     bottom: -15,
                     right: 0,
                     child: InkWell(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AiChat()),
-                      ),
+                      onTap: () =>context.push(RouterPath.aiChat),
                       child: Container(
                         width: 60,
                         height: 46,

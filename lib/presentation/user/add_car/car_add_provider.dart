@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:voltly_app/application/driver/vehicle/model/vehicle_details_model.dart';
 import 'package:voltly_app/application/driver/vehicle/model/vehicle_model.dart';
 import 'package:voltly_app/application/driver/vehicle/repo/vehicle_repo.dart';
@@ -19,5 +22,76 @@ class CarAddProvider extends ChangeNotifier {
     final response = await VehicleRepo().getVehicleDetails(id);
     vechicleDetailsModel = response;
     notifyListeners();
+  }
+
+  //helping data
+
+  File? pickedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> pickImage() async {
+    final pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
+    if (pickedFile != null) {
+      pickedImage = File(pickedFile.path);
+      notifyListeners();
+    }
+  }
+
+  String _selectedVehicleType = 'Car';
+
+  String get selectedVehicleType => _selectedVehicleType;
+
+  bool get isSelectedCar => _selectedVehicleType == 'Car';
+  bool get isSelectedBike => _selectedVehicleType == 'Bike';
+
+  void selectVehicle(String type) {
+    _selectedVehicleType = type;
+    notifyListeners();
+  }
+
+  String carName = "";
+
+  void updateCarName(v) {
+    carName = v;
+    print(carName);
+    notifyListeners();
+  }
+
+  //plug section
+
+  String _selectedPlug = '';
+
+  String get selectedPlug => _selectedPlug;
+  bool get hasSelected => _selectedPlug.isNotEmpty;
+
+  void selectPlug(String plugType) {
+    _selectedPlug = plugType;
+    notifyListeners();
+  }
+
+  void clearSelection() {
+    _selectedPlug = '';
+    notifyListeners();
+  }
+
+  String _registrationNumber = "";
+  String get registrationNumber => _registrationNumber;
+
+  updateRegistrationNumnber(String v) {
+    _registrationNumber = v;
+    notifyListeners();
+  }
+
+  Future<Map<String, dynamic>> addCarData() async {
+    final reseponse = await VehicleRepo().addCar({
+      "vehicle_name": carName,
+      "registration_number": registrationNumber,
+      "plug_type": "type_a",
+      "vehicle_type": _selectedVehicleType.toLowerCase(),
+    }, pickedImage!);
+    return reseponse;
   }
 }

@@ -569,7 +569,6 @@ class _RescheduleSessionDialogState extends State<_RescheduleSessionDialog> {
   String? selectedTimeSlot;
   int selectedDayIndex = 3; // Wednesday
 
-  final List<String> days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   final List<String> timeSlots = [
     '10:00 AM - 11:00 AM',
     '12:30 PM - 01:30 PM',
@@ -578,6 +577,7 @@ class _RescheduleSessionDialogState extends State<_RescheduleSessionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<StationProvider>();
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       backgroundColor: Color(0xFF121C24),
@@ -612,7 +612,7 @@ class _RescheduleSessionDialogState extends State<_RescheduleSessionDialog> {
             const SizedBox(height: 16),
             const Text("Select Days", style: TextStyle(color: Colors.white70)),
             const SizedBox(height: 8),
-            _buildDaySelector(),
+            _buildDaySelector(provider.selectedStation.details!.availableDays!),
             const SizedBox(height: 24),
             const Text("Select Hours", style: TextStyle(color: Colors.white70)),
             const SizedBox(height: 8),
@@ -625,7 +625,7 @@ class _RescheduleSessionDialogState extends State<_RescheduleSessionDialog> {
     );
   }
 
-  Widget _buildDaySelector() {
+  Widget _buildDaySelector(List<String> days) {
     return Container(
       decoration: ShapeDecoration(
         color: const Color(0xFF182724),
@@ -660,7 +660,7 @@ class _RescheduleSessionDialogState extends State<_RescheduleSessionDialog> {
                 ),
                 child: Center(
                   child: Text(
-                    days[index],
+                    days[index][0],
                     style: TextStyle(
                       color: isSelected ? Colors.white : Colors.white,
                       fontWeight: FontWeight.bold,

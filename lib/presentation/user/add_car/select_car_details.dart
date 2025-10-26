@@ -14,7 +14,7 @@ class SelectCarDetails extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Colors.red),
         ),
         title: Text(
           'Selected Vehicle Details',

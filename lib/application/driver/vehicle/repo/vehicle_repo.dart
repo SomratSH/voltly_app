@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:voltly_app/api_service/api_service.dart';
 import 'package:voltly_app/application/driver/vehicle/model/vehicle_details_model.dart';
 import 'package:voltly_app/application/driver/vehicle/model/vehicle_model.dart';
@@ -22,5 +24,19 @@ class VehicleRepo {
     );
 
     return VechicleDetailsModel.fromJson(response);
+  }
+
+  Future<Map<String, dynamic>> addCar(
+    Map<String, dynamic> data,
+    File image,
+  ) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final response = await ApiService().postData(
+      AppUrls.addCarUrl,
+      data,
+      authToken: preferences.getString("authToken"),
+      image: image,
+    );
+    return response;
   }
 }

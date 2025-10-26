@@ -15,8 +15,10 @@ import 'package:voltly_app/presentation/station_owner/profile/host_udpate_profil
 import 'package:voltly_app/presentation/station_owner/profile/profile_owner.dart';
 import 'package:voltly_app/presentation/station_owner/resevation/reservation_page.dart';
 import 'package:voltly_app/presentation/user/add_car/add_car.dart';
+import 'package:voltly_app/presentation/user/add_car/add_car_chargers.dart';
 import 'package:voltly_app/presentation/user/add_car/car_details.dart';
 import 'package:voltly_app/presentation/user/add_car/munal_add_car.dart';
+import 'package:voltly_app/presentation/user/ai_chat/ai_chat.dart';
 import 'package:voltly_app/presentation/user/home_page/home_page.dart';
 import 'package:voltly_app/presentation/user/landing_page/landing_page.dart';
 import 'package:voltly_app/presentation/user/profile/changed_password.dart';
@@ -91,6 +93,15 @@ class AppRouter {
         path: RouterPath.stationDetails,
         builder: (context, state) => StationDetails(),
       ),
+
+      GoRoute(
+        path: RouterPath.addCarCharger,
+        builder: (context, state) => AddCarChargers(),
+      ),
+
+      GoRoute(path: RouterPath.aiChat, builder: (context, state) => AiChat()),
+
+      /////////////////////////////////////////////////host///////////////////////////////
       //host
       GoRoute(
         path: RouterPath.updateProfileHost,
@@ -98,7 +109,7 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: RouterPath.stationDetails,
+        path: RouterPath.profileHost,
         builder: (context, state) => ProfileOwner(),
       ),
       // Shell routing for protected pages driver
@@ -184,4 +195,8 @@ class RouterPath {
   static String carDetails = "/car-details";
 
   static String stationDetails = "/station-details";
+
+  static String addCarCharger = "/add-car-charger";
+
+  static String aiChat = '/ai-chat';
 }

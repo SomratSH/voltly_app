@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/presentation/user/add_car/car_add_provider.dart';
 import 'package:voltly_app/presentation/user/add_car/select_car_details.dart';
 
-class VehiclePlugSelectionScreen extends StatefulWidget {
-  const VehiclePlugSelectionScreen({super.key});
-
-  @override
-  _VehiclePlugSelectionScreenState createState() =>
-      _VehiclePlugSelectionScreenState();
-}
-
-class _VehiclePlugSelectionScreenState
-    extends State<VehiclePlugSelectionScreen> {
-  String? selectedPlug;
+class AddCarChargers extends StatelessWidget {
+  const AddCarChargers({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<CarAddProvider>();
     return Scaffold(
       appBar: AppBar(
-        
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -39,7 +36,7 @@ class _VehiclePlugSelectionScreenState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Tesla CS23',
+                    provider.carName,
                     style: TextStyle(
                       color: const Color(0xFFBEBEBE),
                       fontSize: 20,
@@ -69,8 +66,11 @@ class _VehiclePlugSelectionScreenState
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const TextField(
+                child: TextField(
                   style: TextStyle(color: Colors.white),
+                  onChanged: (value) {
+                    provider.updateRegistrationNumnber(value);
+                  },
                   decoration: InputDecoration(
                     hintText: 'Enter registration number',
                     hintStyle: TextStyle(color: Color(0xFF787878)),
@@ -98,30 +98,76 @@ class _VehiclePlugSelectionScreenState
               ),
               const SizedBox(height: 20.0),
 
-              // Plug Options
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 14,
+                runSpacing: 16,
                 children: [
-                  _buildPlugChip('Type A', "assets/icon/typeA.svg"),
-                  _buildPlugChip('CHAdeMO', "assets/icon/chademo.svg"),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildPlugChip('Type B', "assets/icon/typeB.svg"),
-                  _buildPlugChip('CCS-cable', "assets/icon/csscable.svg"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildPlugChip(
+                        context,
+                        'Type A',
+                        'assets/icon/typeA.svg',
+                        provider,
+                      ),
+                      hPad10,
+                      _buildPlugChip(
+                        context,
+                        'CHAdeMO',
+                        'assets/icon/chademo.svg',
+                        provider,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildPlugChip(
+                        context,
+                        'Type B',
+                        'assets/icon/typeB.svg',
+                        provider,
+                      ),
+                      hPad10,
+                      _buildPlugChip(
+                        context,
+                        'CCS-cable',
+                        'assets/icon/csscable.svg',
+                        provider,
+                      ),
+                    ],
+                  ),
                 ],
               ),
               const SizedBox(height: 50.0),
 
               PrimaryButton(
                 text: "Submit",
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SelectCarDetails()),
-                  );
+                onPressed: () async {
+                  if (provider.carName.isEmpty ||
+                      provider.selectedPlug.isEmpty ||
+                      provider.pickedImage == null ||
+                      provider.selectedVehicleType.isEmpty) {
+                    CustomSnackbar.show(
+                      context,
+                      message: "Fill up all data",
+                      backgroundColor: Colors.red,
+                    );
+                  } else {
+                    LoadingDialog.show(context);
+                    final status = await provider.addCarData();
+                    LoadingDialog.hide(context);
+                    if (status["id"] != null) {
+                      CustomSnackbar.show(
+                        context,
+                        message: "Car Added Successfully",
+                      );
+                      provider.getVehicleList();
+                      context.go(RouterPath.addCar);
+                    }
+                  }
                 },
               ),
               const SizedBox(height: 20.0),
@@ -132,47 +178,59 @@ class _VehiclePlugSelectionScreenState
     );
   }
 
-  Widget _buildPlugChip(String type, String iconUrl) {
-    bool isSelected = selectedPlug == type;
+  Widget _buildPlugChip(
+    BuildContext context,
+    String type,
+    String iconUrl,
+    CarAddProvider provider,
+  ) {
+    final isSelected = provider.selectedPlug == type;
+
     return GestureDetector(
       onTap: () {
-        setState(() {
-          selectedPlug = type;
-        });
+        provider.selectPlug(type);
       },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: 100,
-          height: 100,
-          padding: const EdgeInsets.all(15),
-          decoration: ShapeDecoration(
-            color: isSelected ? primaryColor : const Color(0x7FC4C4C4),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 110,
+        height: 110,
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: isSelected ? primaryColor : const Color(0xFF1E2C2A),
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: isSelected ? Colors.white : Colors.transparent,
+            width: 1.5,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: primaryColor.withOpacity(0.4),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                  ),
+                ]
+              : [],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              iconUrl,
+              width: 40,
+              color: isSelected ? Colors.black : Colors.white,
             ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Placeholder for the plug icon
-              SvgPicture.asset(
-                iconUrl,
-                color: isSelected ? Colors.black : Colors.white,
+            const SizedBox(height: 10),
+            Text(
+              type,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: isSelected ? Colors.black : Colors.white70,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
               ),
-              const SizedBox(height: 8),
-              Text(
-                type,
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.60),
-                  fontSize: 14,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w800,
-                  height: 2,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

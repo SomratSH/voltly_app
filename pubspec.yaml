@@ -44,6 +44,9 @@ dependencies:
   shared_preferences: ^2.5.3
   provider: ^6.1.5+1
   image_picker: ^1.2.0
+  markdown: ^7.3.0
+  html: ^0.15.6
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
