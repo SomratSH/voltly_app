@@ -11,7 +11,7 @@ import 'package:voltly_app/constant/app_urls.dart' show AppUrls;
 import 'package:voltly_app/presentation/station_owner/profile/contact_us.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/station_owner/profile/review_page.dart';
-import 'package:voltly_app/presentation/station_owner/profile/subscription_page.dart';
+import 'package:voltly_app/presentation/station_owner/profile/subscription/subscription_page.dart';
 import 'package:voltly_app/presentation/user/profile/changed_password.dart';
 import 'package:voltly_app/presentation/user/profile/charging_history.dart';
 import 'package:voltly_app/presentation/user/profile/message_page.dart';

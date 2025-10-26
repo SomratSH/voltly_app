@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/presentation/station_owner/profile/subscription/subscription_provider.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => SubscriptionProvider()..getSubscriptionData(),
+      child: _Layout(),
+    );
+  }
+}
+
+class _Layout extends StatelessWidget {
+  const _Layout({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<SubscriptionProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF121C24),
@@ -23,108 +38,90 @@ class SubscriptionScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Choose Your Hosting Plan',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      body: provider.isLoading
+          ? Center(child: CircularProgressIndicator())
+          : provider.subscriptionList.isEmpty
+          ? Center(child: Text("No Plan Data Available"))
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Choose Your Hosting Plan',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Upgrade your plan to get more visibility and manage\nyour chargers better.',
+                    style: TextStyle(color: Color(0xFF888888), fontSize: 14),
+                  ),
+                  const SizedBox(height: 24),
+                  Column(
+                    children: List.generate(provider.subscriptionList.length, (
+                      index,
+                    ) {
+                      final subscriptionData = provider.subscriptionList[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _buildPlanCard(
+                          title: subscriptionData.name!,
+                          subtitle:
+                              "${subscriptionData.price}/${subscriptionData.billingCycle}",
+                          features: [
+                            {'text': '1 charger listing', 'isIncluded': true},
+                            {
+                              'text': 'Standard placement in search',
+                              'isIncluded': true,
+                            },
+                            {
+                              'text': 'No analytics or premium visibility',
+                              'isIncluded': false,
+                            },
+                          ],
+                          buttonText: 'Upgrade to ${subscriptionData.name}',
+                          isMostPopular: false,
+                          isBestForBusiness: false,
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildInfoCard(),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Billing',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildBillingCard(),
+                  const SizedBox(height: 24),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'All subscriptions are billed securely via Stripe. Cancel anytime.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF6B7280),
+                        fontSize: 12,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        height: 1.67,
+                      ),
+                    ),
+                  ),
+                  vPad15,
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Upgrade your plan to get more visibility and manage\nyour chargers better.',
-              style: TextStyle(color: Color(0xFF888888), fontSize: 14),
-            ),
-            const SizedBox(height: 24),
-            _buildPlanCard(
-              title: 'Basic',
-              subtitle: 'Free',
-              features: [
-                {'text': '1 charger listing', 'isIncluded': true},
-                {'text': 'Standard placement in search', 'isIncluded': true},
-                {
-                  'text': 'No analytics or premium visibility',
-                  'isIncluded': false,
-                },
-              ],
-              buttonText: 'Current Plan',
-              isMostPopular: false,
-              isBestForBusiness: false,
-            ),
-            const SizedBox(height: 16),
-            _buildPlanCard(
-              title: 'Pro',
-              subtitle: '\$14.99 - \$29.99',
-              subtitleNote: '/month',
-              features: [
-                {
-                  'text': 'Multiple chargers allowed (up to 5)',
-                  'isIncluded': true,
-                },
-                {
-                  'text': 'Higher visibility in search results',
-                  'isIncluded': true,
-                },
-                {'text': 'Flexible payout options', 'isIncluded': true},
-                {'text': 'Priority customer support', 'isIncluded': true},
-              ],
-              buttonText: 'Upgrade to Pro',
-              isMostPopular: true,
-              isBestForBusiness: false,
-            ),
-            const SizedBox(height: 16),
-            _buildPlanCard(
-              title: 'Business',
-              subtitle: '\$49.99 - \$99.99',
-              subtitleNote: '/month',
-              features: [
-                {'text': 'Unlimited charger listings', 'isIncluded': true},
-                {'text': 'Featured placement in search', 'isIncluded': true},
-                {'text': 'Advanced analytics dashboard', 'isIncluded': true},
-                {'text': 'Dedicated business support', 'isIncluded': true},
-              ],
-              buttonText: 'Upgrade to Business',
-              isMostPopular: false,
-              isBestForBusiness: true,
-            ),
-            const SizedBox(height: 16),
-            _buildInfoCard(),
-            const SizedBox(height: 24),
-            const Text(
-              'Billing',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildBillingCard(),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'All subscriptions are billed securely via Stripe. Cancel anytime.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF6B7280),
-                  fontSize: 12,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w400,
-                  height: 1.67,
-                ),
-              ),
-            ),
-            vPad15,
-          ],
-        ),
-      ),
     );
   }
 

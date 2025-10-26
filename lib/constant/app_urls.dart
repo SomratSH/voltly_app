@@ -21,4 +21,6 @@ class AppUrls {
   static String getStationListUrl = "/driver/stations/nearby/";
 
   static String addCarUrl = "/driver/vehicles/";
+
+  static String subscriptionListUrl = "/subscriptions/plans/";
 }
