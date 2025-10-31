@@ -347,7 +347,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       await prefs.setBool('isHost', true);
                       await prefs.setBool('isDriver', false);
                       context.go(RouterPath.homeOwner);
-                    } else if ((status["data"]["role"] == "Driver")) {
+                    } else if ((status["data"]["role"] == "User")) {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       await prefs.setBool('isHost', false);
@@ -373,14 +373,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 56,
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => VoltlyCreateAccountPage(
-                          isDriver: _isDriverSelected,
-                        ),
-                      ),
-                    );
+                    _isDriverSelected
+                        ? context.go(RouterPath.singUp)
+                        : context.go(RouterPath.hostSignUpStep1);
                   },
                   child: Container(
                     decoration: ShapeDecoration(

@@ -188,10 +188,7 @@ Widget _buildMenuSection(BuildContext context) {
           child: _buildMenuItem("assets/icon/key.svg", 'Change Password'),
         ),
         InkWell(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => MessagesScreen()),
-          ),
+          onTap: () => context.push(RouterPath.message),
           child: _buildMenuItem(
             "assets/icon/message-text.svg",
             'Messages',
