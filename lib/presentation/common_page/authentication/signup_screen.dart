@@ -343,11 +343,11 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
                         if (_passwordController.text ==
                             _confirmPasswordController.text) {
                           LoadingDialog.show(context);
-                          final reseponse = await provider.signUp(
+                          final reseponse = await provider.signUpDrver(
                             name: _nameController.text,
                             email: _emailController.text,
                             phone: _phoneController.text,
-                            role: widget.isDriver ? "driver" : "host",
+                            role: widget.isDriver ? "user" : "host",
                             password: _passwordController.text,
                             confirmPassword: _confirmPasswordController.text,
                             isTerms: _agreeToTerms,

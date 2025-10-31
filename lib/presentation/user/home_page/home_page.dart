@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/custom_padding.dart';
@@ -9,6 +10,7 @@ import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/ai_chat/ai_chat.dart';
+import 'package:voltly_app/presentation/user/home_page/home_provider.dart';
 import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
@@ -19,6 +21,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileProvider = context.watch<ProfileProvider>();
     final stationProvider = context.watch<StationProvider>();
+    final homeprovider = context.watch<HomeProvider>();
     return Scaffold(
       backgroundColor: const Color(0xFF121C24),
       appBar: AppBar(
@@ -190,11 +193,17 @@ class HomePage extends StatelessWidget {
                       width: double.infinity,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          "assets/image/map_image.png",
-                          width: 200,
-                          height: 120,
-                          fit: BoxFit.cover,
+                        child: GoogleMap(
+                          onMapCreated: homeprovider.onMapCreated,
+                          initialCameraPosition: CameraPosition(
+                            target: homeprovider.sourceLocation,
+                            zoom: 16.0,
+                          ),
+                          markers: homeprovider.markers,
+                          mapType: MapType.normal,
+                          trafficEnabled: true,
+                          myLocationButtonEnabled: true,
+                          zoomControlsEnabled: false,
                         ),
                       ),
                     ),
@@ -232,34 +241,41 @@ class HomePage extends StatelessWidget {
               ),
 
               vPad10,
-              EvStationCard(
-                iconPath:
-                    "${AppUrls.imageUrl}${stationProvider.stationList[0].details!.image}",
-                title: "${stationProvider.stationList[0].name}",
-                subtitle:
-                    "${stationProvider.stationList[0].timeToReachMin}mins drive",
-                rating: "4.5",
-                onTap: () {
-                  stationProvider.selectedStationFunc(
-                    stationProvider.stationList[0],
-                  );
-                  context.push(RouterPath.stationDetails);
-                },
-              ),
-              EvStationCard(
-                iconPath:
-                    "${AppUrls.imageUrl}${stationProvider.stationList[1].details!.image}",
-                title: "${stationProvider.stationList[1].name}",
-                subtitle:
-                    "${stationProvider.stationList[1].timeToReachMin}mins drive",
-                rating: "4.5",
-                onTap: () {
-                  stationProvider.selectedStationFunc(
-                    stationProvider.stationList[1],
-                  );
-                  context.push(RouterPath.stationDetails);
-                },
-              ),
+
+              // stationProvider.stationList.isEmpty
+              //     ? Center(child: Text("No station available", style: Te,))
+              //     : Column(
+              //         children: [
+              //           EvStationCard(
+              //             iconPath:
+              //                 "${AppUrls.imageUrl}${stationProvider.stationList[0].details!.image}",
+              //             title: "${stationProvider.stationList[0].name}",
+              //             subtitle:
+              //                 "${stationProvider.stationList[0].timeToReachMin}mins drive",
+              //             rating: "4.5",
+              //             onTap: () {
+              //               stationProvider.selectedStationFunc(
+              //                 stationProvider.stationList[0],
+              //               );
+              //               context.push(RouterPath.stationDetails);
+              //             },
+              //           ),
+              //           EvStationCard(
+              //             iconPath:
+              //                 "${AppUrls.imageUrl}${stationProvider.stationList[1].details!.image}",
+              //             title: "${stationProvider.stationList[1].name}",
+              //             subtitle:
+              //                 "${stationProvider.stationList[1].timeToReachMin}mins drive",
+              //             rating: "4.5",
+              //             onTap: () {
+              //               stationProvider.selectedStationFunc(
+              //                 stationProvider.stationList[1],
+              //               );
+              //               context.push(RouterPath.stationDetails);
+              //             },
+              //           ),
+              //         ],
+              //       ),
               vPad10,
               Stack(
                 clipBehavior: Clip.none,
@@ -278,7 +294,7 @@ class HomePage extends StatelessWidget {
                     bottom: -15,
                     right: 0,
                     child: InkWell(
-                      onTap: () =>context.push(RouterPath.aiChat),
+                      onTap: () => context.push(RouterPath.aiChat),
                       child: Container(
                         width: 60,
                         height: 46,

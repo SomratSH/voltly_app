@@ -1,5 +1,8 @@
 import 'package:go_router/go_router.dart';
+import 'package:voltly_app/demo_map.dart';
 import 'package:voltly_app/presentation/common_page/authentication/forgot_password.dart';
+import 'package:voltly_app/presentation/common_page/authentication/host_sign_up_step_1.dart';
+import 'package:voltly_app/presentation/common_page/authentication/host_sign_up_step_2.dart';
 import 'package:voltly_app/presentation/common_page/authentication/login_screen.dart';
 import 'package:voltly_app/presentation/common_page/authentication/signup_screen.dart';
 import 'package:voltly_app/presentation/common_page/authentication/update_password.dart';
@@ -19,9 +22,11 @@ import 'package:voltly_app/presentation/user/add_car/add_car_chargers.dart';
 import 'package:voltly_app/presentation/user/add_car/car_details.dart';
 import 'package:voltly_app/presentation/user/add_car/munal_add_car.dart';
 import 'package:voltly_app/presentation/user/ai_chat/ai_chat.dart';
+import 'package:voltly_app/presentation/user/ai_chat/ai_chat_provider.dart';
 import 'package:voltly_app/presentation/user/home_page/home_page.dart';
 import 'package:voltly_app/presentation/user/landing_page/landing_page.dart';
 import 'package:voltly_app/presentation/user/profile/changed_password.dart';
+import 'package:voltly_app/presentation/user/profile/message_page.dart';
 import 'package:voltly_app/presentation/user/profile/profile_page.dart';
 import 'package:voltly_app/presentation/user/profile/update_profile.dart';
 import 'package:voltly_app/presentation/user/station/station_details.dart';
@@ -37,10 +42,18 @@ class AppRouter {
         path: RouterPath.splash,
         builder: (context, state) => const SplashScreen(),
       ),
-      // GoRoute(
-      //   path: RouterPath.singUp,
-      //   builder: (context, state) => const VoltlyCreateAccountPage(),
-      // ),
+      GoRoute(
+        path: RouterPath.singUp,
+        builder: (context, state) => VoltlyCreateAccountPage(isDriver: true),
+      ),
+      GoRoute(
+        path: RouterPath.hostSignUpStep1,
+        builder: (context, state) => HostSignUpStep1(isDriver: false),
+      ),
+      GoRoute(
+        path: RouterPath.hostStringUpStep2,
+        builder: (context, state) => HostSignUpStep2(),
+      ),
       GoRoute(
         path: RouterPath.onBoardingOne,
         builder: (context, state) => OnboardingScreen(),
@@ -53,10 +66,10 @@ class AppRouter {
         path: RouterPath.login,
         builder: (context, state) => const LoginScreen(),
       ),
-      // GoRoute(
-      //   path: RouterPath.singUp,
-      //   builder: (context, state) => const VoltlyCreateAccountPage(),
-      // ),
+      GoRoute(
+        path: RouterPath.message,
+        builder: (context, state) => MessagesScreen(),
+      ),
       GoRoute(
         path: RouterPath.resetPassword,
         builder: (context, state) => const UpdatePassword(),
@@ -168,6 +181,8 @@ class RouterPath {
   static String onBoardingTow = "/onBoarding-two";
   static String login = "/login";
   static String singUp = "/signUp";
+  static String hostSignUpStep1 = "/host-sign-up-1";
+  static String hostStringUpStep2 = "/host-sign-up-2";
   static String forgotPassword = "/forgot-password";
   static String verifyOtp = "/verify-otp";
   static String resetPassword = "/reset-password";
@@ -199,4 +214,7 @@ class RouterPath {
   static String addCarCharger = "/add-car-charger";
 
   static String aiChat = '/ai-chat';
+
+  //
+  static String message = "/message";
 }

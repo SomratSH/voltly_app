@@ -150,7 +150,7 @@ class _Layout extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: InkWell(
-          onTap: () => Navigator.pop(context),
+          onTap: () => context.pop(),
           child: Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: const Text(
@@ -281,6 +281,57 @@ class _Layout extends StatelessWidget {
                         ],
                       ),
                     ],
+                  ),
+                ),
+              ),
+              vPad10,
+              GestureDetector(
+                onTap: () {
+                  context.push(RouterPath.message);
+                },
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF007F5F), Color(0xFF2B9348)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 20,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/image/comment.png",
+                          height: 22,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 12),
+                        const Text(
+                          "Message",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

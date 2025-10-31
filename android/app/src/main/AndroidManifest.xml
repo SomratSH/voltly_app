@@ -7,6 +7,7 @@
         android:label="voltly_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDT0I4PgkqYzBiM7TKLfL3u_LmguZp3uUs"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
