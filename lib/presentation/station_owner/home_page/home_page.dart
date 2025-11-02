@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
@@ -9,6 +10,7 @@ import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/common_page/notification.dart';
 import 'package:voltly_app/presentation/station_owner/charging/add_charger_owner.dart';
+import 'package:voltly_app/presentation/station_owner/home_page/host_home_provider.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/station_map.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_owner.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
@@ -20,6 +22,7 @@ class HomePageOwner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileProvider = context.watch<HostProfileProvider>();
+    final homeProvider = context.watch<HostHomeProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF121C24),
@@ -77,7 +80,7 @@ class HomePageOwner extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(context, profileProvider),
+              _buildHeader(context, profileProvider, homeProvider),
               const SizedBox(height: 24),
               _buildEarningsOverview(),
               const SizedBox(height: 24),
@@ -122,6 +125,7 @@ class HomePageOwner extends StatelessWidget {
   Widget _buildHeader(
     BuildContext context,
     HostProfileProvider profileProvider,
+    HostHomeProvider homeProvider,
   ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,18 +204,20 @@ class HomePageOwner extends StatelessWidget {
         SizedBox(width: 16),
         Expanded(
           flex: 1,
-          child: InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => MapScreen()),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image(
-                height: 150,
-                width: 200,
-                image: AssetImage('assets/image/map_image.png'), // Placeholder
-                fit: BoxFit.cover,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: SizedBox(
+              height: 120,
+              child: GoogleMap(
+                onMapCreated: homeProvider.onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: homeProvider.sourceLocation,
+                  zoom: 15,
+                ),
+                markers: homeProvider.markers,
+                style: homeProvider.mapTheme,
+                zoomControlsEnabled: false,
+                trafficEnabled: true,
               ),
             ),
           ),
