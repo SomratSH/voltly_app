@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/station_owner/charging/charger_list_owner.dart';
+import 'package:voltly_app/presentation/station_owner/charging/charging_provider.dart';
+import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
+part 'widget/map_widget.dart';
 
 class AddChargerOwner extends StatefulWidget {
   const AddChargerOwner({super.key});
@@ -14,13 +22,13 @@ class AddChargerOwner extends StatefulWidget {
 class _AddChargerOwnerState extends State<AddChargerOwner> {
   String? _selectedChargerType;
   int? _selectedExtension;
-  bool _isAvailable = true;
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ChargingProvider>();
+    final profileProvider = context.watch<ProfileProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF121C24),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -44,7 +52,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
             const SizedBox(height: 16),
             _buildSectionTitle('Charger Name/Label'),
             const SizedBox(height: 8),
-            _buildChargerNameInput(),
+            _buildChargerNameInput(provider),
             const SizedBox(height: 16),
             _buildSectionTitle('Location'),
             const SizedBox(height: 8),
@@ -58,15 +66,15 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
               ),
             ),
             vPad5,
-            _buildMapPlaceholder(),
+            MapPickerWidget(),
             const SizedBox(height: 16),
             _buildSectionTitle('Address'),
             const SizedBox(height: 8),
-            _buildAddressInput(),
+            _buildAddressInput(provider),
             const SizedBox(height: 16),
             _buildSectionTitle('Pricing'),
             const SizedBox(height: 8),
-            _buildPricingInputs(),
+            _buildPricingInputs(provider),
             vPad20,
             Row(
               children: [
@@ -80,15 +88,13 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
             const SizedBox(height: 16),
             _buildSectionTitle('Availability'),
             const SizedBox(height: 8),
-            _buildAvailabilityRow(),
+            _buildAvailabilityRow(provider),
             const SizedBox(height: 16),
             _buildDaySelection(),
             const SizedBox(height: 16),
-            _buildSectionTitle('Charging Not Yet Complete?'),
-            const SizedBox(height: 8),
-            _buildChargingOptions(),
+
             const SizedBox(height: 32),
-            _buildButtons(),
+            _buildButtons(provider, profileProvider),
             vPad20,
           ],
         ),
@@ -128,7 +134,10 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
         icon: const Icon(Icons.keyboard_arrow_down, color: Color(0xFF5A5A5A)),
         dropdownColor: const Color(0xFF282828),
         items: ['Type 1', 'Type 2', 'CHAdeMO', 'CCS'].map((String value) {
-          return DropdownMenuItem<String>(value: value, child: Text(value));
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value, style: TextStyle(color: Colors.white)),
+          );
         }).toList(),
         onChanged: (String? newValue) {
           setState(() {
@@ -140,7 +149,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
     );
   }
 
-  Widget _buildChargerNameInput() {
+  Widget _buildChargerNameInput(ChargingProvider provider) {
     return Row(
       children: [
         Expanded(
@@ -152,7 +161,10 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const TextField(
+            child: TextField(
+              onChanged: (v) {
+                provider.updateChargerName(v);
+              },
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -163,61 +175,11 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
             ),
           ),
         ),
-        const SizedBox(width: 8),
-        Container(
-          width: 50,
-          height: 50,
-          decoration: ShapeDecoration(
-            color: const Color(0xFF182724),
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1, color: const Color(0xFF4B5563)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          child: IconButton(
-            icon: const Icon(Icons.add_rounded, color: Color(0xFF5A5A5A)),
-            onPressed: () {},
-          ),
-        ),
       ],
     );
   }
 
-  Widget _buildMapPlaceholder() {
-    return Container(
-      height: 180,
-      width: double.infinity,
-      decoration: ShapeDecoration(
-        color: const Color(0xFF182724),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(8),
-          side: BorderSide(color: const Color(0xFFE5E7EB)),
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Icon(Icons.location_on, size: 50, color: primaryColor),
-          const Positioned(
-            bottom: 20,
-            child: Text(
-              'Tap to set location',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: const Color(0xFFD1D5DB),
-                fontSize: 14,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-                height: 1.43,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAddressInput() {
+  Widget _buildAddressInput(ChargingProvider provider) {
     return Container(
       decoration: ShapeDecoration(
         color: const Color(0xFF182724),
@@ -226,7 +188,8 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      child: const TextField(
+      child: TextField(
+        controller: TextEditingController(text: provider.address),
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           border: InputBorder.none,
@@ -238,17 +201,23 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
     );
   }
 
-  Widget _buildPricingInputs() {
+  Widget _buildPricingInputs(ChargingProvider provider) {
     return Row(
       children: [
-        Expanded(child: _buildPriceField('Price per hour', '\$ 0.00')),
+        Expanded(
+          child: _buildPriceField('Price per hour', '\$ 0.00', provider),
+        ),
         const SizedBox(width: 16),
-        Expanded(child: _buildPriceField('Price per kWh', '\$ 0.00')),
+        Expanded(child: _buildPriceField('Price per kWh', '\$ 0.00', provider)),
       ],
     );
   }
 
-  Widget _buildPriceField(String label, String hint) {
+  Widget _buildPriceField(
+    String label,
+    String hint,
+    ChargingProvider provider,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -283,6 +252,9 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
               hintText: hint,
               hintStyle: const TextStyle(color: Color(0xFF5A5A5A)),
             ),
+            onChanged: (v) {
+              provider.ratePerHourUpdate(v);
+            },
           ),
         ),
       ],
@@ -350,7 +322,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
     );
   }
 
-  Widget _buildAvailabilityRow() {
+  Widget _buildAvailabilityRow(ChargingProvider provider) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -365,11 +337,9 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
           ),
         ),
         Switch(
-          value: _isAvailable,
+          value: provider.isOpen24Hours,
           onChanged: (bool value) {
-            setState(() {
-              _isAvailable = value;
-            });
+            provider.updateTheStatusIsAvailable(value);
           },
           activeColor: primaryColor,
         ),
@@ -497,7 +467,10 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(
+    ChargingProvider providerider,
+    ProfileProvider profileProvider,
+  ) {
     return Row(
       children: [
         Expanded(
@@ -520,11 +493,23 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
         Expanded(
           child: PrimaryButton(
             text: "Publish",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => ChargerListOwner()),
+            onPressed: () async {
+              LoadingDialog.show(context);
+              final reseponse = await providerider.addChargerHost(
+                profileProvider.profileModel.data!.id.toString(),
               );
+              LoadingDialog.hide(context);
+
+              if (reseponse["message"] != null) {
+                CustomSnackbar.show(context, message: reseponse["message"]);
+                providerider.getChargingList();
+                context.pop(context);
+              } else {
+                CustomSnackbar.show(
+                  context,
+                  message: "Not added successfully, try agian",
+                );
+              }
             },
           ),
         ),

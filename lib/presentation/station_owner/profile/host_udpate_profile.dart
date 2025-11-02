@@ -112,7 +112,7 @@ class _LayoutState extends State<_Layout> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => context.go(RouterPath.profileHost),
+          onPressed: () => context.pop(context),
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         centerTitle: true,

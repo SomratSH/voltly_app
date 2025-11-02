@@ -1,6 +1,6 @@
 class AppUrls {
-  static String baseUrl = "http://10.10.13.20:9000/api/v1";
-  static String imageUrl = "http://10.10.13.20:9000";
+  static String baseUrl = "http://10.10.13.20:8005/api/v1";
+  static String imageUrl = "http://10.10.13.20:8005";
   //authetication
   static String login = "/login/";
   static String signUp = "/signup/";
@@ -13,7 +13,10 @@ class AppUrls {
   static String profileUpdate = "/profile/update/";
 
   static String changePassword = "/change-password/";
+  
 
+
+  //user
   static String getVehicleUrl = "/driver/vehicles/";
 
   static String getVehicleDetails = "/driver/vehicles/";
@@ -23,4 +26,11 @@ class AppUrls {
   static String addCarUrl = "/driver/vehicles/";
 
   static String subscriptionListUrl = "/subscriptions/plans/";
+
+
+
+  //host
+  static String getChargingList = "/host/my-chargers/";
+
+  static String addHostCharger = "/host/add-charger/";
 }

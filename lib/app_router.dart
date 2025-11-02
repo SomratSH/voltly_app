@@ -10,6 +10,7 @@ import 'package:voltly_app/presentation/common_page/authentication/verify_email.
 import 'package:voltly_app/presentation/common_page/onboarding/onboarding_screen.dart';
 import 'package:voltly_app/presentation/common_page/onboarding/onboarding_screen_second.dart';
 import 'package:voltly_app/presentation/common_page/onboarding/splash_screen.dart';
+import 'package:voltly_app/presentation/station_owner/charging/add_charger_owner.dart';
 import 'package:voltly_app/presentation/station_owner/charging/charging_page.dart';
 import 'package:voltly_app/presentation/station_owner/earning/earning_page.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/home_page.dart';
@@ -117,8 +118,8 @@ class AppRouter {
       /////////////////////////////////////////////////host///////////////////////////////
       //host
       GoRoute(
-        path: RouterPath.updateProfileHost,
-        builder: (context, state) => HostUpdateProfile(),
+        path: RouterPath.addChargerHost,
+        builder: (context, state) => AddChargerOwner(),
       ),
 
       GoRoute(
@@ -200,7 +201,7 @@ class RouterPath {
   static String reservationHost = "/reservation";
   static String chargingHost = "/charging-owner";
   static String earningHost = "/earning";
-
+  static String addChargerHost = "/add-charger";
   static String updateProfileHost = "/update-profile-host";
 
   static String profileHost = "/profile-host";
