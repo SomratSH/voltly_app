@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:voltly_app/common/common_map_chat_button.dart';
+import 'package:voltly_app/common/commone_helper.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
@@ -51,7 +54,7 @@ class StationDetails extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              provider.selectedStation.name!,
+                              provider.stationDetailsModel.stationName!,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -65,7 +68,7 @@ class StationDetails extends StatelessWidget {
                                 Icon(Icons.star, color: primaryColor, size: 16),
                                 SizedBox(width: 4),
                                 Text(
-                                  'High score 5/5',
+                                  'High score ${provider.stationDetailsModel.averageRating}/5',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -89,7 +92,7 @@ class StationDetails extends StatelessWidget {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  '09.00 - 22.00',
+                                  '${convertTo12HourFormat(provider.stationDetailsModel.openingTime!)} - ${convertTo12HourFormat(provider.stationDetailsModel.closingTime!)}',
                                   style: TextStyle(
                                     color: const Color(0xFFB5B5B5),
                                     fontSize: 14,
@@ -116,7 +119,7 @@ class StationDetails extends StatelessWidget {
                       Icon(Icons.location_on, color: primaryColor, size: 16),
                       SizedBox(width: 8),
                       Text(
-                        '${provider.selectedStation.distanceKm} Km.',
+                        '${provider.stationDetailsModel.distanceKm} Km.',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -127,7 +130,7 @@ class StationDetails extends StatelessWidget {
                       SizedBox(width: 16),
                       Expanded(
                         child: Text(
-                          provider.selectedStation.address!,
+                          provider.stationDetailsModel.address ?? "N/A",
                           style: TextStyle(
                             color: const Color(0xFFF2F2F2),
                             fontSize: 16,
@@ -141,7 +144,7 @@ class StationDetails extends StatelessWidget {
                     ],
                   ),
                   vPad10,
-                  PrimaryButton(text: "Go to Map", onPressed: () {}),
+                  MapChatButtons(onTapMap: () {}, onTapMessage: () {}),
                 ],
               ),
             ),
@@ -151,27 +154,37 @@ class StationDetails extends StatelessWidget {
 
             _buildSectionTitle('Connector Type'),
             Divider(color: primaryColor),
-            _buildConnectorType(
-              iconPath: 'assets/icon_type1.png',
-              type: 'Type 1 (AC)',
-              power: '11.04 kW',
-              status: 'Walk in',
-              isAvailable: true,
+
+            Column(
+              children: List.generate(
+                provider.stationDetailsModel.chargers!.length,
+                (index) {
+                  final charger = provider.stationDetailsModel.chargers![index];
+                  return _buildConnectorType(
+                    iconPath: 'assets/icon_type1.png',
+                    type: charger.chargerType!,
+                    power: '11.04 kW',
+                    status: 'Walk in',
+                    isAvailable: charger.available!,
+                  );
+                },
+              ),
             ),
-            _buildConnectorType(
-              iconPath: 'assets/icon_type2.png',
-              type: 'Type 2 (AC)',
-              power: '11.04 kW',
-              status: 'Closed',
-              isAvailable: false,
-            ),
-            _buildConnectorType(
-              iconPath: 'assets/icon_ccs2.png',
-              type: 'CCS2 (AC)',
-              power: '11.04 kW',
-              status: 'Walk in',
-              isAvailable: true,
-            ),
+
+            // _buildConnectorType(
+            //   iconPath: 'assets/icon_type2.png',
+            //   type: 'Type 2 (AC)',
+            //   power: '11.04 kW',
+            //   status: 'Closed',
+            //   isAvailable: false,
+            // ),
+            // _buildConnectorType(
+            //   iconPath: 'assets/icon_ccs2.png',
+            //   type: 'CCS2 (AC)',
+            //   power: '11.04 kW',
+            //   status: 'Walk in',
+            //   isAvailable: true,
+            // ),
             const SizedBox(height: 24),
             _buildSectionTitle('Service fee'),
             Divider(color: Color(0xff00AB82)),
@@ -367,7 +380,7 @@ class StationDetails extends StatelessWidget {
             ),
           ),
           Text(
-            status,
+            isAvailable ? status : "Closed",
             style: TextStyle(
               color: isAvailable ? primaryColor : Colors.red,
               fontWeight: FontWeight.bold,
@@ -612,7 +625,7 @@ class _RescheduleSessionDialogState extends State<_RescheduleSessionDialog> {
             const SizedBox(height: 16),
             const Text("Select Days", style: TextStyle(color: Colors.white70)),
             const SizedBox(height: 8),
-            _buildDaySelector(provider.selectedStation.details!.availableDays!),
+            // _buildDaySelector(provider.selectedStation.details!.availableDays!),
             const SizedBox(height: 24),
             const Text("Select Hours", style: TextStyle(color: Colors.white70)),
             const SizedBox(height: 8),

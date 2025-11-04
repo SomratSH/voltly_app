@@ -86,7 +86,6 @@ class ChargingProvider extends ChangeNotifier {
 
   Future<void> getChargingList() async {
     final reseponse = await ChargingRepo().getChargingList();
-
     if (reseponse.isNotEmpty) {
       chargerList = reseponse;
       notifyListeners();

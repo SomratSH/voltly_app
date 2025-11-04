@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/application/host/booking_repo/model/booking_model.dart';
+import 'package:voltly_app/common/commone_helper.dart';
+import 'package:voltly_app/common/custom_html_text.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/constant/app_urls.dart';
+import 'package:voltly_app/presentation/station_owner/resevation/reservation_provider.dart';
 
 class ReservationPage extends StatelessWidget {
   const ReservationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ReservationProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF121C24),
@@ -21,90 +30,92 @@ class ReservationPage extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            _buildSearchBar(),
+            _buildSearchBar(provider),
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: _buildAllButton(
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal, // ✅ enable horizontal scroll
+              child: Row(
+                children: [
+                  const SizedBox(width: 8), // small padding left
+                  _buildAllButton(
                     "All",
                     const Color(0x1901CC01),
                     primaryColor,
+                    () async => await provider.getBooking("all"),
                   ),
-                ),
-                Expanded(
-                  child: _buildAllButton(
-                    "Confirmed",
+                  const SizedBox(width: 8),
+                  _buildAllButton(
+                    "Completed",
                     const Color(0x1901CC01),
                     primaryColor,
+                    () async => await provider.getBooking("Completed"),
                   ),
-                ),
-                Expanded(
-                  child: _buildAllButton(
+                  const SizedBox(width: 8),
+                  _buildAllButton(
+                    "Confirmed",
+                    const Color(0x1901CC01),
+                    Colors.green.shade300,
+                    () async => await provider.getBooking("confirmed"),
+                  ),
+                  const SizedBox(width: 8),
+                  _buildAllButton(
                     "Pending",
                     const Color(0x19CA8A04),
                     const Color(0xFFCA8A04),
+                    () async => await provider.getBooking("pending"),
                   ),
-                ),
-                Expanded(
-                  child: _buildAllButton(
+                  const SizedBox(width: 8),
+                  _buildAllButton(
                     "Cancelled",
-                    Colors.transparent,
-                    Colors.white,
+                    const Color.fromARGB(255, 27, 10, 10),
+                    const Color.fromARGB(255, 238, 70, 59),
+                    () async => await provider.getBooking("cancelled"),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildReservationCard(
-                    context,
-                    name: 'Sarah Johnson',
-                    carModel: 'Tesla Model 3',
-                    status: 'Pending',
-                    date: 'Sep 15, 2025',
-                    time: '2:30 PM',
-                    chargerType: 'Type 1 (AC) charging',
-                    location: 'Midtown expressway',
-                    showButtons: true,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildReservationCard(
-                    context,
-                    name: 'Saima Akther',
-                    carModel: 'BMW i4',
-                    status: 'Confirmed',
-                    date: 'Sep 15, 2025',
-                    time: '2:30 PM',
-                    chargerType: 'Type 1 (AC) charging',
-                    location: 'Midtown',
-                    showButtons: false,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildReservationCard(
-                    context,
-                    name: 'Emma Davis',
-                    carModel: 'Nissan Leaf',
-                    status: 'Completed',
-                    date: 'Sep 15, 2025',
-                    time: '12:30 AM',
-                    chargerType: 'Type 1 (AC) charging',
-                    location: 'Midtown expressway',
-                    showButtons: false,
-                  ),
+                  const SizedBox(width: 8),
                 ],
               ),
             ),
+
+            const SizedBox(height: 16),
+            provider.bookingList.isEmpty
+                ? Center(
+                    child: Text(
+                      "No booking is not availble!",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                : provider.isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        await provider.getBooking("all");
+                      },
+                      child: ListView(
+                        children: List.generate(
+                          provider.filteredBookings.length,
+                          (index) {
+                            final booking = provider.filteredBookings[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: _buildReservationCard(
+                                context,
+                                booking: booking,
+                                provider: provider,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(ReservationProvider provider) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: ShapeDecoration(
@@ -113,39 +124,46 @@ class ReservationPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      child: const TextField(
+      child: TextField(
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: Color(0xFF5A5A5A)),
-          hintText: 'Search Driver or Charger name',
+          hintText: 'Search Driver or Charger name or Car Name',
           hintStyle: TextStyle(color: Color(0xFF5A5A5A)),
           border: InputBorder.none,
         ),
+        onChanged: (v) {
+          provider.searchBooking(v);
+        },
       ),
     );
   }
 
-  Widget _buildAllButton(String text, Color color, Color borderColor) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 4,
-      ), // spacing between buttons
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: ShapeDecoration(
-        color: color,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: borderColor),
-          borderRadius: BorderRadius.circular(18),
-        ),
-        shadows: const [
-          BoxShadow(
-            color: Color(0x33000000), // lighter shadow
-            blurRadius: 4,
-            offset: Offset(0, 2),
+  Widget _buildAllButton(
+    String text,
+    Color color,
+    Color borderColor,
+    Function() onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: ShapeDecoration(
+          color: color,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(width: 1, color: borderColor),
+            borderRadius: BorderRadius.circular(18),
           ),
-        ],
-      ),
-      child: Center(
+          shadows: const [
+            BoxShadow(
+              color: Color(0x33000000),
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
         child: Text(
           text,
           style: TextStyle(color: borderColor, fontWeight: FontWeight.bold),
@@ -157,17 +175,11 @@ class ReservationPage extends StatelessWidget {
 
   Widget _buildReservationCard(
     BuildContext context, {
-    required String name,
-    required String carModel,
-    required String status,
-    required String date,
-    required String time,
-    required String chargerType,
-    required String location,
-    required bool showButtons,
+    required BookingModel booking,
+    required ReservationProvider provider,
   }) {
     Color statusColor;
-    switch (status) {
+    switch (booking.status) {
       case 'Pending':
         statusColor = const Color(0xFFFFC107);
         break;
@@ -206,9 +218,11 @@ class ReservationPage extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundImage: NetworkImage(
-                  'https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D',
+                  booking.userPicture != null
+                      ? "${AppUrls.imageUrl}${booking.userPicture}"
+                      : 'https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D',
                 ),
                 radius: 25,
               ),
@@ -218,7 +232,7 @@ class ReservationPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      booking.userName!,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -228,7 +242,7 @@ class ReservationPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      carModel,
+                      booking.vehicleName!,
                       style: TextStyle(
                         color: const Color(0xFF9CA3AF),
                         fontSize: 14,
@@ -250,7 +264,7 @@ class ReservationPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  status,
+                  booking.status!,
                   style: TextStyle(
                     color: statusColor,
                     fontWeight: FontWeight.bold,
@@ -269,7 +283,7 @@ class ReservationPage extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                '$date • $time',
+                '${booking.bookingDate} • ${convertTo12HourFormat(booking.startTime!)} - ${convertTo12HourFormat(booking.endTime!)}',
                 style: TextStyle(
                   color: const Color(0xFFD1D5DB),
                   fontSize: 14,
@@ -287,7 +301,7 @@ class ReservationPage extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  '$chargerType • $location',
+                  '${booking.chargerType} • ${booking.locationArea}',
                   style: TextStyle(
                     color: const Color(0xFFD1D5DB),
                     fontSize: 14,
@@ -300,14 +314,77 @@ class ReservationPage extends StatelessWidget {
               ),
             ],
           ),
-          if (showButtons) const SizedBox(height: 16),
-          if (showButtons)
+          const SizedBox(height: 8),
+
+          booking.reviews == null
+              ? SizedBox()
+              : Row(
+                  children: [
+                    const Icon(Icons.comment, size: 16, color: Colors.white),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        booking.reviews!.first.comment!,
+                        style: TextStyle(
+                          color: const Color(0xFFD1D5DB),
+                          fontSize: 14,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                          height: 1.43,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+          booking.reviews == null ? SizedBox() : const SizedBox(height: 8),
+          booking.reviews == null
+              ? SizedBox()
+              : Row(
+                  children: [
+                    const Icon(Icons.star, size: 16, color: Colors.orange),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        "${booking.reviews!.first.rating}/5",
+                        style: TextStyle(
+                          color: const Color(0xFFD1D5DB),
+                          fontSize: 14,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                          height: 1.43,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+
+          if (booking.status == "pending") const SizedBox(height: 16),
+          if (booking.status == "pending")
             Row(
               children: [
                 Expanded(
                   child: SizedBox(
                     height: 44,
-                    child: PrimaryButton(text: "Accept", onPressed: () {}),
+                    child: PrimaryButton(
+                      text: "Accept",
+                      onPressed: () async {
+                        LoadingDialog.show(context);
+                        final response = await provider.bookingAccept(
+                          booking.id.toString(),
+                          "accept",
+                        );
+                        if (response["success"] != null) {
+                          CustomSnackbar.show(
+                            context,
+                            message: response["success"],
+                          );
+                          provider.updateStatus(booking.id!, "confirmed");
+                        }
+                        LoadingDialog.hide(context);
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),

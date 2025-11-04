@@ -13,8 +13,6 @@ class AppUrls {
   static String profileUpdate = "/profile/update/";
 
   static String changePassword = "/change-password/";
-  
-
 
   //user
   static String getVehicleUrl = "/driver/vehicles/";
@@ -22,15 +20,19 @@ class AppUrls {
   static String getVehicleDetails = "/driver/vehicles/";
 
   static String getStationListUrl = "/driver/stations/nearby/";
+  static String getStationDetails = "/driver/stations/nearby/";
 
   static String addCarUrl = "/driver/vehicles/";
 
   static String subscriptionListUrl = "/subscriptions/plans/";
 
-
-
   //host
   static String getChargingList = "/host/my-chargers/";
 
   static String addHostCharger = "/host/add-charger/";
+
+  static String bookingListUrl = "/host/bookings/";
+
+  static String acceptBooking = "/host/bookings/";
+  static String changeChargerStatus = "/host/chargers/change-status/";
 }

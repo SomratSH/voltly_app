@@ -1,4 +1,4 @@
-class StationModel {
+class StationDetailsModel {
   int? id;
   String? stationName;
   String? locationArea;
@@ -9,13 +9,14 @@ class StationModel {
   String? openingTime;
   String? closingTime;
   String? image;
-  dynamic? averageRating;
+  int? averageRating;
   Host? host;
   List<Reviews>? reviews;
   double? distanceKm;
   double? timeToReachMin;
+  List<Chargers>? chargers;
 
-  StationModel({
+  StationDetailsModel({
     this.id,
     this.stationName,
     this.locationArea,
@@ -31,9 +32,10 @@ class StationModel {
     this.reviews,
     this.distanceKm,
     this.timeToReachMin,
+    this.chargers,
   });
 
-  StationModel.fromJson(Map<String, dynamic> json) {
+  StationDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     stationName = json['station_name'];
     locationArea = json['location_area'];
@@ -54,6 +56,12 @@ class StationModel {
     }
     distanceKm = json['distance_km'];
     timeToReachMin = json['time_to_reach_min'];
+    if (json['chargers'] != null) {
+      chargers = <Chargers>[];
+      json['chargers'].forEach((v) {
+        chargers!.add(new Chargers.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -77,6 +85,9 @@ class StationModel {
     }
     data['distance_km'] = this.distanceKm;
     data['time_to_reach_min'] = this.timeToReachMin;
+    if (this.chargers != null) {
+      data['chargers'] = this.chargers!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -124,6 +135,52 @@ class Reviews {
     data['charging_station'] = this.chargingStation;
     data['rating'] = this.rating;
     data['comment'] = this.comment;
+    return data;
+  }
+}
+
+class Chargers {
+  int? id;
+  String? name;
+  String? chargerType;
+  String? mode;
+  dynamic? price;
+  bool? available;
+  List<String>? plugTypes;
+  List<String>? connectorTypes;
+
+  Chargers({
+    this.id,
+    this.name,
+    this.chargerType,
+    this.mode,
+    this.price,
+    this.available,
+    this.plugTypes,
+    this.connectorTypes,
+  });
+
+  Chargers.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    chargerType = json['charger_type'];
+    mode = json['mode'];
+    price = json['price'];
+    available = json['available'];
+    plugTypes = json['plug_types'].cast<String>();
+    connectorTypes = json['connector_types'].cast<String>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['charger_type'] = this.chargerType;
+    data['mode'] = this.mode;
+    data['price'] = this.price;
+    data['available'] = this.available;
+    data['plug_types'] = this.plugTypes;
+    data['connector_types'] = this.connectorTypes;
     return data;
   }
 }
