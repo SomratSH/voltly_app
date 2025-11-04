@@ -4,6 +4,7 @@ import 'package:voltly_app/presentation/common_page/authentication/auth_provider
 import 'package:voltly_app/presentation/station_owner/charging/charging_provider.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/host_home_provider.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
+import 'package:voltly_app/presentation/station_owner/resevation/reservation_provider.dart';
 import 'package:voltly_app/presentation/user/add_car/car_add_provider.dart';
 import 'package:voltly_app/presentation/user/home_page/home_provider.dart';
 import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
@@ -13,6 +14,9 @@ class ProviderList {
   static List<SingleChildWidget> get providers => [
     ChangeNotifierProvider(create: (_) => AuthProvider()),
     ChangeNotifierProvider(create: (_) => HomeProvider()),
+    ChangeNotifierProvider(
+      create: (_) => ReservationProvider()..getBooking("all"),
+    ),
     ChangeNotifierProvider(
       create: (_) => ChargingProvider()..getChargingList(),
     ),

@@ -105,25 +105,28 @@ class ChargingPageOwner extends StatelessWidget {
   }
 
   Widget _buildChargerList(BuildContext context, ChargingProvider provider) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      itemCount: provider.chargerList.length,
-      itemBuilder: (context, index) {
-        final charger = provider.chargerList[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: _buildChargerCard(
-            context: context,
-            chargerName: charger.name ?? 'Unknown Charger',
-            location: '123 St, Midtown expressway',
-            price: "${charger.price ?? 0}/kWh",
-            isActive: charger.isActive ?? false,
-            qrImage: charger.scannerImage ?? "",
-            provider: provider,
-            index: index,
-          ),
-        );
-      },
+    return RefreshIndicator(
+      onRefresh: () => provider.getChargingList(),
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        itemCount: provider.chargerList.length,
+        itemBuilder: (context, index) {
+          final charger = provider.chargerList[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: _buildChargerCard(
+              context: context,
+              chargerName: charger.name ?? 'Unknown Charger',
+              location: '123 St, Midtown expressway',
+              price: "${charger.price ?? 0}/kWh",
+              isActive: charger.isActive ?? false,
+              qrImage: charger.scannerImage ?? "",
+              provider: provider,
+              index: index,
+            ),
+          );
+        },
+      ),
     );
   }
 

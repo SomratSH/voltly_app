@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/station_custom_card.dart';
 import 'package:voltly_app/constant/app_urls.dart';
@@ -33,26 +34,34 @@ class StationPage extends StatelessWidget {
               ),
             ),
             vPad15,
-            Expanded(
-              child: ListView.separated(
-                itemCount: provider.stationList.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  final station = provider.stationList[index];
-                  return EvStationCard(
-                    iconPath: "${AppUrls.imageUrl}${station.details!.image}",
-                    title: "${station.name}",
-                    subtitle: "${station.timeToReachMin}mins drive",
-                    rating: "4.5",
-                    onTap: () {
-                      provider.selectedStationFunc(station);
-                      context.push(RouterPath.stationDetails);
-                    },
-                  );
-                },
-              ),
-            ),
+            provider.stationList.isEmpty
+                ? Center(child: Text("No station found."))
+                : Expanded(
+                    child: ListView.separated(
+                      itemCount: provider.stationList.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final station = provider.stationList[index];
+                        return EvStationCard(
+                          iconPath: "${AppUrls.imageUrl}${station!.image}",
+                          title: "${station.stationName}",
+                          subtitle: "${station.timeToReachMin}mins drive",
+                          rating: "4.5",
+                          onTap: () async {
+                            LoadingDialog.show(context);
+                            final data = await provider.getStationDetails(
+                              station.id.toString(),
+                            );
+                            if (data) {
+                              LoadingDialog.hide(context);
+                              context.push(RouterPath.stationDetails);
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ),
             vPad50,
           ],
         ),
