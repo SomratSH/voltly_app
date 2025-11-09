@@ -6,12 +6,13 @@ import 'package:voltly_app/common/commone_helper.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
 import 'package:voltly_app/common/custom_html_text.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/station/scanner_screen.dart';
 import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
-class ChargingSummaryPage extends StatelessWidget {
-  const ChargingSummaryPage({super.key});
+class BookingDetails extends StatelessWidget {
+  const BookingDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class ChargingSummaryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Booking Summary", style: TextStyle(color: Colors.white)),
+        title: Text("Booking Details", style: TextStyle(color: Colors.white)),
         leading: IconButton(
           onPressed: () {
             context.pop();
@@ -66,7 +67,7 @@ class ChargingSummaryPage extends StatelessWidget {
               const SizedBox(height: 24),
               _buildCloseButtom(context),
               const SizedBox(height: 10),
-              _buildScanToChargeButton(context),
+              _buildScanToChargeButton(context, provider),
               const SizedBox(height: 24),
             ],
           ),
@@ -314,12 +315,25 @@ class ChargingSummaryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildScanToChargeButton(BuildContext context) {
+  Widget _buildScanToChargeButton(
+    BuildContext context,
+    StationProvider provider,
+  ) {
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => ScannerScreen()),
-      ),
+      onTap: () {
+        if (provider.bookingDetailsModel.vehicle!.bookingStatus != "pending") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => ScannerScreen()),
+          );
+        } else {
+          CustomSnackbar.show(
+            context,
+            message:
+                "Your booking isn’t confirmed yet. Please confirm your booking to proceed.",
+          );
+        }
+      },
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),

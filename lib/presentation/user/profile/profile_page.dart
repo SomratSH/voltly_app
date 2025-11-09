@@ -172,15 +172,18 @@ Widget _buildMenuSection(BuildContext context) {
       children: [
         InkWell(
           onTap: () {
+            context.push(RouterPath.bookingUserList);
+          },
+          child: _buildMenuItem("assets/icon/user _pp.svg", 'Booking'),
+        ),
+        InkWell(
+          onTap: () {
             context.push(RouterPath.updateProfile);
           },
           child: _buildMenuItem("assets/icon/user _pp.svg", 'Account Profile'),
         ),
         InkWell(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => ChargingHistory()),
-          ),
+          onTap: () => context.push(RouterPath.chargingHistory),
           child: _buildMenuItem("assets/icon/card-pos.svg", 'Charging History'),
         ),
         InkWell(

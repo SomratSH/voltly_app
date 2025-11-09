@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/presentation/user/profile/history_details.dart';
+import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
 class ChargingHistory extends StatelessWidget {
   const ChargingHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<StationProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF121C24),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -17,27 +22,13 @@ class ChargingHistory extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         centerTitle: true,
-        title: Text("Voltly", style: TextStyle(color: Colors.white)),
+        title: Text("Charging History", style: TextStyle(color: Colors.white)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Charging History',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w700,
-                  height: 1.20,
-                ),
-              ),
-            ),
-            vPad10,
             Text(
               'My Car',
               textAlign: TextAlign.center,
@@ -62,7 +53,7 @@ class ChargingHistory extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Tesla CS23',
+                      provider.bookingDetailsModel.vehicle!.model!,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: const Color(0xFFBEBEBE),
@@ -72,7 +63,7 @@ class ChargingHistory extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'ABCD\nType 2',
+                      provider.bookingDetailsModel.vehicle!.plugType!,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: const Color(0xFFD7D7D7),
@@ -130,7 +121,8 @@ class ChargingHistory extends StatelessWidget {
             ),
             Column(
               children: List.generate(
-                6,
+                provider.charingHistoryModel.history!.length,
+
                 (index) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: DecoratedBox(
@@ -168,7 +160,10 @@ class ChargingHistory extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Name',
+                                provider
+                                    .charingHistoryModel
+                                    .history![index]
+                                    .stationName!,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: const Color(0xFF9CA3AF),
@@ -193,7 +188,10 @@ class ChargingHistory extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '00 KW',
+                                provider
+                                    .charingHistoryModel
+                                    .history![index]
+                                    .usageKwh!,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: const Color(0xFF9CA3AF),
@@ -218,7 +216,7 @@ class ChargingHistory extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '100 \$',
+                                '${provider.charingHistoryModel.history![index].price} \$',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: const Color(0xFF9CA3AF),
@@ -230,12 +228,17 @@ class ChargingHistory extends StatelessWidget {
                             ],
                           ),
                           InkWell(
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => HistoryDetails(),
-                              ),
-                            ),
+                            onTap: () async {
+                              LoadingDialog.show(context);
+                              await provider.getCharingHistoryDetailsUser(
+                                provider
+                                    .charingHistoryModel
+                                    .history![index]
+                                    .bookingId!,
+                              );
+                              LoadingDialog.show(context);
+                              context.push(RouterPath.chargingHistoryDetails);
+                            },
                             child: Icon(
                               Icons.arrow_forward,
                               color: Colors.white,

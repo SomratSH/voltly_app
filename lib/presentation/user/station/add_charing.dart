@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
+import 'package:voltly_app/constant/app_urls.dart';
+import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/station/charging_page.dart';
+import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
 class AddCharing extends StatelessWidget {
   const AddCharing({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<StationProvider>();
+    final profileProvider = context.watch<ProfileProvider>();
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(context),
+            _buildHeader(context, profileProvider),
             vPad70,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -47,11 +57,25 @@ class AddCharing extends StatelessWidget {
                   vPad15,
                   PrimaryButton(
                     text: "Charging",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => ChargingPage()),
+                    onPressed: () async {
+                      LoadingDialog.show(context);
+                      final response = await provider.startChargingUser(
+                        provider.bookingDetailsModel.bookingDetails!.id!,
                       );
+                      if (response['booking_id'] != null) {
+                        LoadingDialog.hide(context);
+                        CustomSnackbar.show(
+                          context,
+                          message: response["message"],
+                        );
+                        context.go(RouterPath.charging);
+                      } else {
+                        LoadingDialog.hide(context);
+                        CustomSnackbar.show(
+                          context,
+                          message: "Somethign wrong, try again",
+                        );
+                      }
                     },
                   ),
                   vPad10,
@@ -89,7 +113,7 @@ class AddCharing extends StatelessWidget {
   }
 }
 
-Widget _buildHeader(BuildContext context) {
+Widget _buildHeader(BuildContext context, ProfileProvider provider) {
   return Stack(
     clipBehavior: Clip.none,
     children: [
@@ -158,7 +182,9 @@ Widget _buildHeader(BuildContext context) {
         child: CircleAvatar(
           radius: 40,
           backgroundImage: NetworkImage(
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s",
+            provider.profileModel.data!.picture != null
+                ? "${AppUrls.imageUrl}${provider.profileModel.data!.picture}"
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s",
           ),
         ),
       ),

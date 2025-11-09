@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/application/driver/profile/model/profile_model.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/constant/app_urls.dart';
+import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/station/add_charing.dart';
 
 class ConnectCharger extends StatefulWidget {
@@ -17,7 +21,7 @@ class _ConnectChargerState extends State<ConnectCharger> {
     // TODO: implement initState
     super.initState();
     Future.delayed(
-      Duration(seconds: 3),
+      Duration(seconds: 4),
       () => Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => AddCharing()),
@@ -27,6 +31,7 @@ class _ConnectChargerState extends State<ConnectCharger> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ProfileProvider>();
     return Scaffold(
       appBar: CustomAppBar(),
       body: Padding(
@@ -41,7 +46,9 @@ class _ConnectChargerState extends State<ConnectCharger> {
                 CircleAvatar(
                   radius: 50,
                   backgroundImage: NetworkImage(
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s",
+                    provider.profileModel.data!.picture != null
+                        ? "${AppUrls.imageUrl}${provider.profileModel.data!.picture}"
+                        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s",
                   ),
                 ),
                 hPad5,

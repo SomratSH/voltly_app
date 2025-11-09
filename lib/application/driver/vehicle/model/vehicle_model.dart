@@ -1,47 +1,57 @@
 class VehicleModel {
   int? id;
-  String? user;
+  String? name;
   String? vehicleType;
-  String? vehicleName;
-  String? registrationNumber;
-  String? plugType;
   String? batteryType;
+  String? unitsPerTime;
+  // List<Null>? supportedPlugs;
   String? batteryCapacity;
+  String? chargingTime;
   String? image;
 
-  VehicleModel(
-      {this.id,
-      this.user,
-      this.vehicleType,
-      this.vehicleName,
-      this.registrationNumber,
-      this.plugType,
-      this.batteryType,
-      this.batteryCapacity,
-      this.image});
+  VehicleModel({
+    this.id,
+    this.name,
+    this.vehicleType,
+    this.batteryType,
+    this.unitsPerTime,
+    // this.supportedPlugs,
+    this.batteryCapacity,
+    this.chargingTime,
+    this.image,
+  });
 
   VehicleModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    user = json['user'];
+    name = json['name'];
     vehicleType = json['vehicle_type'];
-    vehicleName = json['vehicle_name'];
-    registrationNumber = json['registration_number'];
-    plugType = json['plug_type'];
     batteryType = json['battery_type'];
+    unitsPerTime = json['units_per_time'];
+    // if (json['supported_plugs'] != null) {
+    //   supportedPlugs = <Null>[];
+    //   json['supported_plugs'].forEach((v) {
+    //     supportedPlugs!.add(new Null.fromJson(v));
+    //   });
+    // }
     batteryCapacity = json['battery_capacity'];
+    chargingTime = json['charging_time'];
     image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['user'] = this.user;
+    data['name'] = this.name;
     data['vehicle_type'] = this.vehicleType;
-    data['vehicle_name'] = this.vehicleName;
-    data['registration_number'] = this.registrationNumber;
-    data['plug_type'] = this.plugType;
     data['battery_type'] = this.batteryType;
+    data['units_per_time'] = this.unitsPerTime;
+    // if (this.supportedPlugs != null) {
+    //   data['supported_plugs'] = this.supportedPlugs!
+    //       .map((v) => v.toJson())
+    //       .toList();
+    // }
     data['battery_capacity'] = this.batteryCapacity;
+    data['charging_time'] = this.chargingTime;
     data['image'] = this.image;
     return data;
   }

@@ -27,7 +27,9 @@ class ProviderList {
     ),
     ChangeNotifierProvider(create: (_) => CarAddProvider()..getVehicleList()),
     ChangeNotifierProvider(
-      create: (_) => StationProvider()..getNeayByStation(),
+      create: (_) => StationProvider()
+        ..getNeayByStation()
+        ..getCharingHistoryUser(),
     ),
   ];
 }
