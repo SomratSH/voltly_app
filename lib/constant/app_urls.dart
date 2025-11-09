@@ -26,6 +26,16 @@ class AppUrls {
 
   static String subscriptionListUrl = "/subscriptions/plans/";
 
+  static String createBooking = "/bookings/create-booking/";
+  static String getUserBookingList = "/bookings/booking-list/";
+
+  static String statChargingUrl = "/bookings/start-charging/";
+  static String endChargingUrl = "/bookings/finish-charging/";
+
+  static String paymentCharging = "/bookings/pay-for-booking/";
+  static String chargingHistory = "/bookings/charging-history/";
+  static String charingHistoryDetails = "/bookings/charging/";
+
   //host
   static String getChargingList = "/host/my-chargers/";
 
@@ -35,4 +45,6 @@ class AppUrls {
 
   static String acceptBooking = "/host/bookings/";
   static String changeChargerStatus = "/host/chargers/change-status/";
+
+  static String bookingDetails = "/bookings/get-booking/";
 }

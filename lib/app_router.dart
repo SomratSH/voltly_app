@@ -27,9 +27,18 @@ import 'package:voltly_app/presentation/user/ai_chat/ai_chat_provider.dart';
 import 'package:voltly_app/presentation/user/home_page/home_page.dart';
 import 'package:voltly_app/presentation/user/landing_page/landing_page.dart';
 import 'package:voltly_app/presentation/user/profile/changed_password.dart';
+import 'package:voltly_app/presentation/user/profile/charging_history.dart'
+    show ChargingHistory;
+import 'package:voltly_app/presentation/user/profile/history_details.dart';
 import 'package:voltly_app/presentation/user/profile/message_page.dart';
 import 'package:voltly_app/presentation/user/profile/profile_page.dart';
 import 'package:voltly_app/presentation/user/profile/update_profile.dart';
+import 'package:voltly_app/presentation/user/station/booking_details.dart';
+import 'package:voltly_app/presentation/user/station/booking_list.dart';
+import 'package:voltly_app/presentation/user/station/booking_page.dart';
+import 'package:voltly_app/presentation/user/station/charging_information.dart';
+import 'package:voltly_app/presentation/user/station/charging_page.dart';
+import 'package:voltly_app/presentation/user/station/payment_success.dart';
 import 'package:voltly_app/presentation/user/station/station_details.dart';
 import 'package:voltly_app/presentation/user/station/station_page.dart';
 
@@ -115,6 +124,38 @@ class AppRouter {
 
       GoRoute(path: RouterPath.aiChat, builder: (context, state) => AiChat()),
 
+      GoRoute(
+        path: RouterPath.bookingSummary,
+        builder: (context, state) => ChargingSummaryPage(),
+      ),
+      GoRoute(
+        path: RouterPath.bookingUserList,
+        builder: (context, state) => BookingListScreen(),
+      ),
+      GoRoute(
+        path: RouterPath.bookingDetailsUser,
+        builder: (context, state) => BookingDetails(),
+      ),
+      GoRoute(
+        path: RouterPath.charging,
+        builder: (context, state) => ChargingPage(),
+      ),
+      GoRoute(
+        path: RouterPath.chargingInformation,
+        builder: (context, state) => ChargingInformation(),
+      ),
+      GoRoute(
+        path: RouterPath.paymentSuccess,
+        builder: (context, state) => PaymentSuccess(),
+      ),
+      GoRoute(
+        path: RouterPath.chargingHistory,
+        builder: (context, state) => ChargingHistory(),
+      ),
+      GoRoute(
+        path: RouterPath.chargingHistoryDetails,
+        builder: (context, state) => HistoryDetails(),
+      ),
       /////////////////////////////////////////////////host///////////////////////////////
       //host
       GoRoute(
@@ -195,6 +236,12 @@ class RouterPath {
   static String profile = "/profile";
   static String updateProfile = "/update-profile";
   static String changePassword = "/change-password";
+  static String bookingUserList = "/booking-user-list";
+  static String bookingSummary = "/booking-summary";
+  static String bookingDetailsUser = "/booking-details-user";
+  static String charging = "/charging";
+  static String chargingInformation = "/charging-information";
+  static String paymentSuccess = "/payment-success";
 
   //host page
   static String homeOwner = "/home-owner";
@@ -218,4 +265,8 @@ class RouterPath {
 
   //
   static String message = "/message";
+
+  static String chargingHistory = "/charging-history";
+
+  static String chargingHistoryDetails = "/charging-history-details";
 }

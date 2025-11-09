@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/common_map_chat_button.dart';
 import 'package:voltly_app/common/commone_helper.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/user/station/booking_page.dart';
 import 'package:voltly_app/presentation/user/station/scanner_screen.dart';
 import 'package:voltly_app/presentation/user/station/station_provider.dart';
+import 'package:voltly_app/presentation/user/station/widget/car_selector.dart';
+import 'package:voltly_app/presentation/user/station/widget/choose_time.dart';
+import 'package:voltly_app/presentation/user/station/widget/connector_type.dart';
 
 class StationDetails extends StatelessWidget {
   const StationDetails({super.key});
@@ -160,56 +166,41 @@ class StationDetails extends StatelessWidget {
                 provider.stationDetailsModel.chargers!.length,
                 (index) {
                   final charger = provider.stationDetailsModel.chargers![index];
-                  return _buildConnectorType(
-                    iconPath: 'assets/icon_type1.png',
-                    type: charger.chargerType!,
-                    power: '11.04 kW',
-                    status: 'Walk in',
+                  print(charger.plugTypes!.length);
+                  return ConnectorTypeCard(
+                    mode: charger.mode!,
+                    price: charger.price.toString(),
+                    iconPath: "assets/icon/first_charger.svg",
+                    plugTypes: charger.plugTypes!,
+                    chargerId: charger.id!,
+                    power: "50 kW",
+
                     isAvailable: charger.available!,
+                    chargersName: charger.name!,
                   );
                 },
               ),
             ),
 
-            // _buildConnectorType(
-            //   iconPath: 'assets/icon_type2.png',
-            //   type: 'Type 2 (AC)',
-            //   power: '11.04 kW',
-            //   status: 'Closed',
-            //   isAvailable: false,
-            // ),
-            // _buildConnectorType(
-            //   iconPath: 'assets/icon_ccs2.png',
-            //   type: 'CCS2 (AC)',
-            //   power: '11.04 kW',
-            //   status: 'Walk in',
-            //   isAvailable: true,
-            // ),
             const SizedBox(height: 24),
-            _buildSectionTitle('Service fee'),
-            Divider(color: Color(0xff00AB82)),
-            _buildServiceFeeItem('By Energy Unit'),
+
             InkWell(
               onTap: () {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const SeviceFee();
+                    return RescheduleSessionDialog();
                   },
                 );
               },
-              child: _buildServiceFeeItem('Extra Service Fee'),
+              child: _buildServiceFeeItem('Choose Date & Time'),
             ),
+            vPad10,
             InkWell(
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const _RescheduleSessionDialog();
-                  },
-                );
+                CarSelectorBottomSheet.show(context);
               },
-              child: _buildServiceFeeItem('Choose time'),
+              child: _buildServiceFeeItem('Choose Car'),
             ),
             const SizedBox(height: 24),
             _buildSectionTitle('Reviews'),
@@ -310,83 +301,6 @@ class StationDetails extends StatelessWidget {
           fontFamily: 'Kanit',
           fontWeight: FontWeight.w500,
         ),
-      ),
-    );
-  }
-
-  Widget _buildConnectorType({
-    required String iconPath,
-    required String type,
-    required String power,
-    required String status,
-    required bool isAvailable,
-  }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: primaryColor),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-
-                  shape: BoxShape.circle,
-                ),
-                child: SvgPicture.asset(
-                  color: primaryColor,
-                  "assets/icon/first_charger.svg",
-                ), // Using a generic icon
-              ),
-              vPad10,
-              Text(
-                'Type 1 (AC)',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: const Color(0xFFFCEFEF),
-                  fontSize: 16,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                '11.04 kW',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: const Color(0xFFFCEFEF),
-                  fontSize: 16,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
-          ),
-
-          Text(
-            'ABC charging \nstation',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            isAvailable ? status : "Closed",
-            style: TextStyle(
-              color: isAvailable ? primaryColor : Colors.red,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -558,210 +472,25 @@ class _ScanToChargeButton extends StatelessWidget {
 class _BookNowButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<StationProvider>();
     return PrimaryButton(
       text: "Book Now",
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => ChargingSummaryPage()),
-        );
-      },
-    );
-  }
-}
+      onPressed: () async {
+        LoadingDialog.show(context);
+        final data = await provider.createConfirmBooking();
+        if (data['id'] != null) {
+          LoadingDialog.hide(context);
+          provider.getBookingDetailsUser(data["id"]);
+          CustomSnackbar.show(
+            context,
+            message: "Booking creating successfully",
+          );
 
-class _RescheduleSessionDialog extends StatefulWidget {
-  const _RescheduleSessionDialog();
-
-  @override
-  State<_RescheduleSessionDialog> createState() =>
-      _RescheduleSessionDialogState();
-}
-
-class _RescheduleSessionDialogState extends State<_RescheduleSessionDialog> {
-  String? selectedTimeSlot;
-  int selectedDayIndex = 3; // Wednesday
-
-  final List<String> timeSlots = [
-    '10:00 AM - 11:00 AM',
-    '12:30 PM - 01:30 PM',
-    '2:30 PM - 03:30 PM',
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    final provider = context.watch<StationProvider>();
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      backgroundColor: Color(0xFF121C24),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Let's reschedule your Session",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              "We understand plans change. Choose a new time that works best for you.",
-              style: TextStyle(color: Colors.white70),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              "Available Time Slot",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text("Select Days", style: TextStyle(color: Colors.white70)),
-            const SizedBox(height: 8),
-            // _buildDaySelector(provider.selectedStation.details!.availableDays!),
-            const SizedBox(height: 24),
-            const Text("Select Hours", style: TextStyle(color: Colors.white70)),
-            const SizedBox(height: 8),
-            _buildTimeSlotSelector(),
-            const SizedBox(height: 24),
-            _buildRescheduleButton(context),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDaySelector(List<String> days) {
-    return Container(
-      decoration: ShapeDecoration(
-        color: const Color(0xFF182724),
-        shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: const Color(0xFF4B5563)),
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(days.length, (index) {
-            bool isSelected = index == selectedDayIndex;
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedDayIndex = index;
-                });
-              },
-              child: Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? const Color(0x3301CC01)
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(9999),
-                  border: Border.all(
-                    color: isSelected ? Colors.transparent : Colors.white24,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    days[index][0],
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTimeSlotSelector() {
-    return Column(
-      children: timeSlots.map((slot) {
-        bool isSelected = selectedTimeSlot == slot;
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedTimeSlot = slot;
-              });
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: isSelected
-                      ? Color(0xFF01CC01)
-                      : const Color(0xFF2E3E2E),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: isSelected
-                            ? const Color(0xFF33D933)
-                            : Colors.white70,
-                        width: 2,
-                      ),
-                      color: isSelected
-                          ? const Color(0xFF33D933)
-                          : Colors.transparent,
-                    ),
-                    child: isSelected
-                        ? const Center(
-                            child: Icon(
-                              Icons.circle,
-                              size: 10,
-                              color: Colors.black,
-                            ),
-                          )
-                        : null,
-                  ),
-                  const SizedBox(width: 16),
-                  Text(
-                    slot,
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.white70,
-                      fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildRescheduleButton(BuildContext context) {
-    return PrimaryButton(
-      text: "Reschedule Session",
-      onPressed: () {
-        Navigator.pop(context);
+          context.push(RouterPath.bookingSummary);
+        } else {
+          LoadingDialog.hide(context);
+          CustomSnackbar.show(context, message: "Something wrong, try again");
+        }
       },
     );
   }

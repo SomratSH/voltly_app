@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/presentation/user/landing_page/landing_page.dart';
@@ -57,10 +59,7 @@ class PaymentSuccess extends StatelessWidget {
               child: PrimaryButton(
                 text: "Back to home",
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => LandingPage()),
-                  );
+                  context.go(RouterPath.home);
                 },
               ),
             ),

@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/presentation/user/payment/payment_charging.dart';
 import 'package:voltly_app/presentation/user/station/payment_success.dart';
+import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
 class ChargingInformation extends StatelessWidget {
   const ChargingInformation({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<StationProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF121C24),
@@ -49,7 +55,7 @@ class ChargingInformation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'License Plate',
+                  'Car Model',
                   style: TextStyle(
                     color: const Color(0xFF666666),
                     fontSize: 16,
@@ -59,7 +65,7 @@ class ChargingInformation extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'AB 1234',
+                  provider.bookingDetailsModel.vehicle!.model!,
                   style: TextStyle(
                     color: const Color(0xFFFFF7F7),
                     fontSize: 16,
@@ -121,7 +127,7 @@ class ChargingInformation extends StatelessWidget {
                 ),
                 hPad5,
                 Text(
-                  'ABC charging station',
+                  provider.bookingDetailsModel.chargingStation!.stationName!,
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
@@ -143,11 +149,13 @@ class ChargingInformation extends StatelessWidget {
               ),
             ),
             Divider(color: primaryColor),
+
+            hPad5,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Start Charging',
+                  'Charging Time',
                   style: TextStyle(
                     color: const Color(0xFF666666),
                     fontSize: 16,
@@ -157,7 +165,7 @@ class ChargingInformation extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '15/09/25 11:30',
+                  "${provider.charingCompleteResponseModel.durationHours}HH-${provider.charingCompleteResponseModel.durationMinutes}MIN-${provider.charingCompleteResponseModel.durationSeconds}",
                   style: TextStyle(
                     color: const Color(0xFFFFF7F7),
                     fontSize: 16,
@@ -173,7 +181,7 @@ class ChargingInformation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Start Charging',
+                  'Subtotal',
                   style: TextStyle(
                     color: const Color(0xFF666666),
                     fontSize: 16,
@@ -183,7 +191,7 @@ class ChargingInformation extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '15/09/25 11:30',
+                  provider.charingCompleteResponseModel.subtotal!,
                   style: TextStyle(
                     color: const Color(0xFFFFF7F7),
                     fontSize: 16,
@@ -199,7 +207,7 @@ class ChargingInformation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Usage (kWh)',
+                  "Platform Charge/Fee",
                   style: TextStyle(
                     color: const Color(0xFF666666),
                     fontSize: 16,
@@ -208,30 +216,15 @@ class ChargingInformation extends StatelessWidget {
                     height: 1.38,
                   ),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      '50.25',
-                      style: TextStyle(
-                        color: const Color(0xFFFFF7F7),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        height: 1.38,
-                      ),
-                    ),
-                    hPad5,
-                    Text(
-                      'kWh',
-                      style: TextStyle(
-                        color: const Color(0xFF666666),
-                        fontSize: 16,
-                        fontFamily: 'Kanit',
-                        fontWeight: FontWeight.w400,
-                        height: 1.38,
-                      ),
-                    ),
-                  ],
+                Text(
+                  provider.charingCompleteResponseModel.platformFee!,
+                  style: TextStyle(
+                    color: const Color(0xFFFFF7F7),
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    height: 1.38,
+                  ),
                 ),
               ],
             ),
@@ -240,7 +233,7 @@ class ChargingInformation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Usage (kWh)',
+                  "Total",
                   style: TextStyle(
                     color: const Color(0xFF666666),
                     fontSize: 16,
@@ -249,30 +242,15 @@ class ChargingInformation extends StatelessWidget {
                     height: 1.38,
                   ),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      '510',
-                      style: TextStyle(
-                        color: const Color(0xFFFFF7F7),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        height: 1.38,
-                      ),
-                    ),
-                    hPad5,
-                    Text(
-                      'THB',
-                      style: TextStyle(
-                        color: const Color(0xFF666666),
-                        fontSize: 16,
-                        fontFamily: 'Kanit',
-                        fontWeight: FontWeight.w400,
-                        height: 1.38,
-                      ),
-                    ),
-                  ],
+                Text(
+                  provider.charingCompleteResponseModel.totalAmount!,
+                  style: TextStyle(
+                    color: const Color(0xFFFFF7F7),
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    height: 1.38,
+                  ),
                 ),
               ],
             ),
@@ -280,11 +258,27 @@ class ChargingInformation extends StatelessWidget {
             vPad20,
             PrimaryButton(
               text: "Payment",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PaymentSuccess()),
+              onPressed: () async {
+                LoadingDialog.show(context);
+                final data = await provider.paymentForCharging(
+                  provider.bookingDetailsModel.bookingDetails!.id!,
                 );
+                if (data["checkout_url"] != null) {
+                  LoadingDialog.hide(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          PaymentCharging(url: data["checkout_url"]),
+                    ),
+                  );
+                } else {
+                  LoadingDialog.hide(context);
+                  CustomSnackbar.show(
+                    context,
+                    message: "Please, try again later",
+                  );
+                }
               },
             ),
           ],

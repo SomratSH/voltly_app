@@ -93,7 +93,7 @@ class AddCar extends StatelessWidget {
                                       ),
                               ),
                               title: Text(
-                                vehicle.vehicleName ?? "Unknown Vehicle",
+                                vehicle.name ?? "Unknown Vehicle",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -104,11 +104,11 @@ class AddCar extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Reg: ${vehicle.registrationNumber}",
+                                    "Reg: ${vehicle.batteryType}",
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                   Text(
-                                    "Plug Type: ${vehicle.plugType}",
+                                    "Plug Type: ${vehicle.batteryCapacity}",
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ],

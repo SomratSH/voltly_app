@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
 class HistoryDetails extends StatelessWidget {
   const HistoryDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<StationProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF121C24),
@@ -48,7 +51,11 @@ class HistoryDetails extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'AB 1234',
+                  provider
+                          .charingHistoryDetailsModel
+                          .vehicleInformation!
+                          .licensePlate ??
+                      "",
                   style: TextStyle(
                     color: const Color(0xFFFFF7F7),
                     fontSize: 16,
@@ -122,7 +129,10 @@ class HistoryDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'ABC charging station',
+                        provider
+                            .charingHistoryDetailsModel
+                            .stationInformation!
+                            .stationName!,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
