@@ -12,4 +12,16 @@ class SubscriptionRepo {
     );
     return reseponse.map((e) => SubcriptionModel.fromJson(e)).toList();
   }
+
+  Future<Map<String, dynamic>> subscriptionToPlan(
+    Map<String, dynamic> data,
+  ) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final response = await ApiService().postDataRegular(
+      AppUrls.subscripToPlan,
+      data,
+      authToken: preferences.getString("authToken"),
+    );
+    return response;
+  }
 }

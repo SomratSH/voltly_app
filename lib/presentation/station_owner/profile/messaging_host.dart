@@ -4,10 +4,11 @@ import 'package:voltly_app/common/commone_helper.dart';
 import 'package:voltly_app/common/custom_html_text.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/common_page/messaging_provider.dart';
+import 'package:voltly_app/presentation/station_owner/profile/conversation_host.dart';
 import 'package:voltly_app/presentation/user/profile/converstation_screen.dart';
 
-class MessagesScreen extends StatelessWidget {
-  const MessagesScreen({super.key});
+class MessagingHost extends StatelessWidget {
+  const MessagingHost({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,32 +65,32 @@ class MessagesScreen extends StatelessWidget {
             // 📩 Messages List
             Expanded(
               child: ListView.builder(
-                itemCount: provider.chats.chats!.length,
+                itemCount: provider.hostChat.chats!.length,
                 itemBuilder: (context, index) {
-                  final msg = provider.chats.chats![index];
+                  final msg = provider.hostChat.chats![index];
                   return ListTile(
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => ChatPage(
+                        builder: (_) => ConversationHost(
                           chatId: msg.chatRoomId!,
-                          name: msg.host!.name!,
-                          picture: msg.host!.profileImage!,
+                          name: msg.driver!.name!,
+                          picture: msg.driver!.profileImage!,
                         ),
                       ),
                     ),
                     leading: CircleAvatar(
-                      backgroundImage: msg.host!.profileImage == null
+                      backgroundImage: msg.driver!.profileImage == null
                           ? NetworkImage(
                               "https://cdn-icons-png.flaticon.com/512/3675/3675805.png",
                             )
                           : NetworkImage(
-                              "${AppUrls.imageUrl}${msg.host!.profileImage.toString()}",
+                              "${AppUrls.imageUrl}${msg.driver!.profileImage.toString()}",
                             ),
                       radius: 24,
                     ),
                     title: Text(
-                      msg.host!.name!,
+                      msg.driver!.name!,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

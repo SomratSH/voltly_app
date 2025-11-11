@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/common_page/messaging_provider.dart';
 
-class ChatPage extends StatelessWidget {
+class ConversationHost extends StatelessWidget {
   final int chatId; // dynamic chat room id
   final TextEditingController _controller = TextEditingController();
   final String name;
   final String picture;
 
-  ChatPage({
+  ConversationHost({
     super.key,
     required this.chatId,
     required this.name,
@@ -27,7 +27,6 @@ class ChatPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
             title: Text("Voltly", style: const TextStyle(color: Colors.white)),
             centerTitle: true,
             leading: IconButton(

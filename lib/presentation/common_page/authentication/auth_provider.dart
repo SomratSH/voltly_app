@@ -137,6 +137,8 @@ class AuthProvider extends ChangeNotifier {
     if (response["message"] != null) {
       prefs.setString('authToken', response["access_token"]);
       prefs.setString('refreshToken', response["refresh_token"].toString());
+      prefs.setInt("id", response['data']["id"]);
+      prefs.setString("role", response['data']["role"]);
     } else {
       debugPrint("Login failed: ${response["message"]}");
     }

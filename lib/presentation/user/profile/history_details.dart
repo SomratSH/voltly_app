@@ -142,11 +142,11 @@ class HistoryDetails extends StatelessWidget {
                       ),
 
                       Row(
-                        children: const [
+                        children: [
                           Icon(Icons.star, color: Color(0xFF33D933), size: 16),
                           SizedBox(width: 4),
                           Text(
-                            'High score 5/5',
+                            'High score ${provider.charingHistoryDetailsModel.stationInformation!.rating ?? "0"}/5',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -158,11 +158,24 @@ class HistoryDetails extends StatelessWidget {
                       ),
 
                       Row(
-                        children: const [
+                        children: [
                           Text(
-                            'Open',
+                            provider
+                                        .charingHistoryDetailsModel
+                                        .stationInformation!
+                                        .openStatus ==
+                                    "Closed"
+                                ? "Closed"
+                                : 'Open',
                             style: TextStyle(
-                              color: const Color(0xFF01CC01),
+                              color:
+                                  provider
+                                          .charingHistoryDetailsModel
+                                          .stationInformation!
+                                          .openStatus ==
+                                      "Closed"
+                                  ? Colors.red
+                                  : const Color(0xFF01CC01),
                               fontSize: 18,
                               fontFamily: 'Roboto',
                               fontWeight: FontWeight.w500,
@@ -170,7 +183,7 @@ class HistoryDetails extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            '09.00 - 22.00',
+                            '${provider.charingHistoryDetailsModel.stationInformation!.openingTime}- ${provider.charingHistoryDetailsModel.stationInformation!.closingTime}',
                             style: TextStyle(
                               color: const Color(0xFFB5B5B5),
                               fontSize: 14,
@@ -230,7 +243,11 @@ class HistoryDetails extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '500',
+                                provider
+                                        .charingHistoryDetailsModel
+                                        .chargeDetails!
+                                        .chargingFee ??
+                                    "N/A",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: const Color(0xFF01CC01),
@@ -238,18 +255,6 @@ class HistoryDetails extends StatelessWidget {
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
                                   height: 1,
-                                ),
-                              ),
-                              hPad10,
-                              Text(
-                                'THB',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: const Color(0xFFE6E6E6),
-                                  fontSize: 16,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.50,
                                 ),
                               ),
                             ],
@@ -276,7 +281,7 @@ class HistoryDetails extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            'Charging',
+                            'Charging Rate',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: const Color(0xFFE6E6E6),
@@ -290,7 +295,11 @@ class HistoryDetails extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '30',
+                                provider
+                                        .charingHistoryDetailsModel
+                                        .chargeDetails!
+                                        .chargingRate ??
+                                    "N/A",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: const Color(0xFF01CC01),
@@ -298,18 +307,6 @@ class HistoryDetails extends StatelessWidget {
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
                                   height: 1,
-                                ),
-                              ),
-                              hPad10,
-                              Text(
-                                'Kw/h',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: const Color(0xFFE6E6E6),
-                                  fontSize: 16,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.50,
                                 ),
                               ),
                             ],
@@ -340,7 +337,7 @@ class HistoryDetails extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            'Service Fee',
+                            'Platform Fee',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: const Color(0xFFE6E6E6),
@@ -354,7 +351,11 @@ class HistoryDetails extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '10',
+                                provider
+                                        .charingHistoryDetailsModel
+                                        .chargeDetails!
+                                        .platformFee ??
+                                    "N/A",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: const Color(0xFF01CC01),
@@ -362,18 +363,6 @@ class HistoryDetails extends StatelessWidget {
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
                                   height: 1,
-                                ),
-                              ),
-                              hPad10,
-                              Text(
-                                'THB',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: const Color(0xFFE6E6E6),
-                                  fontSize: 16,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.50,
                                 ),
                               ),
                             ],
@@ -400,7 +389,7 @@ class HistoryDetails extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            'Extra Parking time',
+                            'Total Fee',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: const Color(0xFFE6E6E6),
@@ -414,7 +403,11 @@ class HistoryDetails extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '0',
+                                provider
+                                        .charingHistoryDetailsModel
+                                        .chargeDetails!
+                                        .totalFee ??
+                                    "N/A",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: const Color(0xFF01CC01),
@@ -422,18 +415,6 @@ class HistoryDetails extends StatelessWidget {
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
                                   height: 1,
-                                ),
-                              ),
-                              hPad10,
-                              Text(
-                                'MINS',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: const Color(0xFFE6E6E6),
-                                  fontSize: 16,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.50,
                                 ),
                               ),
                             ],
@@ -462,18 +443,11 @@ class HistoryDetails extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '15/09/25',
-                      style: TextStyle(
-                        color: const Color(0xFFFFF7F7),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        height: 1.38,
-                      ),
-                    ),
-                    hPad10,
-                    Text(
-                      '11:30',
+                      provider
+                              .charingHistoryDetailsModel
+                              .timing!
+                              .startCharging ??
+                          "N/A",
                       style: TextStyle(
                         color: const Color(0xFFFFF7F7),
                         fontSize: 16,
@@ -491,7 +465,7 @@ class HistoryDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Start Charging',
+                  'End Charging',
                   style: TextStyle(
                     color: const Color(0xFF666666),
                     fontSize: 16,
@@ -503,18 +477,11 @@ class HistoryDetails extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '15/09/25',
-                      style: TextStyle(
-                        color: const Color(0xFFFFF7F7),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        height: 1.38,
-                      ),
-                    ),
-                    hPad10,
-                    Text(
-                      '11:30',
+                      provider
+                              .charingHistoryDetailsModel
+                              .timing!
+                              .finishCharging ??
+                          "N/A",
                       style: TextStyle(
                         color: const Color(0xFFFFF7F7),
                         fontSize: 16,

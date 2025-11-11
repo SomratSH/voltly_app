@@ -14,4 +14,11 @@ class SubscriptionProvider extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
+  Future<Map<String, dynamic>> subscriptionPlanHost(String id) async {
+    final response = await SubscriptionRepo().subscriptionToPlan({
+      "plan_id": id,
+    });
+    return response;
+  }
 }

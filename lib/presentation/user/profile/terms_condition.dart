@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/application/host/profile/model/host_profile_model.dart';
+import 'package:voltly_app/common/custom_html_text.dart';
+import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 
 class TermsScreen extends StatefulWidget {
   const TermsScreen({super.key});
@@ -12,6 +16,7 @@ class _TermsScreenState extends State<TermsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final proivder = context.watch<HostProfileProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Voltly", style: TextStyle(color: Colors.white)),
@@ -43,72 +48,10 @@ class _TermsScreenState extends State<TermsScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-
-                    // Clause 1
-                    const Text(
-                      "Clause 1",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    Text(
+                      "${toPlainText(proivder.termConditionModel.content!)}",
+                      style: TextStyle(color: Colors.white),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra condimentum eget purus in. "
-                      "Consectetur eget id morbi amet amet in. Ipsum viverra pretium tellus neque. "
-                      "Ullamcorper suspendisse aenean leo pharetra in sit semper et. Amet quam placerat sem.",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        height: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Clause 2
-                    const Text(
-                      "Clause 2",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra condimentum eget purus in. "
-                      "Consectetur eget id morbi amet amet in. Ipsum viverra pretium tellus neque. "
-                      "Ullamcorper suspendisse aenean leo pharetra in sit semper et. Amet quam placerat sem.",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        height: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Clause 3
-                    const Text(
-                      "Clause 3",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra condimentum eget purus in. "
-                      "Consectetur eget id morbi amet amet in. Ipsum viverra pretium tellus neque. "
-                      "Ullamcorper suspendisse aenean leo pharetra in sit semper et. Amet quam placerat sem.",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        height: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
                   ],
                 ),
               ),

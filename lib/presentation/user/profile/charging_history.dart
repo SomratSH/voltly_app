@@ -236,7 +236,7 @@ class ChargingHistory extends StatelessWidget {
                                     .history![index]
                                     .bookingId!,
                               );
-                              LoadingDialog.show(context);
+                              LoadingDialog.hide(context);
                               context.push(RouterPath.chargingHistoryDetails);
                             },
                             child: Icon(
