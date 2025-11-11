@@ -12,21 +12,24 @@ class ChargingListModel {
   bool? available;
   bool? open247;
   bool? isActive;
+  bool? isDefault;
 
-  ChargingListModel(
-      {this.id,
-      this.name,
-      this.scannerCode,
-      this.scannerImage,
-      this.station,
-      this.chargerType,
-      this.plugTypes,
-      this.connectorTypes,
-      this.mode,
-      this.price,
-      this.available,
-      this.open247,
-      this.isActive});
+  ChargingListModel({
+    this.id,
+    this.name,
+    this.scannerCode,
+    this.scannerImage,
+    this.station,
+    this.chargerType,
+    this.plugTypes,
+    this.connectorTypes,
+    this.mode,
+    this.price,
+    this.available,
+    this.isDefault,
+    this.open247,
+    this.isActive,
+  });
 
   ChargingListModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -42,6 +45,7 @@ class ChargingListModel {
     available = json['available'];
     open247 = json['open_24_7'];
     isActive = json['is_active'];
+    isDefault = json['is_default'];
   }
 
   Map<String, dynamic> toJson() {

@@ -10,6 +10,7 @@ import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/common_page/notification.dart';
 import 'package:voltly_app/presentation/station_owner/charging/add_charger_owner.dart';
+import 'package:voltly_app/presentation/station_owner/charging/charging_provider.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/host_home_provider.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/station_map.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_owner.dart';
@@ -23,9 +24,9 @@ class HomePageOwner extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileProvider = context.watch<HostProfileProvider>();
     final homeProvider = context.watch<HostHomeProvider>();
+    final chagingProvider = context.watch<ChargingProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF121C24),
         elevation: 0,
         leading: SvgPicture.asset(
           "assets/icon/logo.svg",
@@ -82,7 +83,7 @@ class HomePageOwner extends StatelessWidget {
             children: [
               _buildHeader(context, profileProvider, homeProvider),
               const SizedBox(height: 24),
-              _buildEarningsOverview(),
+              _buildEarningsOverview(profileProvider),
               const SizedBox(height: 24),
               Text(
                 'Upcoming Reservations',
@@ -95,23 +96,53 @@ class HomePageOwner extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              _buildReservationCard(
-                name: 'Rafsan Mahmud',
-                carModel: 'Tesla Model 3',
-                status: 'Confirmed',
-                statusColor: Colors.green,
-                time: 'Today, 2:00 PM - 4:00 PM',
-              ),
-              const SizedBox(height: 16),
-              _buildReservationCard(
-                name: 'Salma Akther',
-                carModel: 'BMW i3',
-                status: 'Pending',
-                statusColor: Colors.orange,
-                time: 'Tomorrow, 9:00 AM - 11:00 AM',
-              ),
+
+              profileProvider.upcomingReservationModel.upcomingReservations ==
+                      null
+                  ? Text("No reservation avaiable")
+                  : Column(
+                      children: List.generate(
+                        profileProvider
+                            .upcomingReservationModel
+                            .upcomingReservations!
+                            .length,
+                        (index) {
+                          final reservation = profileProvider
+                              .upcomingReservationModel
+                              .upcomingReservations![index];
+
+                          // Map API status to display text
+                          String statusText;
+                          switch (reservation.status?.toLowerCase()) {
+                            case 'pending':
+                              statusText = "Pending";
+                              break;
+                            case 'confirmed':
+                              statusText = "Confirmed";
+                              break;
+                            case 'completed':
+                              statusText = "Completed";
+                              break;
+                            default:
+                              statusText = "n/A";
+                          }
+
+                          return _buildReservationCard(
+                            image: "",
+                            name: reservation.userName!,
+                            carModel: reservation.vehicleName!,
+                            status: statusText,
+                            statusColor: getStatusColor(
+                              reservation.status ?? "",
+                            ),
+                            time:
+                                '${reservation.bookingDate}\n${reservation.startTime} - ${reservation.endTime}', // replace with dynamic if needed
+                          );
+                        },
+                      ),
+                    ),
               const SizedBox(height: 24),
-              _buildChargerStatus(),
+              _buildChargerStatus(chagingProvider, context),
               const SizedBox(height: 24),
               _buildQuickActions(context),
               const SizedBox(height: 100),
@@ -226,7 +257,7 @@ class HomePageOwner extends StatelessWidget {
     );
   }
 
-  Widget _buildEarningsOverview() {
+  Widget _buildEarningsOverview(HostProfileProvider provider) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: ShapeDecoration(
@@ -254,14 +285,25 @@ class HomePageOwner extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildEarningColumn('Today', '\$45'),
-              _buildEarningColumn('This Week', '\$210'),
-              _buildEarningColumn('This Month', '\$980'),
-            ],
-          ),
+          provider.earningPayoutModel.earningsOverview == null
+              ? SizedBox()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildEarningColumn(
+                      'Today',
+                      '${provider.earningPayoutModel.earningsOverview!.today ?? "\$ 0.0"}',
+                    ),
+                    _buildEarningColumn(
+                      'This Week',
+                      '${provider.earningPayoutModel.earningsOverview!.thisWeek ?? "\$ 0.0"}',
+                    ),
+                    _buildEarningColumn(
+                      'This Month',
+                      '${provider.earningPayoutModel.earningsOverview!.thisMonth ?? "\$ 0.0"}',
+                    ),
+                  ],
+                ),
         ],
       ),
     );
@@ -300,6 +342,7 @@ class HomePageOwner extends StatelessWidget {
     required String status,
     required Color statusColor,
     required String time,
+    required String image,
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -322,11 +365,13 @@ class HomePageOwner extends StatelessWidget {
           Container(
             width: 50,
             height: 50,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
                 image: NetworkImage(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s',
+                  image.isNotEmpty
+                      ? "${AppUrls.imageUrl}${image}"
+                      : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s',
                 ), // Placeholder
                 fit: BoxFit.cover,
               ),
@@ -390,110 +435,127 @@ class HomePageOwner extends StatelessWidget {
     );
   }
 
-  Widget _buildChargerStatus() {
+  Widget _buildChargerStatus(ChargingProvider provider, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Charger Status',
               style: TextStyle(
-                color: const Color(0xFFEAEAEA),
+                color: Color(0xFFEAEAEA),
                 fontSize: 16,
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w600,
                 height: 1.50,
               ),
             ),
-            Text(
-              'See all',
-              style: TextStyle(
-                color: primaryColor,
-                fontSize: 12,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w700,
-                height: 1.50,
+            InkWell(
+              onTap: () => context.go(RouterPath.chargingHost),
+              child: Text(
+                'See all',
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 12,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w700,
+                  height: 1.50,
+                ),
               ),
             ),
           ],
         ),
         const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: ShapeDecoration(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1, color: primaryColor),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            shadows: [
-              BoxShadow(
-                color: Color(0x0C000000),
-                blurRadius: 2,
-                offset: Offset(0, 1),
-                spreadRadius: 0,
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Tesla Wall Connector (Type 1 (AC))',
-                      style: TextStyle(
-                        color: const Color(0xFFF2F2F2),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w500,
+
+        // Loop through chargers that are default
+        Column(
+          children: provider.chargerList
+              .where(
+                (charger) => charger.isDefault == true,
+              ) // ✅ filter default chargers
+              .map((charger) {
+                final isActive = (charger.isActive ?? false); // active status
+
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(16),
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 1,
+                        color: isActive ? primaryColor : Colors.grey,
                       ),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      '123 Main St, Midtown expressway',
-                      style: TextStyle(
-                        color: const Color(0xFF7C818B),
-                        fontSize: 14,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x0C000000),
+                        blurRadius: 2,
+                        offset: Offset(0, 1),
+                        spreadRadius: 0,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: primaryColor,
-                            shape: BoxShape.circle,
-                          ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              charger.name ?? "Charger Name",
+                              style: const TextStyle(
+                                color: Color(0xFFF2F2F2),
+                                fontSize: 16,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: isActive
+                                        ? primaryColor
+                                        : Colors.grey,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  isActive ? 'Active' : 'Inactive',
+                                  style: TextStyle(
+                                    color: isActive
+                                        ? primaryColor
+                                        : Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Active',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Switch(
-                value: true,
-                onChanged: (bool value) {},
-                activeColor: primaryColor,
-                inactiveThumbColor: Colors.white,
-                inactiveTrackColor: Colors.white10,
-              ),
-            ],
-          ),
+                      ),
+                      Switch(
+                        value: isActive,
+                        onChanged: (bool value) {
+                          // Call provider method to toggle charger status
+                          // provider.toggleCharger(charger.id, value);
+                        },
+                        activeColor: primaryColor,
+                        inactiveThumbColor: Colors.white,
+                        inactiveTrackColor: Colors.white10,
+                      ),
+                    ],
+                  ),
+                );
+              })
+              .toList(),
         ),
       ],
     );
@@ -570,5 +632,20 @@ class HomePageOwner extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Color getStatusColor(String status) {
+  switch (status.toLowerCase()) {
+    case 'pending':
+      return Colors.orange;
+    case 'confirmed':
+      return Colors.blue;
+    case 'completed':
+      return Colors.green;
+    case 'cancelled':
+      return Colors.red;
+    default:
+      return Colors.grey;
   }
 }

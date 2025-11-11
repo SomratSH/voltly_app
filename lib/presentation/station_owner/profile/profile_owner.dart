@@ -3,33 +3,27 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:voltly_app/app_router.dart';
+import 'package:voltly_app/application/host/home/repo/dashboard_host_repo.dart';
 import 'package:voltly_app/common/custom_dialog.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/constant/app_urls.dart' show AppUrls;
+import 'package:voltly_app/presentation/station_owner/home_page/host_home_provider.dart';
+import 'package:voltly_app/presentation/station_owner/profile/connect_account.dart';
 import 'package:voltly_app/presentation/station_owner/profile/contact_us.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/station_owner/profile/review_page.dart';
 import 'package:voltly_app/presentation/station_owner/profile/subscription/subscription_page.dart';
+import 'package:voltly_app/presentation/user/payment/payment_charging.dart';
 import 'package:voltly_app/presentation/user/profile/changed_password.dart';
 import 'package:voltly_app/presentation/user/profile/charging_history.dart';
 import 'package:voltly_app/presentation/user/profile/message_page.dart';
 import 'package:voltly_app/presentation/user/profile/privacy_policy.dart';
 import 'package:voltly_app/presentation/user/profile/terms_condition.dart';
 import 'package:voltly_app/presentation/user/profile/update_profile.dart';
-
-class ProfileOwner extends StatelessWidget {
-  const ProfileOwner({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => HostProfileProvider()..getProfileHost(),
-      child: _Layout(),
-    );
-  }
-}
 
 Widget _buildSettingsAndSupportSection(BuildContext context) {
   return DecoratedBox(
@@ -139,12 +133,13 @@ Widget _buildSettingsAndSupportSection(BuildContext context) {
   );
 }
 
-class _Layout extends StatelessWidget {
-  const _Layout({super.key});
+class ProfileOwner extends StatelessWidget {
+  const ProfileOwner({super.key});
 
   @override
   Widget build(BuildContext context) {
     final profileProvider = context.watch<HostProfileProvider>();
+    final hostDashbaord = context.watch<HostHomeProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -287,7 +282,7 @@ class _Layout extends StatelessWidget {
               vPad10,
               GestureDetector(
                 onTap: () {
-                  context.push(RouterPath.message);
+                  context.push(RouterPath.messaginHost);
                 },
                 child: Container(
                   width: double.infinity,
@@ -336,74 +331,137 @@ class _Layout extends StatelessWidget {
                 ),
               ),
               vPad10,
-              DecoratedBox(
-                decoration: ShapeDecoration(
-                  color: const Color(0xFF182724),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              SizedBox(
+                width: double.infinity,
+                child: DecoratedBox(
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF182724),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Payment Setup',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w400,
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Payment Setup',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      vPad15,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset("assets/icon/stripe.svg"),
-                              hPad5,
-                              Text(
-                                'Stripe Connect',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                ),
+                        vPad15,
+                        hostDashbaord
+                                    .hostDashboardModel
+                                    .paymentSetup!
+                                    .stripeStatus ==
+                                "No Stripe account linked"
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      hostDashbaord
+                                          .hostDashboardModel
+                                          .paymentSetup!
+                                          .stripeStatus!,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.50,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: PrimaryButton(
+                                      text: "Link Stripe",
+                                      onPressed: () async {
+                                        LoadingDialog.show(context);
+                                        final response = await hostDashbaord
+                                            .linkStripeAccountHost();
+                                        if (response["onboarding_url"] !=
+                                            null) {
+                                          LoadingDialog.hide(context);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => ConnectAccount(
+                                                url: response["onboarding_url"],
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          LoadingDialog.hide(context);
+                                          CustomSnackbar.show(
+                                            context,
+                                            message: response['error'],
+                                            backgroundColor: Colors.red,
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icon/stripe.svg",
+                                          ),
+                                          hPad5,
+                                          Text(
+                                            'Stripe Connect',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.50,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.check_circle,
+                                            color: Color(0xFF01CC01),
+                                          ),
+                                          hPad5,
+                                          Text(
+                                            'Verified',
+                                            style: TextStyle(
+                                              color: primaryColor,
+                                              fontSize: 16,
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.50,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  vPad15,
+                                  PrimaryButton(
+                                    text: "Update Payment Method",
+                                    onPressed: () {},
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.check_circle,
-                                color: Color(0xFF01CC01),
-                              ),
-                              hPad5,
-                              Text(
-                                'Verified',
-                                style: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: 16,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      vPad15,
-                      PrimaryButton(
-                        text: "Update Payment Method",
-                        onPressed: () {},
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -445,7 +503,10 @@ class _Layout extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Pro Host',
+                            hostDashbaord
+                                .hostDashboardModel
+                                .subscriptionPlan!
+                                .currentPlan!,
                             style: TextStyle(
                               color: primaryColor,
                               fontSize: 16,
@@ -471,7 +532,11 @@ class _Layout extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Jan 15, 2024',
+                            hostDashbaord
+                                    .hostDashboardModel
+                                    .subscriptionPlan!
+                                    .nextBillingDate ??
+                                "N/A",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -525,7 +590,11 @@ class _Layout extends StatelessWidget {
                           Column(
                             children: [
                               Text(
-                                '3',
+                                hostDashbaord
+                                    .hostDashboardModel
+                                    .chargers!
+                                    .activeChargers
+                                    .toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: primaryColor,
@@ -549,7 +618,11 @@ class _Layout extends StatelessWidget {
                           Column(
                             children: [
                               Text(
-                                '1',
+                                hostDashbaord
+                                    .hostDashboardModel
+                                    .chargers!
+                                    .inactiveChargers
+                                    .toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: const Color(0xFF9CA3AF),
@@ -608,14 +681,22 @@ class _Layout extends StatelessWidget {
                             children: [
                               Row(
                                 children: List.generate(
-                                  5,
+                                  hostDashbaord
+                                      .hostDashboardModel
+                                      .ratingsAndReviews!
+                                      .averageRating!
+                                      .toInt(),
                                   (index) =>
                                       Icon(Icons.star, color: Colors.amber),
                                 ),
                               ),
                               hPad5,
                               Text(
-                                '4.7',
+                                hostDashbaord
+                                    .hostDashboardModel
+                                    .ratingsAndReviews!
+                                    .averageRating
+                                    .toString(),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -627,7 +708,7 @@ class _Layout extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            '28 reviews',
+                            '${hostDashbaord.hostDashboardModel.ratingsAndReviews!.totalReviews!} reviews',
                             style: TextStyle(
                               color: const Color(0xFF9CA3AF),
                               fontSize: 16,

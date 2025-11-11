@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:voltly_app/application/host/home/repo/dashboard_host_repo.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/presentation/station_owner/home_page/host_home_provider.dart';
+import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 
 class EarningPage extends StatelessWidget {
   const EarningPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<HostProfileProvider>();
+    final dashboardProvider = context.watch<HostHomeProvider>();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -22,11 +30,11 @@ class EarningPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildEarningsOverview(),
+            _buildEarningsOverview(provider),
             const SizedBox(height: 16),
-            _buildNextPayoutCard(),
+            _buildNextPayoutCard(provider),
             const SizedBox(height: 16),
-            _buildWithdrawButton(),
+            _buildWithdrawButton(dashboardProvider, context),
             const SizedBox(height: 16),
             _buildExportReportButton(),
             const SizedBox(height: 24),
@@ -59,7 +67,7 @@ class EarningPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEarningsOverview() {
+  Widget _buildEarningsOverview(HostProfileProvider provider) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: ShapeDecoration(
@@ -88,14 +96,28 @@ class EarningPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildEarningsItem(label: 'Today', amount: '\$45'),
-              _buildEarningsItem(label: 'This Week', amount: '\$210'),
-              _buildEarningsItem(label: 'This Month', amount: '\$980'),
-            ],
-          ),
+          provider.earningPayoutModel.earningsOverview == null
+              ? SizedBox()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildEarningsItem(
+                      label: 'Today',
+                      amount:
+                          '${provider.earningPayoutModel.earningsOverview!.today ?? "\$ 0.0"}',
+                    ),
+                    _buildEarningsItem(
+                      label: 'This Week',
+                      amount:
+                          '${provider.earningPayoutModel.earningsOverview!.thisWeek ?? "\$ 0.0"}',
+                    ),
+                    _buildEarningsItem(
+                      label: 'This Month',
+                      amount:
+                          '${provider.earningPayoutModel.earningsOverview!.thisMonth ?? "\$ 0.0"}',
+                    ),
+                  ],
+                ),
         ],
       ),
     );
@@ -129,7 +151,7 @@ class EarningPage extends StatelessWidget {
     );
   }
 
-  Widget _buildNextPayoutCard() {
+  Widget _buildNextPayoutCard(HostProfileProvider provider) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: ShapeDecoration(
@@ -185,7 +207,7 @@ class EarningPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Sep 20, 2025',
+                provider.earningPayoutModel.nextPayout!.scheduledDate ?? "N/A",
                 style: TextStyle(
                   color: primaryColor,
                   fontSize: 16,
@@ -194,8 +216,9 @@ class EarningPage extends StatelessWidget {
                   height: 1.50,
                 ),
               ),
-              const Text(
-                '\$120',
+              Text(
+                provider.earningPayoutModel.nextPayout!.estimatedAmount ??
+                    '\$0.00',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -216,32 +239,23 @@ class EarningPage extends StatelessWidget {
     );
   }
 
-  Widget _buildWithdrawButton() {
+  Widget _buildWithdrawButton(HostHomeProvider provider, BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: Container(
-        decoration: ShapeDecoration(
-          color: Colors.black.withValues(alpha: 0),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: const Color(0xFFE5E7EB)),
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Text(
-              'Withdraw Now',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
+      child: PrimaryButton(
+        text: "Withdraw Now",
+        onPressed: () async {
+          LoadingDialog.show(context);
+          final response = await provider.hostWithdrawRquest();
+          if (response["error"] != null) {
+            LoadingDialog.hide(context);
+            CustomSnackbar.show(
+              context,
+              message: response["error"],
+              backgroundColor: Colors.red,
+            );
+          }
+        },
       ),
     );
   }

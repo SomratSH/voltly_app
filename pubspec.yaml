@@ -54,6 +54,7 @@ dependencies:
   gallery_saver_plus: ^3.2.9
   geocoding: ^4.0.0
   webview_flutter: ^4.13.0
+  web_socket_channel: ^3.0.3
 
 dev_dependencies:
   flutter_test:

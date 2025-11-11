@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:voltly_app/application/host/home/model/dashboard_model.dart';
+import 'package:voltly_app/application/host/home/repo/dashboard_host_repo.dart';
 
 class HostHomeProvider extends ChangeNotifier {
   GoogleMapController? _controller;
@@ -279,11 +281,27 @@ class HostHomeProvider extends ChangeNotifier {
   }
 ]''';
 
+  HostDashboardModel hostDashboardModel = HostDashboardModel();
 
+  Future<void> getDasboardData() async {
+    final response = await DashboardHostRepo().getDashboard();
+    hostDashboardModel = response;
+    notifyListeners();
+  }
+
+  Future<Map<String, dynamic>> linkStripeAccountHost() async {
+    final response = await DashboardHostRepo().linkStripeAccount();
+    return response;
+  }
 
   @override
   void dispose() {
     _controller?.dispose();
     super.dispose();
+  }
+
+  Future<Map<String, dynamic>> hostWithdrawRquest() async {
+    final response = await DashboardHostRepo().hostWithdrawRquest();
+    return response;
   }
 }

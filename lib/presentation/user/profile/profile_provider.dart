@@ -4,9 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:voltly_app/api_service/api_service.dart';
 import 'package:voltly_app/application/driver/profile/model/profile_model.dart';
 import 'package:voltly_app/application/driver/profile/repo/profile_repo.dart';
+import 'package:voltly_app/application/host/profile/model/earning_payout_model.dart';
 
 class ProfileProvider extends ChangeNotifier {
   ProfileModel profileModel = ProfileModel();
+
   String name = "";
   String phone = "";
   Future<void> getProfile() async {
@@ -48,6 +50,8 @@ class ProfileProvider extends ChangeNotifier {
 
     return response;
   }
+
+
 
   updateName(String data) {
     name = data;

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
+import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/presentation/station_owner/profile/subscription/subscription_payment.dart';
 import 'package:voltly_app/presentation/station_owner/profile/subscription/subscription_provider.dart';
 
 class SubscriptionScreen extends StatelessWidget {
@@ -69,6 +72,31 @@ class _Layout extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: _buildPlanCard(
+                          onTap: () async {
+                            LoadingDialog.show(context);
+                            final response = await provider
+                                .subscriptionPlanHost(
+                                  provider.subscriptionList[index].id
+                                      .toString(),
+                                );
+                            if (response["checkout_url"] != null) {
+                              LoadingDialog.hide(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => SubscriptionPayment(
+                                    url: response["checkout_url"],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              CustomSnackbar.show(
+                                context,
+                                message: "Something wrong, try again",
+                              );
+                              LoadingDialog.hide(context);
+                            }
+                          },
                           title: subscriptionData.name!,
                           subtitle:
                               "${subscriptionData.price}/${subscriptionData.billingCycle}",
@@ -83,7 +111,7 @@ class _Layout extends StatelessWidget {
                               'isIncluded': false,
                             },
                           ],
-                          buttonText: 'Upgrade to ${subscriptionData.name}',
+                          buttonText: '${subscriptionData.name}',
                           isMostPopular: false,
                           isBestForBusiness: false,
                         ),
@@ -128,6 +156,7 @@ class _Layout extends StatelessWidget {
   Widget _buildPlanCard({
     required String title,
     required String subtitle,
+    required Function() onTap,
     String? subtitleNote,
     required List<Map<String, dynamic>> features,
     required String buttonText,
@@ -272,7 +301,12 @@ class _Layout extends StatelessWidget {
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
-                child: PrimaryButton(text: buttonText, onPressed: () {}),
+                child: PrimaryButton(
+                  text: buttonText,
+                  onPressed: () {
+                    onTap();
+                  },
+                ),
               ),
             ],
           ),

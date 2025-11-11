@@ -15,7 +15,10 @@ import 'package:voltly_app/presentation/station_owner/charging/charging_page.dar
 import 'package:voltly_app/presentation/station_owner/earning/earning_page.dart';
 import 'package:voltly_app/presentation/station_owner/home_page/home_page.dart';
 import 'package:voltly_app/presentation/station_owner/landing_page/landing_owner_page.dart';
+import 'package:voltly_app/presentation/station_owner/profile/connect_success.dart';
+import 'package:voltly_app/presentation/station_owner/profile/conversation_host.dart';
 import 'package:voltly_app/presentation/station_owner/profile/host_udpate_profile.dart';
+import 'package:voltly_app/presentation/station_owner/profile/messaging_host.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_owner.dart';
 import 'package:voltly_app/presentation/station_owner/resevation/reservation_page.dart';
 import 'package:voltly_app/presentation/user/add_car/add_car.dart';
@@ -167,6 +170,14 @@ class AppRouter {
         path: RouterPath.profileHost,
         builder: (context, state) => ProfileOwner(),
       ),
+      GoRoute(
+        path: RouterPath.messaginHost,
+        builder: (context, state) => MessagingHost(),
+      ),
+      GoRoute(
+        path: RouterPath.connectSuccess,
+        builder: (context, state) => ConnectSuccess(),
+      ),
       // Shell routing for protected pages driver
       ShellRoute(
         builder: (context, state, child) => LandingPage(child: child),
@@ -250,23 +261,19 @@ class RouterPath {
   static String earningHost = "/earning";
   static String addChargerHost = "/add-charger";
   static String updateProfileHost = "/update-profile-host";
-
   static String profileHost = "/profile-host";
-
   static String manualAddCar = "/manual-add-car";
-
   static String carDetails = "/car-details";
-
   static String stationDetails = "/station-details";
-
   static String addCarCharger = "/add-car-charger";
-
   static String aiChat = '/ai-chat';
+  static String messaginHost = "/messaging-host";
+  static String conversationHost = "/conversation-host";
 
   //
   static String message = "/message";
-
   static String chargingHistory = "/charging-history";
-
   static String chargingHistoryDetails = "/charging-history-details";
+
+  static String connectSuccess = "/connect-success";
 }
