@@ -92,14 +92,20 @@ class ChargingProvider extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> addChargerHost(String stationId) async {
+  Future<Map<String, dynamic>> addChargerHost(
+    String stationId,
+    List<int> plug,
+    List<int> connector,
+  ) async {
     final reseponse = await ChargingRepo().addCharger({
-      "station_id": 7,
+      "station_id": stationId,
       "name": chargername,
       "charger_type": 2,
       "mode": mode,
       "price": price,
       "open_24_7": isOpen24Hours,
+      "plug_types": plug,
+      "connector_types": connector,
       "station_latitude": selectedPosition!.latitude.toString(),
       "station_longitude": selectedPosition!.longitude.toString(),
       "station_address": address,

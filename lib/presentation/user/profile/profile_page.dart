@@ -229,10 +229,13 @@ Widget _buildSettingsAndSupportSection(BuildContext context) {
             children: [
               _buildSwitchItem(Icons.notifications_none, 'Notifications'),
 
-              _buildMenuItemIcon(
-                Icons.help_outline,
-                'Help Center',
-                showDivider: false,
+              InkWell(
+                onTap: () => context.push(RouterPath.helpSupport),
+                child: _buildMenuItemIcon(
+                  Icons.help_outline,
+                  'Help Center',
+                  showDivider: false,
+                ),
               ),
 
               InkWell(

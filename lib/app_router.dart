@@ -32,6 +32,7 @@ import 'package:voltly_app/presentation/user/landing_page/landing_page.dart';
 import 'package:voltly_app/presentation/user/profile/changed_password.dart';
 import 'package:voltly_app/presentation/user/profile/charging_history.dart'
     show ChargingHistory;
+import 'package:voltly_app/presentation/user/profile/help_support.dart';
 import 'package:voltly_app/presentation/user/profile/history_details.dart';
 import 'package:voltly_app/presentation/user/profile/message_page.dart';
 import 'package:voltly_app/presentation/user/profile/profile_page.dart';
@@ -159,6 +160,10 @@ class AppRouter {
         path: RouterPath.chargingHistoryDetails,
         builder: (context, state) => HistoryDetails(),
       ),
+      GoRoute(
+        path: RouterPath.helpSupport,
+        builder: (context, state) => HelpSupportScreen(),
+      ),
       /////////////////////////////////////////////////host///////////////////////////////
       //host
       GoRoute(
@@ -170,6 +175,11 @@ class AppRouter {
         path: RouterPath.profileHost,
         builder: (context, state) => ProfileOwner(),
       ),
+      GoRoute(
+        path: RouterPath.updateProfileHost,
+        builder: (context, state) => HostUpdateProfile(),
+      ),
+
       GoRoute(
         path: RouterPath.messaginHost,
         builder: (context, state) => MessagingHost(),
@@ -276,4 +286,6 @@ class RouterPath {
   static String chargingHistoryDetails = "/charging-history-details";
 
   static String connectSuccess = "/connect-success";
+
+  static String helpSupport = "/help-support";
 }

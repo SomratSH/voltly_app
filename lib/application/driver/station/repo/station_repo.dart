@@ -20,7 +20,7 @@ class StationRepo {
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final reseponse = await ApiService().getList(
-      "${AppUrls.getStationListUrl}?latitude=34.0522&longitude=-118.2437&radius=50",
+      "${AppUrls.getStationListUrl}?latitude=23.839054&longitude=90.3641294&radius=50",
       authToken: prefs.getString("authToken"),
     );
     return reseponse.map((e) => StationModel.fromJson(e)).toList();
@@ -34,7 +34,7 @@ class StationRepo {
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final reseponse = await ApiService().getData(
-      "${AppUrls.getStationDetails}?latitude=34.0522&longitude=-118.2437&radius=50&station_id=${stationId}",
+      "${AppUrls.getStationDetails}?latitude=23.839054&longitude=90.3641294&radius=50&station_id=${stationId}",
       authToken: prefs.getString("authToken"),
     );
     return StationDetailsModel.fromJson(reseponse);

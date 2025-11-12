@@ -86,7 +86,9 @@ class ChargingStation {
     status = json['status'];
     openTime = json['open_time'];
     closeTime = json['close_time'];
-    rating = json['rating'];
+    rating = (json['rating'] != null)
+        ? double.tryParse(json['rating'].toString())
+        : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voltly_app/api_service/api_service.dart';
 import 'package:voltly_app/application/host/home/model/dashboard_model.dart';
+import 'package:voltly_app/application/host/home/model/plug_connector_model.dart';
 
 import 'package:voltly_app/constant/app_urls.dart';
 
@@ -32,5 +33,14 @@ class DashboardHostRepo {
       authToken: preferences.getString("authToken"),
     );
     return response;
+  }
+
+  Future<PlugConnectorModel> getPlugConnector() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final response = await ApiService().getData(
+      AppUrls.getPlugConnector,
+      authToken: preferences.getString("authToken"),
+    );
+    return PlugConnectorModel.fromJson(response);
   }
 }

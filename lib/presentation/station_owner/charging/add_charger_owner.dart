@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:voltly_app/application/host/profile/model/host_profile_model.dart';
 import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/custom_sanckbar.dart';
@@ -9,6 +10,8 @@ import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/presentation/station_owner/charging/charger_list_owner.dart';
 import 'package:voltly_app/presentation/station_owner/charging/charging_provider.dart';
+import 'package:voltly_app/presentation/station_owner/home_page/host_home_provider.dart';
+import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
 part 'widget/map_widget.dart';
 
@@ -21,12 +24,14 @@ class AddChargerOwner extends StatefulWidget {
 
 class _AddChargerOwnerState extends State<AddChargerOwner> {
   String? _selectedChargerType;
+  String? _conectorType;
   int? _selectedExtension;
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<ChargingProvider>();
-    final profileProvider = context.watch<ProfileProvider>();
+    final profileProvider = context.watch<HostProfileProvider>();
+    final dashboardProvider = context.watch<HostHomeProvider>();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -46,9 +51,13 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('Charger Type'),
+            _buildSectionTitle('plug Type'),
             const SizedBox(height: 8),
-            _buildChargerTypeDropdown(),
+            _buildChargerTypeDropdown(dashboardProvider),
+            const SizedBox(height: 16),
+            _buildSectionTitle('Connector Type'),
+            const SizedBox(height: 8),
+            _buildConnectorTypeDropdown(dashboardProvider),
             const SizedBox(height: 16),
             _buildSectionTitle('Charger Name/Label'),
             const SizedBox(height: 8),
@@ -94,7 +103,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
             const SizedBox(height: 16),
 
             const SizedBox(height: 32),
-            _buildButtons(provider, profileProvider),
+            _buildButtons(provider, profileProvider, dashboardProvider),
             vPad20,
           ],
         ),
@@ -113,7 +122,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
     );
   }
 
-  Widget _buildChargerTypeDropdown() {
+  Widget _buildChargerTypeDropdown(HostHomeProvider dashboard) {
     return Container(
       decoration: ShapeDecoration(
         color: const Color(0xFF182724),
@@ -128,23 +137,55 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
           contentPadding: EdgeInsets.symmetric(horizontal: 16),
         ),
         hint: const Text(
-          'Select charger type',
+          'Select Plug type',
           style: TextStyle(color: Color(0xFF5A5A5A)),
         ),
         icon: const Icon(Icons.keyboard_arrow_down, color: Color(0xFF5A5A5A)),
         dropdownColor: const Color(0xFF282828),
-        items: ['Type 1', 'Type 2', 'CHAdeMO', 'CCS'].map((String value) {
+        items: dashboard.plugConnectorModel.plugTypes!.map((e) {
           return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value, style: TextStyle(color: Colors.white)),
+            value: e.name,
+            child: Text(e.name!, style: TextStyle(color: Colors.white)),
           );
         }).toList(),
         onChanged: (String? newValue) {
-          setState(() {
-            _selectedChargerType = newValue;
-          });
+          dashboard.updatePlugType(dashboard.getPlugId(newValue!)!);
         },
         value: _selectedChargerType,
+      ),
+    );
+  }
+
+  Widget _buildConnectorTypeDropdown(HostHomeProvider dashboard) {
+    return Container(
+      decoration: ShapeDecoration(
+        color: const Color(0xFF182724),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(width: 1, color: const Color(0xFF4B5563)),
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: DropdownButtonFormField<String>(
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+        ),
+        hint: const Text(
+          'Select Connector type',
+          style: TextStyle(color: Color(0xFF5A5A5A)),
+        ),
+        icon: const Icon(Icons.keyboard_arrow_down, color: Color(0xFF5A5A5A)),
+        dropdownColor: const Color(0xFF282828),
+        items: dashboard.plugConnectorModel.connectorTypes!.map((e) {
+          return DropdownMenuItem<String>(
+            value: e.name,
+            child: Text(e.name!, style: TextStyle(color: Colors.white)),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          dashboard.updateConnectorType(dashboard.getConnectorId(newValue!)!);
+        },
+        value: _conectorType,
       ),
     );
   }
@@ -469,7 +510,8 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
 
   Widget _buildButtons(
     ChargingProvider providerider,
-    ProfileProvider profileProvider,
+    HostProfileProvider profileProvider,
+    HostHomeProvider dashbaord,
   ) {
     return Row(
       children: [
@@ -496,7 +538,10 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
             onPressed: () async {
               LoadingDialog.show(context);
               final reseponse = await providerider.addChargerHost(
-                profileProvider.profileModel.data!.id.toString(),
+                profileProvider.hostProfileModel.data!.chargingStation!.id
+                    .toString(),
+                dashbaord.plugType,
+                dashbaord.connectorType,
               );
               LoadingDialog.hide(context);
 

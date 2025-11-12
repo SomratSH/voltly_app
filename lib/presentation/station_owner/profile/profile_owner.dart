@@ -355,6 +355,7 @@ class ProfileOwner extends StatelessWidget {
                           ),
                         ),
                         vPad15,
+
                         hostDashbaord
                                     .hostDashboardModel
                                     .paymentSetup!
@@ -364,10 +365,7 @@ class ProfileOwner extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      hostDashbaord
-                                          .hostDashboardModel
-                                          .paymentSetup!
-                                          .stripeStatus!,
+                                      "No Stripe account linked",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,

@@ -22,7 +22,9 @@ class ProviderList {
       create: (_) => ChargingProvider()..getChargingList(),
     ),
     ChangeNotifierProvider(
-      create: (_) => HostHomeProvider()..getDasboardData(),
+      create: (_) => HostHomeProvider()
+        ..getDasboardData()
+        ..getPlugConnectData(),
     ),
 
     ChangeNotifierProvider(create: (_) => ProfileProvider()..getProfile()),

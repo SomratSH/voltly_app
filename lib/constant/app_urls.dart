@@ -2,8 +2,8 @@ class AppUrls {
   // static String baseUrl = "http://10.10.13.20:8005/api/v1";
   // static String imageUrl = "http://10.10.13.20:8005";
 
-  static String baseUrl = "https://2426b672d839.ngrok-free.app/api/v1";
-  static String imageUrl = "https://2426b672d839.ngrok-free.app";
+  static String baseUrl = "https://8d6c5e582b34.ngrok-free.app/api/v1";
+  static String imageUrl = "https://8d6c5e582b34.ngrok-free.app";
   //authetication
   static String login = "/login/";
   static String signUp = "/signup/";
@@ -52,4 +52,8 @@ class AppUrls {
   static String termsCondition = "/common/terms-conditions/";
 
   static String chatHistory = "/chat/messages/";
+
+  static String helpSupport = "/common/help-support/";
+
+  static String getPlugConnector = "/host/get-plugs/";
 }

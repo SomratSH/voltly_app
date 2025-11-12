@@ -99,7 +99,12 @@ class HomePageOwner extends StatelessWidget {
 
               profileProvider.upcomingReservationModel.upcomingReservations ==
                       null
-                  ? Text("No reservation avaiable")
+                  ? Center(
+                      child: Text(
+                        "No reservation avaiable",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
                   : Column(
                       children: List.generate(
                         profileProvider
@@ -470,93 +475,101 @@ class HomePageOwner extends StatelessWidget {
         const SizedBox(height: 8),
 
         // Loop through chargers that are default
-        Column(
-          children: provider.chargerList
-              .where(
-                (charger) => charger.isDefault == true,
-              ) // ✅ filter default chargers
-              .map((charger) {
-                final isActive = (charger.isActive ?? false); // active status
+        provider.chargerList.isEmpty
+            ? Center(
+                child: Text(
+                  "No charger available",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            : Column(
+                children: provider.chargerList
+                    .where(
+                      (charger) => charger.isDefault == true,
+                    ) // ✅ filter default chargers
+                    .map((charger) {
+                      final isActive =
+                          (charger.isActive ?? false); // active status
 
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(16),
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: isActive ? primaryColor : Colors.grey,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x0C000000),
-                        blurRadius: 2,
-                        offset: Offset(0, 1),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              charger.name ?? "Charger Name",
-                              style: const TextStyle(
-                                color: Color(0xFFF2F2F2),
-                                fontSize: 16,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                              ),
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.all(16),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 1,
+                              color: isActive ? primaryColor : Colors.grey,
                             ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Container(
-                                  width: 8,
-                                  height: 8,
-                                  decoration: BoxDecoration(
-                                    color: isActive
-                                        ? primaryColor
-                                        : Colors.grey,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  isActive ? 'Active' : 'Inactive',
-                                  style: TextStyle(
-                                    color: isActive
-                                        ? primaryColor
-                                        : Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          shadows: const [
+                            BoxShadow(
+                              color: Color(0x0C000000),
+                              blurRadius: 2,
+                              offset: Offset(0, 1),
+                              spreadRadius: 0,
                             ),
                           ],
                         ),
-                      ),
-                      Switch(
-                        value: isActive,
-                        onChanged: (bool value) {
-                          // Call provider method to toggle charger status
-                          // provider.toggleCharger(charger.id, value);
-                        },
-                        activeColor: primaryColor,
-                        inactiveThumbColor: Colors.white,
-                        inactiveTrackColor: Colors.white10,
-                      ),
-                    ],
-                  ),
-                );
-              })
-              .toList(),
-        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    charger.name ?? "Charger Name",
+                                    style: const TextStyle(
+                                      color: Color(0xFFF2F2F2),
+                                      fontSize: 16,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color: isActive
+                                              ? primaryColor
+                                              : Colors.grey,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        isActive ? 'Active' : 'Inactive',
+                                        style: TextStyle(
+                                          color: isActive
+                                              ? primaryColor
+                                              : Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Switch(
+                              value: isActive,
+                              onChanged: (bool value) {
+                                // Call provider method to toggle charger status
+                                // provider.toggleCharger(charger.id, value);
+                              },
+                              activeColor: primaryColor,
+                              inactiveThumbColor: Colors.white,
+                              inactiveTrackColor: Colors.white10,
+                            ),
+                          ],
+                        ),
+                      );
+                    })
+                    .toList(),
+              ),
       ],
     );
   }

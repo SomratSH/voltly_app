@@ -18,7 +18,6 @@ class ReservationPage extends StatelessWidget {
     final provider = context.watch<ReservationProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF121C24),
         title: const Text(
           'Reservations',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

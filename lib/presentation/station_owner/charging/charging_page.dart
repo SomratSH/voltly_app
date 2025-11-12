@@ -19,7 +19,6 @@ class ChargingPageOwner extends StatelessWidget {
     final provider = context.watch<ChargingProvider>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121C24),
       body: SafeArea(
         child: Column(
           children: [

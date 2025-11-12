@@ -36,12 +36,11 @@ class _VoltlyCreateAccountPageState extends State<VoltlyCreateAccountPage> {
     final provider = context.watch<AuthProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF121C24),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            context.pop(context);
           },
         ),
       ),

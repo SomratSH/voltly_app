@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:voltly_app/application/host/home/model/dashboard_model.dart';
+import 'package:voltly_app/application/host/home/model/plug_connector_model.dart';
 import 'package:voltly_app/application/host/home/repo/dashboard_host_repo.dart';
 
 class HostHomeProvider extends ChangeNotifier {
@@ -26,6 +27,41 @@ class HostHomeProvider extends ChangeNotifier {
     });
 
     notifyListeners();
+  }
+
+  List<int> plugType = [];
+  List<int> connectorType = [];
+
+  void updatePlugType(int id) {
+    if (!plugType.contains(id)) {
+      plugType.add(id);
+      notifyListeners();
+    }
+  }
+
+  void updateConnectorType(int id) {
+    if (!connectorType.contains(id)) {
+      connectorType.add(id);
+      notifyListeners();
+    }
+  }
+
+  int? getPlugId(String name) {
+    try {
+      return plugConnectorModel.plugTypes!.firstWhere((e) => e.name == name).id;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  int? getConnectorId(String name) {
+    try {
+      return plugConnectorModel.connectorTypes!
+          .firstWhere((e) => e.name == name)
+          .id;
+    } catch (_) {
+      return null;
+    }
   }
 
   final String _darkMapStyle = '''[
@@ -292,6 +328,14 @@ class HostHomeProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> linkStripeAccountHost() async {
     final response = await DashboardHostRepo().linkStripeAccount();
     return response;
+  }
+
+  PlugConnectorModel plugConnectorModel = PlugConnectorModel();
+
+  Future<void> getPlugConnectData() async {
+    final response = await DashboardHostRepo().getPlugConnector();
+    plugConnectorModel = response;
+    notifyListeners();
   }
 
   @override

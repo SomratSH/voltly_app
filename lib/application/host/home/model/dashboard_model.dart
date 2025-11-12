@@ -105,7 +105,10 @@ class RatingsAndReviews {
   RatingsAndReviews({this.averageRating, this.totalReviews});
 
   RatingsAndReviews.fromJson(Map<String, dynamic> json) {
-    averageRating = json['average_rating'];
+    averageRating = (json['average_rating'] is int)
+        ? (json['average_rating'] as int).toDouble()
+        : (json['average_rating'] ?? 0.0);
+    ;
     totalReviews = json['total_reviews'];
   }
 

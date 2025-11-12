@@ -93,7 +93,9 @@ class ChargingSummaryPage extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      provider.bookingDetailsModel.vehicle!.model!,
+                      provider.bookingDetailsModel.vehicle == null
+                          ? "N/A"
+                          : provider.bookingDetailsModel.vehicle!.model!,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: const Color(0xFFBEBEBE),

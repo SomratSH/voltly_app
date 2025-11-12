@@ -374,8 +374,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: InkWell(
                   onTap: () {
                     _isDriverSelected
-                        ? context.go(RouterPath.singUp)
-                        : context.go(RouterPath.hostSignUpStep1);
+                        ? context.push(RouterPath.singUp)
+                        : context.push(RouterPath.hostSignUpStep1);
                   },
                   child: Container(
                     decoration: ShapeDecoration(
