@@ -188,6 +188,14 @@ class AppRouter {
         path: RouterPath.connectSuccess,
         builder: (context, state) => ConnectSuccess(),
       ),
+      GoRoute(
+        path: RouterPath.messaginHost,
+        builder: (context, state) => MessagingHost(),
+      ),
+      GoRoute(
+        path: RouterPath.connectSuccess,
+        builder: (context, state) => ConnectSuccess(),
+      ),
       // Shell routing for protected pages driver
       ShellRoute(
         builder: (context, state, child) => LandingPage(child: child),

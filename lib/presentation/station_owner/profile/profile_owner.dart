@@ -355,7 +355,6 @@ class ProfileOwner extends StatelessWidget {
                           ),
                         ),
                         vPad15,
-
                         hostDashbaord
                                     .hostDashboardModel
                                     .paymentSetup!
