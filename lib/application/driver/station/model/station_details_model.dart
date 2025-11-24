@@ -1,38 +1,38 @@
 class StationDetailsModel {
-   int ?id;
-   String ?stationName;
-   String ?locationArea;
-   String? address;
-   double ?latitude;
-   double ?longitude;
-   String ?status;
-   String ?openingTime;
-   String ?closingTime;
-   String? image;
-   double ?averageRating;
-   Host ?host;
-   List<Review> ?reviews;
-   double ?distanceKm;
-   double ?timeToReachMin;
-   List<Charger> ?chargers;
+  int? id;
+  String? stationName;
+  String? locationArea;
+  String? address;
+  double? latitude;
+  double? longitude;
+  String? status;
+  String? openingTime;
+  String? closingTime;
+  String? image;
+  double? averageRating;
+  Host? host;
+  List<Review>? reviews;
+  double? distanceKm;
+  double? timeToReachMin;
+  List<Charger>? chargers;
 
   StationDetailsModel({
-     this.id,
-     this.stationName,
-     this.locationArea,
+    this.id,
+    this.stationName,
+    this.locationArea,
     this.address,
-     this.latitude,
-     this.longitude,
-     this.status,
-     this.openingTime,
-     this.closingTime,
+    this.latitude,
+    this.longitude,
+    this.status,
+    this.openingTime,
+    this.closingTime,
     this.image,
-     this.averageRating,
-     this.host,
-     this.reviews,
-     this.distanceKm,
-     this.timeToReachMin,
-     this.chargers,
+    this.averageRating,
+    this.host,
+    this.reviews,
+    this.distanceKm,
+    this.timeToReachMin,
+    this.chargers,
   });
 
   factory StationDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -41,13 +41,13 @@ class StationDetailsModel {
       stationName: json['station_name'],
       locationArea: json['location_area'],
       address: json['address'],
-      latitude: (json['latitude'] as num).toDouble(),
-      longitude: (json['longitude'] as num).toDouble(),
+      latitude: (json['latitude'] ?? 0.0 as num).toDouble(),
+      longitude: (json['longitude'] ?? 0.0 as num).toDouble(),
       status: json['status'],
       openingTime: json['opening_time'],
       closingTime: json['closing_time'],
       image: json['image'],
-      averageRating: (json['average_rating'] as num).toDouble(),
+      averageRating: (json['average_rating'] ?? 0.0 as num).toDouble(),
       host: Host.fromJson(json['host']),
       reviews: (json['reviews'] as List<dynamic>)
           .map((e) => Review.fromJson(e))
@@ -81,17 +81,12 @@ class StationDetailsModel {
 }
 
 class Host {
-   int ?id;
-   String ?fullName;
-   String ?email;
-   String ?phone;
+  int? id;
+  String? fullName;
+  String? email;
+  String? phone;
 
-  Host({
-     this.id,
-     this.fullName,
-     this.email,
-     this.phone,
-  });
+  Host({this.id, this.fullName, this.email, this.phone});
 
   factory Host.fromJson(Map<String, dynamic> json) => Host(
     id: json['id'],
@@ -109,15 +104,11 @@ class Host {
 }
 
 class Review {
-   int ?chargingStation;
-   int ?rating;
-   String ?comment;
+  int? chargingStation;
+  int? rating;
+  String? comment;
 
-  Review({
-     this.chargingStation,
-     this.rating,
-     this.comment,
-  });
+  Review({this.chargingStation, this.rating, this.comment});
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
     chargingStation: json['charging_station'],
@@ -133,24 +124,24 @@ class Review {
 }
 
 class Charger {
-   int ?id;
-   String ?name;
-   String ?chargerType;
-   String ?mode;
-   double ?price;
-   bool ?available;
-   List<PlugType>? plugTypes;
-   List<ConnectorType> ?connectorTypes;
+  int? id;
+  String? name;
+  String? chargerType;
+  String? mode;
+  double? price;
+  bool? available;
+  List<PlugType>? plugTypes;
+  List<ConnectorType>? connectorTypes;
 
   Charger({
-     this.id,
-     this.name,
-     this.chargerType,
-     this.mode,
-     this.price,
-     this.available,
-     this.plugTypes,
-     this.connectorTypes,
+    this.id,
+    this.name,
+    this.chargerType,
+    this.mode,
+    this.price,
+    this.available,
+    this.plugTypes,
+    this.connectorTypes,
   });
 
   factory Charger.fromJson(Map<String, dynamic> json) => Charger(
@@ -181,10 +172,10 @@ class Charger {
 }
 
 class PlugType {
-   int? id;
-   String? name;
+  int? id;
+  String? name;
 
-  PlugType({ this.id,  this.name});
+  PlugType({this.id, this.name});
 
   factory PlugType.fromJson(Map<String, dynamic> json) =>
       PlugType(id: json['id'], name: json['name']);
@@ -193,10 +184,10 @@ class PlugType {
 }
 
 class ConnectorType {
-   int ?id;
-   String ?name;
+  int? id;
+  String? name;
 
-  ConnectorType({ this.id,  this.name});
+  ConnectorType({this.id, this.name});
 
   factory ConnectorType.fromJson(Map<String, dynamic> json) =>
       ConnectorType(id: json['id'], name: json['name']);

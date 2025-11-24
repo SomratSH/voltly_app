@@ -92,6 +92,74 @@ class HostSignUpStep2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
 
+                // Image Upload Section
+                Text(
+                  "Upload Station Image",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      // If image selected → Show preview
+                      provider.selectedImage != null
+                          ? Column(
+                              children: [
+                                Image.file(
+                                  provider.selectedImage!,
+                                  height: 150,
+                                  fit: BoxFit.cover,
+                                ),
+                                const SizedBox(height: 8),
+                                TextButton(
+                                  onPressed: provider.removeImage,
+                                  child: const Text(
+                                    "Remove Image",
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Text(
+                              "No image selected",
+                              style: TextStyle(color: Colors.white70),
+                            ),
+
+                      const SizedBox(height: 12),
+
+                      // Upload Button
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2A9D8F),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        icon: const Icon(Icons.upload, color: Colors.white),
+                        label: const Text(
+                          "Upload Image",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          _showImagePickerSheet(context, provider);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 32),
+
                 // Continue Button
                 SizedBox(
                   width: double.infinity,
@@ -115,6 +183,7 @@ class HostSignUpStep2 extends StatelessWidget {
                           password: provider.password,
                           confirmPassword: provider.confirmPassword,
                           isTerms: provider.agreeToTerms,
+                          image: provider.selectedImage!,
                         );
 
                         LoadingDialog.hide(context);
@@ -186,4 +255,46 @@ class HostSignUpStep2 extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showImagePickerSheet(BuildContext context, AuthProvider provider) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.black,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+    ),
+    builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo, color: Colors.white),
+              title: const Text(
+                "Pick from Gallery",
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                provider.pickImageFromGallery();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: Colors.white),
+              title: const Text(
+                "Take a Photo",
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                provider.pickImageFromCamera();
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

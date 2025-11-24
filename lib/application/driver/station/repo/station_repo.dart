@@ -11,8 +11,10 @@ import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/user/profile/charging_history.dart';
 import 'package:voltly_app/presentation/user/station/booking_details.dart';
 import 'package:voltly_app/presentation/user/station/station_details.dart';
-
+import 'package:geolocator/geolocator.dart';
 class StationRepo {
+
+  
   Future<List<StationModel>> getStationList({
     required String lat,
     required String long,
@@ -20,7 +22,7 @@ class StationRepo {
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final reseponse = await ApiService().getList(
-      "${AppUrls.getStationListUrl}?latitude=23.839054&longitude=90.3641294&radius=50",
+      "${AppUrls.getStationListUrl}?latitude=$lat&longitude=$long&radius=50",
       authToken: prefs.getString("authToken"),
     );
     return reseponse.map((e) => StationModel.fromJson(e)).toList();
@@ -34,7 +36,7 @@ class StationRepo {
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final reseponse = await ApiService().getData(
-      "${AppUrls.getStationDetails}?latitude=23.839054&longitude=90.3641294&radius=50&station_id=${stationId}",
+      "${AppUrls.getStationDetails}?latitude=$lat&longitude=$long&radius=50&station_id=${stationId}",
       authToken: prefs.getString("authToken"),
     );
     return StationDetailsModel.fromJson(reseponse);

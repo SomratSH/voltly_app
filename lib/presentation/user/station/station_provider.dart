@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:voltly_app/application/driver/station/model/booking_details_model.dart';
 import 'package:voltly_app/application/driver/station/model/booking_list_model.dart';
 import 'package:voltly_app/application/driver/station/model/booking_response_model.dart';
@@ -18,6 +19,46 @@ class StationProvider extends ChangeNotifier {
   int? selectCarId;
   int? selectedChargerId;
   int? selectedPlugId;
+
+  double? myLat;
+  double? myLong;
+
+  // StationProvider() {
+  //   initLocation();
+  // }
+
+  // Future<void> initLocation() async {
+  //   print(myLat);
+  //   print(myLong);
+  //   await getMyLatLong();
+  // }
+
+  // Future<void> getMyLatLong() async {
+  //   // Check permission
+  //   LocationPermission permission = await Geolocator.checkPermission();
+
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       print("Location permission denied");
+  //       return null;
+  //     }
+  //   }
+
+  //   if (permission == LocationPermission.deniedForever) {
+  //     print("Location permission permanently denied");
+  //     return null;
+  //   }
+
+  //   // Get current position
+  //   Position position = await Geolocator.getCurrentPosition(
+  //     desiredAccuracy: LocationAccuracy.high,
+  //   );
+
+  //   myLat = position.latitude;
+  //   myLong = position.longitude;
+  //   notifyListeners();
+  // }
 
   void selectPlug(int chargerId, int plugId) {
     selectedChargerId = chargerId;
@@ -73,10 +114,30 @@ class StationProvider extends ChangeNotifier {
   double _timeToDouble(TimeOfDay time) => time.hour + time.minute / 60.0;
 
   Future<void> getNeayByStation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        print("Location permission denied");
+        return null;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      print("Location permission permanently denied");
+      return null;
+    }
+
+    // Get current position
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
     final response = await StationRepo().getStationList(
-      lat: "234",
-      long: "213",
-      raduis: "58",
+      lat: position.latitude.toString(),
+      long: position.longitude.toString(),
+      raduis: "50",
     );
     stationList = response;
     notifyListeners();
@@ -89,10 +150,27 @@ class StationProvider extends ChangeNotifier {
   }
 
   Future<bool> getStationDetails(String stationID) async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        print("Location permission denied");
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      print("Location permission permanently denied");
+    }
+
+    // Get current position
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
     final response = await StationRepo().getStationDetails(
-      lat: "",
-      long: "",
-      raduis: "",
+      lat: position.latitude.toString(),
+      long: position.longitude.toString(),
+      raduis: "50",
       stationId: stationID,
     );
     stationDetailsModel = response;

@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:voltly_app/application/host/home/model/dashboard_model.dart';
 import 'package:voltly_app/application/host/home/model/plug_connector_model.dart';
@@ -6,17 +8,38 @@ import 'package:voltly_app/application/host/home/repo/dashboard_host_repo.dart';
 
 class HostHomeProvider extends ChangeNotifier {
   GoogleMapController? _controller;
-  final LatLng sourceLocation = const LatLng(23.8103, 90.4125); // Dhaka example
+  LatLng? sourceLocation; // Dhaka example
   Set<Marker> markers = {};
   String mapTheme = "";
-  void onMapCreated(GoogleMapController controller) {
+  String? address;
+
+  HostHomeProvider() {
+    getCurrentLocation();
+  }
+  void onMapCreated(GoogleMapController controller) async {
     _controller = controller;
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      address = "Location permission permanently denied";
+      notifyListeners();
+      return;
+    }
+
+    // Get location
+    Position pos = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
 
     // Add marker
     markers.add(
       Marker(
         markerId: const MarkerId('source'),
-        position: sourceLocation,
+        position: LatLng(pos.latitude, pos.longitude),
         infoWindow: const InfoWindow(title: 'Source Location'),
       ),
     );
@@ -27,6 +50,45 @@ class HostHomeProvider extends ChangeNotifier {
     });
 
     notifyListeners();
+  }
+
+  Future<void> getCurrentLocation() async {
+    try {
+      // Check permission
+      LocationPermission permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        address = "Location permission permanently denied";
+        notifyListeners();
+        return;
+      }
+
+      // Get location
+      Position pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // Reverse geocoding
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        pos.latitude,
+        pos.longitude,
+      );
+
+      Placemark place = placemarks.first;
+      sourceLocation = LatLng(pos.latitude, pos.longitude);
+      address =
+          "${place.street}, ${place.subLocality}, ${place.locality}, ${place.country}";
+
+      notifyListeners();
+    } catch (e) {
+      print("Location Error: $e");
+      address = "Failed to get location";
+      notifyListeners();
+    }
   }
 
   List<int> plugType = [];

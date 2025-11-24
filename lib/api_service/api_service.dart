@@ -11,7 +11,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> postDataRegular(
     String endpoint,
-    Map<String, dynamic> data, {
+    Map<String, dynamic>? data, {
     Map<String, String>? queryParams,
     String? authToken,
   }) async {
@@ -58,7 +58,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> postDataRegular2(
     String endpoint,
-    Map<String, dynamic> data, {
+    Map<String, dynamic>? data, {
     Map<String, String>? queryParams,
     String? authToken,
   }) async {
@@ -147,7 +147,7 @@ class ApiService {
       final response = await request.send();
 
       final responseBody = await http.Response.fromStream(response);
-
+      print("|my falut ${responseBody}");
       // Return the parsed response
       return _handleResponse(responseBody);
     } on http.ClientException catch (e) {
@@ -333,5 +333,31 @@ class ApiService {
   // Handle generic errors
   Map<String, dynamic> _handleError(String errorMessage) {
     return {'error': errorMessage};
+  }
+
+  Future<dynamic> postApiWithoutBody(String urls, String token) async {
+    String url = "${AppUrls.baseUrl}$urls";
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        // No body here
+      );
+      print(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        print(response.body);
+        throw Exception("Failed: ${response.statusCode}");
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }

@@ -15,10 +15,7 @@ class UpdateProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ProfileProvider()..getProfile(),
-      child: const _Layout(),
-    );
+    return const _Layout();
   }
 }
 

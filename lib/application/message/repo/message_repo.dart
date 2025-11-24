@@ -3,6 +3,7 @@ import 'package:voltly_app/api_service/api_service.dart';
 import 'package:voltly_app/application/message/model/chat_history_model.dart';
 import 'package:voltly_app/application/message/model/chat_host_model.dart';
 import 'package:voltly_app/application/message/model/chat_list_model.dart';
+import 'package:voltly_app/application/message/model/create_chat_model.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 
 class MessageRepo {
@@ -33,5 +34,16 @@ class MessageRepo {
       authToken: preferences.getString("authToken"),
     );
     return ChatHistoryModel.fromJson(reponse);
+  }
+
+  Future<CreateChatModel> getCreateChatModel(int id) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final reponse = await ApiService().postApiWithoutBody(
+      "${AppUrls.createChat}${id}/chat/",
+
+      preferences.getString("authToken")!,
+    );
+    
+    return CreateChatModel.fromJson(reponse);
   }
 }

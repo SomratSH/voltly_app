@@ -4,12 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voltly_app/application/message/model/chat_history_model.dart';
 import 'package:voltly_app/application/message/model/chat_host_model.dart';
 import 'package:voltly_app/application/message/model/chat_list_model.dart';
+import 'package:voltly_app/application/message/model/create_chat_model.dart';
 import 'package:voltly_app/application/message/repo/message_repo.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class MessagingProvider extends ChangeNotifier {
   ChatListModel _chats = ChatListModel();
   HostChatModel _chatsHost = HostChatModel();
+  CreateChatModel createChatModel = CreateChatModel();
   bool _isLoading = false;
   ChatHistoryModel chatHistoryModel = ChatHistoryModel();
 
@@ -38,6 +40,16 @@ class MessagingProvider extends ChangeNotifier {
     final response = await MessageRepo().fetchHostChatsList();
     _chatsHost = response;
     notifyListeners();
+  }
+
+  Future<bool> createChat(int id) async {
+    final response = await MessageRepo().getCreateChatModel(id);
+    createChatModel = response;
+    notifyListeners();
+    if (createChatModel.id != null) {
+      return true;
+    }
+    return false;
   }
 
   /// Connect WebSocket + Load Previous Messages

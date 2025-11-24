@@ -2,8 +2,8 @@ class AppUrls {
   // static String baseUrl = "http://10.10.13.20:8005/api/v1";
   // static String imageUrl = "http://10.10.13.20:8005";
 
-  static String baseUrl = "https://8d6c5e582b34.ngrok-free.app/api/v1";
-  static String imageUrl = "https://8d6c5e582b34.ngrok-free.app";
+  static String baseUrl = "https://b613bd610d6e.ngrok-free.app/api/v1";
+  static String imageUrl = "https://b613bd610d6e.ngrok-free.app";
   //authetication
   static String login = "/login/";
   static String signUp = "/signup/";
@@ -17,11 +17,11 @@ class AppUrls {
   static String changePassword = "/change-password/";
 
   //user
-  static String getVehicleUrl = "/driver/vehicles/";
+  static String getVehicleUrl = "/driver/user-vehicles/list/";
   static String getVehicleDetails = "/driver/vehicles/";
   static String getStationListUrl = "/driver/stations/nearby/";
   static String getStationDetails = "/driver/stations/nearby/";
-  static String addCarUrl = "/driver/vehicles/";
+  static String addCarUrl = "/driver/user-vehicles/add/";
   static String subscriptionListUrl = "/subscriptions/plans/";
   static String createBooking = "/bookings/create-booking/";
   static String getUserBookingList = "/bookings/booking-list/";
@@ -56,4 +56,7 @@ class AppUrls {
   static String helpSupport = "/common/help-support/";
 
   static String getPlugConnector = "/host/get-plugs/";
+
+  //CREATE CHAT
+  static String createChat = "/chat/create/";
 }

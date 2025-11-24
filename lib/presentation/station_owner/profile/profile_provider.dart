@@ -39,7 +39,7 @@ class HostProfileProvider extends ChangeNotifier {
       "mobile": phone,
     }, image);
     if (response.isNotEmpty) {
-      getProfileHost();
+      await getProfileHost();
     } else {
       debugPrint("Failed to update profile");
     }

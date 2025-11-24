@@ -63,11 +63,11 @@ class ChargingPageOwner extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(RouterPath.addChargerHost),
-        backgroundColor: primaryColor,
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => context.push(RouterPath.addChargerHost),
+      //   backgroundColor: primaryColor,
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 
@@ -117,7 +117,7 @@ class ChargingPageOwner extends StatelessWidget {
             child: _buildChargerCard(
               context: context,
               chargerName: charger.name ?? 'Unknown Charger',
-              location: '123 St, Midtown expressway',
+              location: charger.stationDetails!.address!,
               price: "${charger.price ?? 0}/kWh",
               isActive: charger.isActive ?? false,
               qrImage: charger.scannerImage ?? "",

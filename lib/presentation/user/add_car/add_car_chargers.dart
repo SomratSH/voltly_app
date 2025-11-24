@@ -158,8 +158,9 @@ class AddCarChargers extends StatelessWidget {
                   } else {
                     LoadingDialog.show(context);
                     final status = await provider.addCarData();
+                    print("data $status");
                     LoadingDialog.hide(context);
-                    if (status["id"] != null) {
+                    if (status["data"]["id"] != null) {
                       CustomSnackbar.show(
                         context,
                         message: "Car Added Successfully",

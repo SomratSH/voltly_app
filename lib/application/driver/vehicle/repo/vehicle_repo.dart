@@ -36,6 +36,7 @@ class VehicleRepo {
       data,
       authToken: preferences.getString("authToken"),
       image: image,
+      imageParamNam: "custom_vehicle_image",
     );
     return response;
   }

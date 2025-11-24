@@ -30,21 +30,20 @@ class EvStationCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 🔹 Station Icon
             DecoratedBox(
               decoration: BoxDecoration(
                 border: Border.all(color: primaryColor, width: 1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(14.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Image.network(
                   iconPath,
-                  width: 28,
-                  height: 28,
-                  color: primaryColor,
+                  width: 40,
+                  height: 40,
+                  // color: primaryColor,
                   errorBuilder: (context, error, stackTrace) {
-                    debugPrint("❌ Image load failed: $error");
+                    debugPrint("❌ Image station: $error");
                     return Image.network(
                       'https://www.directmobilityonline.co.uk/assets/img/noimage.png',
                       fit: BoxFit.cover,

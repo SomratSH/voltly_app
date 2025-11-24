@@ -40,7 +40,7 @@ class CarAddProvider extends ChangeNotifier {
     }
   }
 
-  String _selectedVehicleType = 'Car';
+  String _selectedVehicleType = 'car';
 
   String get selectedVehicleType => _selectedVehicleType;
 
@@ -86,11 +86,14 @@ class CarAddProvider extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> addCarData() async {
+    print(pickedImage!.path);
     final reseponse = await VehicleRepo().addCar({
-      "vehicle_name": carName,
       "registration_number": registrationNumber,
-      "plug_type": "type_a",
-      "vehicle_type": _selectedVehicleType.toLowerCase(),
+      "selected_plug": 2,
+      "vehicle": 2,
+      "custom_vehicle_name": carName,
+      "vehicle_type": _selectedVehicleType.toUpperCase(),
+      "battery_type": "lithium",
     }, pickedImage!);
     return reseponse;
   }

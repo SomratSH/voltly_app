@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voltly_app/api_service/api_service.dart';
 import 'package:voltly_app/application/authentication/authentiation_repo/authentication_repo.dart';
@@ -17,6 +20,33 @@ class AuthProvider extends ChangeNotifier {
   String locationArea = '';
   String latitude = '';
   String longitude = '';
+
+  File? selectedImage;
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> pickImageFromGallery() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      selectedImage = File(image.path);
+      notifyListeners();
+    }
+  }
+
+  Future<void> pickImageFromCamera() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      selectedImage = File(image.path);
+      notifyListeners();
+    }
+  }
+
+  void removeImage() {
+    selectedImage = null;
+    notifyListeners();
+  }
 
   // Update functions
   void updateName(String value) {
@@ -85,6 +115,7 @@ class AuthProvider extends ChangeNotifier {
     required String password,
     required String confirmPassword,
     required bool isTerms,
+    required File image,
   }) async {
     final response = await AuthenticationRepo(ApiService()).signUp({
       "full_name": name,
@@ -98,7 +129,7 @@ class AuthProvider extends ChangeNotifier {
       "location_area": locationArea,
       "latitude": latitude,
       "longitude": longitude,
-    });
+    }, image);
     return response;
   }
 
@@ -111,7 +142,7 @@ class AuthProvider extends ChangeNotifier {
     required String confirmPassword,
     required bool isTerms,
   }) async {
-    final response = await AuthenticationRepo(ApiService()).signUp({
+    final response = await AuthenticationRepo(ApiService()).signUpDriver({
       "full_name": name,
       "email": email,
       "phone": phone,

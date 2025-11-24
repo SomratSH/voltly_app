@@ -17,10 +17,7 @@ class HostUpdateProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => HostProfileProvider()..getProfileHost(),
-      child: const _Layout(),
-    );
+    return const _Layout();
   }
 }
 

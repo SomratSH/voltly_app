@@ -8,8 +8,12 @@ import 'package:voltly_app/common/commone_helper.dart';
 import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/custom_sanckbar.dart';
+import 'package:voltly_app/common/helpers.dart';
 import 'package:voltly_app/common/primary_button.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/constant/app_urls.dart';
+import 'package:voltly_app/presentation/common_page/messaging_provider.dart';
+import 'package:voltly_app/presentation/user/profile/converstation_screen.dart';
 import 'package:voltly_app/presentation/user/station/booking_page.dart';
 import 'package:voltly_app/presentation/user/station/scanner_screen.dart';
 import 'package:voltly_app/presentation/user/station/station_provider.dart';
@@ -23,12 +27,13 @@ class StationDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<StationProvider>();
+    final providerMessage = context.watch<MessagingProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(context),
+            _buildHeader(context, provider),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Column(
@@ -42,8 +47,10 @@ class StationDetails extends StatelessWidget {
                         height: 60,
                         decoration: ShapeDecoration(
                           image: DecorationImage(
-                            image: AssetImage(
-                              "assets/image/station_details.png",
+                            image: NetworkImage(
+                              provider.stationDetailsModel.image == null
+                                  ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+                                  : "${AppUrls.imageUrl}${provider.stationDetailsModel.image}",
                             ),
                             fit: BoxFit.cover,
                           ),
@@ -150,7 +157,36 @@ class StationDetails extends StatelessWidget {
                     ],
                   ),
                   vPad10,
-                  MapChatButtons(onTapMap: () {}, onTapMessage: () {}),
+                  MapChatButtons(
+                    onTapMap: () async {
+                      LoadingDialog.show(context);
+                      await openMapToAddress(
+                        destinationLang: provider.stationDetailsModel.longitude
+                            .toString(),
+                        destinationLat: provider.stationDetailsModel.latitude
+                            .toString(),
+                      );
+                      LoadingDialog.hide(context);
+                    },
+                    onTapMessage: () async {
+                      final data = await providerMessage.createChat(
+                        provider.stationDetailsModel.id!,
+                      );
+                      if (data) {
+                        MaterialPageRoute(
+                          builder: (_) => ChatPage(
+                            chatId: providerMessage.createChatModel.id!,
+                            name:
+                                providerMessage.createChatModel.host!.fullName!,
+                            picture:
+                                providerMessage.createChatModel.host!.picture!,
+                          ),
+                        );
+                      } else {
+                        CustomSnackbar.show(context, message: "Not connected");
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -219,14 +255,16 @@ class StationDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, StationProvider provider) {
     return Stack(
       children: [
         SizedBox(
           height: 250,
           width: double.infinity,
-          child: Image.asset(
-            'assets/image/station_details.png', // Replace with your image asset
+          child: Image.network(
+            provider.stationDetailsModel.image == null
+                ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+                : "${AppUrls.imageUrl}${provider.stationDetailsModel.image!}", // Replace with your image asset
             fit: BoxFit.cover,
           ),
         ),
@@ -267,22 +305,22 @@ class StationDetails extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFF5F5F5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(8.0),
-                    child: SvgPicture.asset("assets/icon/ph_bell.svg"),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 8.0),
+              //   child: GestureDetector(
+              //     onTap: () {},
+              //     child: Container(
+              //       decoration: ShapeDecoration(
+              //         color: const Color(0xFFF5F5F5),
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(100),
+              //         ),
+              //       ),
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: SvgPicture.asset("assets/icon/ph_bell.svg"),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

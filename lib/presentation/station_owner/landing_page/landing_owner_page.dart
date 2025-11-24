@@ -95,38 +95,38 @@ class _LandingOwnerPageState extends State<LandingOwnerPage> {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 40, left: 30, right: 30),
-        child: InkWell(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FindStation()),
-          ),
-          child: Container(
-            height: 60,
-            width: 60,
-            decoration: ShapeDecoration(
-              color: bottomNavBarIconColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              shadows: [
-                BoxShadow(
-                  color: Color(0x3F0091D8),
-                  blurRadius: 4,
-                  offset: Offset(0, 4),
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: SvgPicture.asset("assets/icon/thunder.svg"),
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.only(bottom: 40, left: 30, right: 30),
+      //   child: InkWell(
+      //     onTap: () => Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => FindStation()),
+      //     ),
+      //     child: Container(
+      //       height: 60,
+      //       width: 60,
+      //       decoration: ShapeDecoration(
+      //         color: bottomNavBarIconColor,
+      //         shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.circular(12),
+      //         ),
+      //         shadows: [
+      //           BoxShadow(
+      //             color: Color(0x3F0091D8),
+      //             blurRadius: 4,
+      //             offset: Offset(0, 4),
+      //             spreadRadius: 0,
+      //           ),
+      //         ],
+      //       ),
+      //       child: Padding(
+      //         padding: const EdgeInsets.all(12.0),
+      //         child: SvgPicture.asset("assets/icon/thunder.svg"),
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

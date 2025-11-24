@@ -43,8 +43,11 @@ class StationPage extends StatelessWidget {
                           const SizedBox(height: 12),
                       itemBuilder: (context, index) {
                         final station = provider.stationList[index];
+                        print(station.image);
                         return EvStationCard(
-                          iconPath: "${AppUrls.imageUrl}${station!.image}",
+                          iconPath: station.image == null
+                              ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+                              : "${AppUrls.imageUrl}${station.image}",
                           title: "${station.stationName}",
                           subtitle: "${station.timeToReachMin}mins drive",
                           rating: "4.5",

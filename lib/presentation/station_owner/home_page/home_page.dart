@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/common/custom_appbar.dart';
+import 'package:voltly_app/common/custom_loading_dialog.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/constant/app_urls.dart';
@@ -201,7 +202,7 @@ class HomePageOwner extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                '123 St ,ABC, Midtown expressway',
+                homeProvider.address ?? "N/A",
                 style: TextStyle(
                   color: const Color(0xFF9CA3AF),
                   fontSize: 14,
@@ -212,14 +213,21 @@ class HomePageOwner extends StatelessWidget {
               ),
 
               SizedBox(height: 8),
-              Text(
-                'Change your Location?\n',
-                style: TextStyle(
-                  color: const Color(0xFFD1D5DB),
-                  fontSize: 14,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w500,
-                  height: 1.50,
+              InkWell(
+                onTap: () async {
+                  LoadingDialog.show(context);
+                  await homeProvider.getCurrentLocation();
+                  LoadingDialog.hide(context);
+                },
+                child: Text(
+                  'Change your Location?\n',
+                  style: TextStyle(
+                    color: const Color(0xFFD1D5DB),
+                    fontSize: 14,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
                 ),
               ),
 
@@ -244,17 +252,22 @@ class HomePageOwner extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: SizedBox(
               height: 120,
-              child: GoogleMap(
-                onMapCreated: homeProvider.onMapCreated,
-                initialCameraPosition: CameraPosition(
-                  target: homeProvider.sourceLocation,
-                  zoom: 15,
-                ),
-                markers: homeProvider.markers,
-                style: homeProvider.mapTheme,
-                zoomControlsEnabled: false,
-                trafficEnabled: true,
-              ),
+              child: homeProvider.sourceLocation == null
+                  ? Container(
+                      color: Colors.grey[300],
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  : GoogleMap(
+                      onMapCreated: homeProvider.onMapCreated,
+                      initialCameraPosition: CameraPosition(
+                        target: homeProvider.sourceLocation!,
+                        zoom: 15,
+                      ),
+                      markers: homeProvider.markers,
+                      style: homeProvider.mapTheme,
+                      zoomControlsEnabled: false,
+                      trafficEnabled: true,
+                    ),
             ),
           ),
         ),
@@ -485,7 +498,7 @@ class HomePageOwner extends StatelessWidget {
             : Column(
                 children: provider.chargerList
                     .where(
-                      (charger) => charger.isDefault == true,
+                      (charger) => charger.isActive == true,
                     ) // ✅ filter default chargers
                     .map((charger) {
                       final isActive =
