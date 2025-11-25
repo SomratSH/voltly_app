@@ -77,7 +77,7 @@ class CarSelectorBottomSheet {
                           ),
                         ),
                         child: Text(
-                          car.name ?? "Car ${car.id}",
+                          car.vehicleDetails!.name ?? "Car ${car.id}",
                           style: TextStyle(
                             color: isSelected ? Colors.white : Colors.white70,
                             fontWeight: isSelected

@@ -60,7 +60,7 @@ class AddCharing extends StatelessWidget {
                     onPressed: () async {
                       LoadingDialog.show(context);
                       final response = await provider.startChargingUser(
-                        provider.bookingDetailsModel.bookingDetails!.id!,
+                        provider.bookingDetailsModel.bookingDetails!.bookingId!,
                       );
                       if (response['booking_id'] != null) {
                         LoadingDialog.hide(context);

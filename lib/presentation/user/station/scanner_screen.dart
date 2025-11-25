@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'package:voltly_app/presentation/user/station/connect_charger.dart';
+import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key});
@@ -19,35 +21,42 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   @override
   void dispose() {
+    controller?.dispose();
     super.dispose();
-    controller!.disposed;
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
   }
 
   void _onQRViewCreated(QRViewController ctrl) {
-    this.controller = ctrl;
-    // ctrl.scannedDataStream.listen((scanData) {
-    //   if (!scanned) {
-    //     scanned = true;
-    //   }
-    // });
-    Future.delayed(
-      Duration(seconds: 2),
-      () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => ConnectCharger()),
-      ),
-    );
+    controller = ctrl;
+    ctrl.scannedDataStream.listen((scanData) {
+      if (!scanned && scanData.code != null) {
+        setState(() {
+          scanned = true;
+        });
+
+        // // Pause camera
+        // controller?.pauseCamera();
+
+        // Show result dialog
+        if (context
+                .read<StationProvider>()
+                .bookingDetailsModel
+                .charger!
+                .scannerCode ==
+            scanData.code) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => ConnectCharger()),
+          );
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<StationProvider>();
     return Scaffold(
+      backgroundColor: Color(0xFF121C24),
       body: SafeArea(
         child: Column(
           children: [
@@ -71,7 +80,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(width: 48), // Placeholder to balance the back button
+                  SizedBox(width: 48),
                 ],
               ),
             ),
@@ -83,7 +92,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 key: qrKey,
                 onQRViewCreated: _onQRViewCreated,
                 overlay: QrScannerOverlayShape(
-                  borderColor: Color(0xFF121C24),
+                  borderColor: Color(0xFF00FF00),
                   borderRadius: 10,
                   borderLength: 30,
                   borderWidth: 10,

@@ -67,7 +67,9 @@ class BookingDetails extends StatelessWidget {
               const SizedBox(height: 24),
               _buildCloseButtom(context),
               const SizedBox(height: 10),
-              _buildScanToChargeButton(context, provider),
+              provider.bookingDetailsModel.bookingDetails!.status == "confirmed"
+                  ? _buildScanToChargeButton(context, provider)
+                  : SizedBox(),
               const SizedBox(height: 24),
             ],
           ),
@@ -91,7 +93,8 @@ class BookingDetails extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       provider.bookingDetailsModel.vehicle!.model!,
@@ -108,7 +111,7 @@ class BookingDetails extends StatelessWidget {
                       provider.bookingDetailsModel.vehicle!.plugType!,
                       style: TextStyle(
                         color: const Color(0xFFD7D7D7),
-                        fontSize: 16,
+                        fontSize: 12,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w400,
                       ),

@@ -67,9 +67,9 @@ class AddCar extends StatelessWidget {
                               contentPadding: const EdgeInsets.all(12),
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: vehicle.image != null
+                                child: vehicle.vehicleDetails!.name != null
                                     ? Image.network(
-                                        "${AppUrls.imageUrl}${vehicle.image}",
+                                        "${AppUrls.imageUrl}${vehicle.vehicleDetails!.image}",
                                         width: 60,
                                         height: 60,
                                         fit: BoxFit.cover,
@@ -93,7 +93,8 @@ class AddCar extends StatelessWidget {
                                       ),
                               ),
                               title: Text(
-                                vehicle.name ?? "Unknown Vehicle",
+                                vehicle.vehicleDetails!.name ??
+                                    "Unknown Vehicle",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -104,11 +105,11 @@ class AddCar extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Reg: ${vehicle.batteryType}",
+                                    "Reg: ${vehicle.vehicleDetails!.batteryType}",
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                   Text(
-                                    "Plug Type: ${vehicle.batteryCapacity}",
+                                    "Plug Type: ${vehicle.selectedPlugName}",
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ],

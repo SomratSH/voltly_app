@@ -261,7 +261,7 @@ class ChargingInformation extends StatelessWidget {
               onPressed: () async {
                 LoadingDialog.show(context);
                 final data = await provider.paymentForCharging(
-                  provider.bookingDetailsModel.bookingDetails!.id!,
+                  provider.bookingDetailsModel.bookingDetails!.bookingId!,
                 );
                 if (data["checkout_url"] != null) {
                   LoadingDialog.hide(context);

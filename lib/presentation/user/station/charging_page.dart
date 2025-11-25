@@ -328,7 +328,7 @@ class ChargingPage extends StatelessWidget {
               onPressed: () async {
                 LoadingDialog.show(context);
                 final data = await provider.endChargingUser(
-                  provider.bookingDetailsModel.bookingDetails!.id!,
+                  provider.bookingDetailsModel.bookingDetails!.bookingId!,
                 );
                 if (data["message"] == "Charging completed") {
                   LoadingDialog.hide(context);

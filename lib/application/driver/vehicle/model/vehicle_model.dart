@@ -1,38 +1,84 @@
 class VehicleModel {
   int? id;
+  String? registrationNumber;
+  int? vehicle;
+  VehicleDetails? vehicleDetails;
+  int? selectedPlug;
+  String? selectedPlugName;
+  String? unitsValue;
+  String? timeValue;
+  bool? isDefault;
+
+  VehicleModel({
+    this.id,
+    this.registrationNumber,
+    this.vehicle,
+    this.vehicleDetails,
+    this.selectedPlug,
+    this.selectedPlugName,
+    this.unitsValue,
+    this.timeValue,
+    this.isDefault,
+  });
+
+  VehicleModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    registrationNumber = json['registration_number'];
+    vehicle = json['vehicle'];
+    vehicleDetails = json['vehicle_details'] != null
+        ? new VehicleDetails.fromJson(json['vehicle_details'])
+        : null;
+    selectedPlug = json['selected_plug'];
+    selectedPlugName = json['selected_plug_name'];
+    unitsValue = json['units_value'];
+    timeValue = json['time_value'];
+    isDefault = json['is_default'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['registration_number'] = this.registrationNumber;
+    data['vehicle'] = this.vehicle;
+    if (this.vehicleDetails != null) {
+      data['vehicle_details'] = this.vehicleDetails!.toJson();
+    }
+    data['selected_plug'] = this.selectedPlug;
+    data['selected_plug_name'] = this.selectedPlugName;
+    data['units_value'] = this.unitsValue;
+    data['time_value'] = this.timeValue;
+    data['is_default'] = this.isDefault;
+    return data;
+  }
+}
+
+class VehicleDetails {
+  int? id;
   String? name;
   String? vehicleType;
   String? batteryType;
   String? unitsPerTime;
-  // List<Null>? supportedPlugs;
   String? batteryCapacity;
   String? chargingTime;
   String? image;
 
-  VehicleModel({
+  VehicleDetails({
     this.id,
     this.name,
     this.vehicleType,
     this.batteryType,
     this.unitsPerTime,
-    // this.supportedPlugs,
     this.batteryCapacity,
     this.chargingTime,
     this.image,
   });
 
-  VehicleModel.fromJson(Map<String, dynamic> json) {
+  VehicleDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     vehicleType = json['vehicle_type'];
     batteryType = json['battery_type'];
     unitsPerTime = json['units_per_time'];
-    // if (json['supported_plugs'] != null) {
-    //   supportedPlugs = <Null>[];
-    //   json['supported_plugs'].forEach((v) {
-    //     supportedPlugs!.add(new Null.fromJson(v));
-    //   });
-    // }
     batteryCapacity = json['battery_capacity'];
     chargingTime = json['charging_time'];
     image = json['image'];
@@ -45,11 +91,6 @@ class VehicleModel {
     data['vehicle_type'] = this.vehicleType;
     data['battery_type'] = this.batteryType;
     data['units_per_time'] = this.unitsPerTime;
-    // if (this.supportedPlugs != null) {
-    //   data['supported_plugs'] = this.supportedPlugs!
-    //       .map((v) => v.toJson())
-    //       .toList();
-    // }
     data['battery_capacity'] = this.batteryCapacity;
     data['charging_time'] = this.chargingTime;
     data['image'] = this.image;
