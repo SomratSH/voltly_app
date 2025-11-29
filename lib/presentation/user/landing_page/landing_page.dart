@@ -3,9 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voltly_app/app_router.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/presentation/station_owner/home_page/station_map.dart';
 import 'package:voltly_app/presentation/user/add_car/add_car.dart';
 import 'package:voltly_app/presentation/user/find_station/find_station.dart';
 import 'package:voltly_app/presentation/user/home_page/home_page.dart';
+import 'package:voltly_app/presentation/user/map_screen/map_screen.dart';
 import 'package:voltly_app/presentation/user/profile/profile_page.dart';
 import 'package:voltly_app/presentation/user/station/station_page.dart';
 
@@ -83,7 +85,7 @@ class _LandingPageState extends State<LandingPage> {
                                 context.push(_pagesUrl[index]);
                               },
                               child: SvgPicture.asset(
-                                color: bottomNavBarIconColor,
+                                color: driverPrimaryColor,
                                 navItem[index].icon.toString(),
                               ),
                             ),
@@ -100,13 +102,13 @@ class _LandingPageState extends State<LandingPage> {
         child: InkWell(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FindStation()),
+            MaterialPageRoute(builder: (context) => MapScreen()),
           ),
           child: Container(
             height: 60,
             width: 60,
             decoration: ShapeDecoration(
-              color: bottomNavBarIconColor,
+              color: driverPrimaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

@@ -66,7 +66,8 @@ class MessagingProvider extends ChangeNotifier {
         return;
       }
 
-      final url = "ws://10.10.13.20:8005/ws/chat/$chatId/?token=$token";
+      final url =
+          "ws://api.admin.dockploy.89.116.157.176.sslip.io/ws/chat/$chatId/?token=$token";
       debugPrint("🔌 Connecting to WebSocket: $url");
 
       _channel = WebSocketChannel.connect(Uri.parse(url));
@@ -91,9 +92,9 @@ class MessagingProvider extends ChangeNotifier {
             }
 
             // Normal chat message
-            if (data["message"] != null || data["text"] != null) {
-              _addMessage(data);
-            }
+            // if (data["message"] != null || data["text"] != null) {
+            //   _addMessage(data);
+            // }
           } catch (e) {
             debugPrint("❌ Error decoding message: $e");
           }
@@ -164,7 +165,7 @@ class MessagingProvider extends ChangeNotifier {
     _channel!.sink.add(jsonEncode(message));
 
     // Add locally for immediate UI update
-    _messages.add({
+    _messages.add({ 
       "id": DateTime.now().millisecondsSinceEpoch, // temporary ID
       "message": text,
       "sender_id": localId,

@@ -188,6 +188,7 @@ class StationProvider extends ChangeNotifier {
       "start_time": finalStartTime.toString(),
       "end_time": endTimeFinal.toString(),
     });
+    print(response);
     if (response["id"] != null) {
       bookingSummaryModel = BookingResponseModel.fromJson(response);
       notifyListeners();

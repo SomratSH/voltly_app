@@ -86,7 +86,7 @@ class _ConnectAccountState extends State<ConnectAccount> {
               _showSuccessSnackBar();
               widget.onSuccess?.call();
               Navigator.of(context).pop(true);
-              context.go(RouterPath.connectSuccess);
+              context.go(RouterPath.connectSuccessHost);
               return NavigationDecision.prevent;
             }
 

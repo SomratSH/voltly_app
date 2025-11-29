@@ -56,13 +56,13 @@ class RescheduleSessionDialog extends StatelessWidget {
                     return Theme(
                       data: Theme.of(context).copyWith(
                         colorScheme: ColorScheme.light(
-                          primary: primaryColor,
+                          primary: driverPrimaryColor,
                           // onPrimary: Colors.white,
                           // onSurface: Colors.white,
                         ),
                         textButtonTheme: TextButtonThemeData(
                           style: TextButton.styleFrom(
-                            foregroundColor: primaryColor,
+                            foregroundColor: driverPrimaryColor,
                           ),
                         ),
                       ),
@@ -202,7 +202,7 @@ class RescheduleSessionDialog extends StatelessWidget {
   ) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: primaryColor,
+        backgroundColor: driverPrimaryColor,
         minimumSize: const Size.fromHeight(48),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),

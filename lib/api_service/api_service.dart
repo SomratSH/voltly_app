@@ -147,7 +147,7 @@ class ApiService {
       final response = await request.send();
 
       final responseBody = await http.Response.fromStream(response);
-      print("|my falut ${responseBody}");
+      print("|my falut ${responseBody.body}");
       // Return the parsed response
       return _handleResponse(responseBody);
     } on http.ClientException catch (e) {

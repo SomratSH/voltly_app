@@ -39,14 +39,14 @@ class ReservationPage extends StatelessWidget {
                   _buildAllButton(
                     "All",
                     const Color(0x1901CC01),
-                    primaryColor,
+                    hostprimaryColor,
                     () async => await provider.getBooking("all"),
                   ),
                   const SizedBox(width: 8),
                   _buildAllButton(
                     "Completed",
                     const Color(0x1901CC01),
-                    primaryColor,
+                    hostprimaryColor,
                     () async => await provider.getBooking("Completed"),
                   ),
                   const SizedBox(width: 8),

@@ -167,7 +167,7 @@ class _Layout extends StatelessWidget {
         ? const Color(0xFF2E5431)
         : const Color(0xFF282828);
     Color buttonColor = isMostPopular || isBestForBusiness
-        ? primaryColor
+        ? hostprimaryColor
         : const Color(0xFF333333);
     Color buttonTextColor = isMostPopular || isBestForBusiness
         ? Colors.white
@@ -198,7 +198,7 @@ class _Layout extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: primaryColor,
+                    color: hostprimaryColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
@@ -220,7 +220,7 @@ class _Layout extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: primaryColor,
+                    color: hostprimaryColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
@@ -276,7 +276,7 @@ class _Layout extends StatelessWidget {
                       Icon(
                         feature['isIncluded'] ? Icons.check : Icons.close,
                         color: feature['isIncluded']
-                            ? primaryColor
+                            ? hostprimaryColor
                             : Colors.red,
                         size: 16,
                       ),

@@ -8,6 +8,7 @@ import 'package:voltly_app/common/custom_html_text.dart';
 import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/common/custom_sanckbar.dart';
 import 'package:voltly_app/constant/app_colors.dart';
+import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/user/station/scanner_screen.dart';
 import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
@@ -59,7 +60,7 @@ class BookingDetails extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildStationInfoCard(provider),
-              Divider(color: primaryColor),
+              Divider(color: driverPrimaryColor),
               vPad10,
               _buildSessionDetails(provider),
               const SizedBox(height: 24),
@@ -125,7 +126,7 @@ class BookingDetails extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: ShapeDecoration(
-              color: primaryColor,
+              color: driverPrimaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -159,10 +160,17 @@ class BookingDetails extends StatelessWidget {
             height: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(9999),
-              image: const DecorationImage(
-                image: AssetImage(
-                  'assets/image/station_details.png',
-                ), // Placeholder
+              image: DecorationImage(
+                image:
+                    provider.bookingDetailsModel.chargingStation!.image == null
+                    ? NetworkImage('assets/image/station_details.png')
+                    : NetworkImage(
+                        AppUrls.imageUrl +
+                            provider
+                                .bookingDetailsModel
+                                .chargingStation!
+                                .image!,
+                      ), // Placeholder
                 fit: BoxFit.cover,
               ),
             ),
@@ -201,7 +209,7 @@ class BookingDetails extends StatelessWidget {
                           ? 'Open'
                           : "Closed",
                       style: TextStyle(
-                        color: primaryColor,
+                        color: driverPrimaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -231,7 +239,7 @@ class BookingDetails extends StatelessWidget {
           colors: [const Color(0x33182724), const Color(0x192ECC71)],
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: primaryColor),
+          side: BorderSide(width: 1, color: driverPrimaryColor),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
@@ -263,7 +271,7 @@ class BookingDetails extends StatelessWidget {
           colors: [const Color(0x33182724), const Color(0x192ECC71)],
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: primaryColor),
+          side: BorderSide(width: 1, color: driverPrimaryColor),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
@@ -341,7 +349,7 @@ class BookingDetails extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: ShapeDecoration(
-          color: primaryColor,
+          color: driverPrimaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           shadows: [
             BoxShadow(
@@ -379,7 +387,7 @@ class BookingDetails extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: ShapeDecoration(
-          color: primaryColor,
+          color: driverPrimaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           shadows: [
             BoxShadow(

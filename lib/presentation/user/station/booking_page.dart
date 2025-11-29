@@ -58,7 +58,7 @@ class ChargingSummaryPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildStationInfoCard(provider),
-              Divider(color: primaryColor),
+              Divider(color: driverPrimaryColor),
               vPad10,
               _buildSessionDetails(provider),
               const SizedBox(height: 24),
@@ -90,7 +90,8 @@ class ChargingSummaryPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       provider.bookingDetailsModel.vehicle == null
@@ -106,7 +107,7 @@ class ChargingSummaryPage extends StatelessWidget {
                     ),
                     hPad20,
                     Text(
-                      provider.bookingDetailsModel.vehicle!.plugType!,
+                      provider.bookingDetailsModel.vehicle!.plugType ?? "N/A",
                       style: TextStyle(
                         color: const Color(0xFFD7D7D7),
                         fontSize: 16,
@@ -123,7 +124,7 @@ class ChargingSummaryPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: ShapeDecoration(
-              color: primaryColor,
+              color: driverPrimaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -199,7 +200,7 @@ class ChargingSummaryPage extends StatelessWidget {
                           ? 'Open'
                           : "Closed",
                       style: TextStyle(
-                        color: primaryColor,
+                        color: driverPrimaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -229,7 +230,7 @@ class ChargingSummaryPage extends StatelessWidget {
           colors: [const Color(0x33182724), const Color(0x192ECC71)],
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: primaryColor),
+          side: BorderSide(width: 1, color: driverPrimaryColor),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
@@ -261,7 +262,7 @@ class ChargingSummaryPage extends StatelessWidget {
           colors: [const Color(0x33182724), const Color(0x192ECC71)],
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: primaryColor),
+          side: BorderSide(width: 1, color: driverPrimaryColor),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
@@ -326,7 +327,7 @@ class ChargingSummaryPage extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: ShapeDecoration(
-          color: primaryColor,
+          color: driverPrimaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           shadows: [
             BoxShadow(
@@ -364,7 +365,7 @@ class ChargingSummaryPage extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: ShapeDecoration(
-          color: primaryColor,
+          color: driverPrimaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           shadows: [
             BoxShadow(

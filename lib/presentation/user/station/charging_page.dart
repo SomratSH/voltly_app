@@ -363,7 +363,8 @@ Widget _buildCarInfoCard(StationProvider provider) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     provider.bookingDetailsModel.vehicle!.model!,
@@ -394,7 +395,7 @@ Widget _buildCarInfoCard(StationProvider provider) {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: ShapeDecoration(
-            color: primaryColor,
+            color: driverPrimaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),

@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voltly_app/api_service/api_service.dart';
 import 'package:voltly_app/application/authentication/authentiation_repo/authentication_repo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthProvider extends ChangeNotifier {
   //
@@ -212,6 +214,87 @@ class AuthProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('authToken');
     await prefs.remove('refreshToken');
+    await prefs.remove("id");
+    await prefs.remove("role");
+    await prefs.clear();
     notifyListeners();
+    print(prefs.getString("authToken"));
   }
+
+  bool isLoading = false;
+  Future<Map<String, dynamic>> signUpGoogle(User status) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLoading = true;
+
+    notifyListeners();
+    final response = await AuthenticationRepo(ApiService()).loginGoogle(
+      status.phoneNumber == null
+          ? {
+              "email": status.email!,
+              "full_name": status.displayName!,
+              "avatar": status.photoURL!,
+            }
+          : {
+              "email": status.email!,
+              "mobile": status.phoneNumber!,
+              "full_name": status.displayName!,
+              "avatar": status.photoURL!,
+            },
+    );
+    print(response);
+    if (response["message"] != null) {
+      prefs.setString('authToken', response["access_token"]);
+      prefs.setString('refreshToken', response["refresh_token"].toString());
+      prefs.setBool("isGoogleLogin", true);
+      // emailController.clear();
+      // passwordController.clear();
+      notifyListeners();
+    } else {
+      debugPrint("Login failed: ${response["message"]}");
+    }
+    isLoading = false;
+    notifyListeners();
+    return response;
+  }
+
+  // final _auth = FirebaseAuth.instance;
+  // final _googleSignIn = GoogleSignIn();
+
+ 
+  // Future<User?> signInWithGoogle() async {
+  //   try {
+  //     // Trigger the Google authentication flow
+  //     final GoogleSignInAccount? gUser = await _googleSignIn.signIn();
+  //     if (gUser == null) {
+  //       // User cancelled the sign-in
+  //       return null;
+  //     }
+
+  //     // Obtain the auth details from the request
+  //     final GoogleSignInAuthentication gAuth = await gUser.authentication;
+
+  //     // Create a new credential
+  //     final credential = GoogleAuthProvider.credential(
+  //       accessToken: gAuth.accessToken,
+  //       idToken: gAuth.idToken,
+  //     );
+
+  //     // Sign in to Firebase with the credential
+  //     final userCredential = await _auth.signInWithCredential(credential);
+
+  //     // Get the Firebase ID token (JWT)
+  //     final idToken = await userCredential.user;
+  //     print("id toke === >  $idToken");
+  //     return idToken;
+  //   } catch (e) {
+  //     print('Google Sign-In error: $e');
+  //     rethrow;
+  //   }
+  // }
+
+  // /// Optional: Sign out from both Firebase and Google
+  // Future<void> googleSignOut() async {
+  //   await _auth.signOut();
+  //   await _googleSignIn.signOut();
+  // }
 }

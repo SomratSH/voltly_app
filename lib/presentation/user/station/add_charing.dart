@@ -19,6 +19,7 @@ class AddCharing extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<StationProvider>();
     final profileProvider = context.watch<ProfileProvider>();
+
     return Scaffold(
       body: SafeArea(
         child: Column(

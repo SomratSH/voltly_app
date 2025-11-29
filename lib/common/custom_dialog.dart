@@ -11,7 +11,7 @@ Future<void> showLogoutDialog(BuildContext context) {
     context: context,
     barrierDismissible: false,
     builder: (BuildContext dialogContext) {
-      final provider = Provider.of<AuthProvider>(context, listen: false);
+      final provider = context.watch<AuthProvider>();
       return Dialog(
         backgroundColor: Color(0xFF121C24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

@@ -197,7 +197,7 @@ class AddCarChargers extends StatelessWidget {
         height: 110,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: isSelected ? primaryColor : const Color(0xFF1E2C2A),
+          color: isSelected ? driverPrimaryColor : const Color(0xFF1E2C2A),
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
             color: isSelected ? Colors.white : Colors.transparent,
@@ -206,7 +206,7 @@ class AddCarChargers extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: primaryColor.withOpacity(0.4),
+                    color: driverPrimaryColor.withOpacity(0.4),
                     blurRadius: 20,
                     spreadRadius: 2,
                   ),

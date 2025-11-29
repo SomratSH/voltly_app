@@ -7,6 +7,7 @@ import 'package:voltly_app/common/custom_padding.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
 import 'package:voltly_app/presentation/user/station/add_charing.dart';
+import 'package:voltly_app/presentation/user/station/station_provider.dart';
 
 class ConnectCharger extends StatefulWidget {
   const ConnectCharger({super.key});
@@ -32,6 +33,7 @@ class _ConnectChargerState extends State<ConnectCharger> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<ProfileProvider>();
+    final providerStation = context.watch<StationProvider>();
     return Scaffold(
       appBar: CustomAppBar(),
       body: Padding(
@@ -56,8 +58,14 @@ class _ConnectChargerState extends State<ConnectCharger> {
                 hPad5,
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage(
-                    "assets/image/station_details.png",
+                  backgroundImage: NetworkImage(
+                    providerStation
+                                .bookingDetailsModel
+                                .chargingStation!
+                                .image !=
+                            null
+                        ? "${AppUrls.imageUrl}${providerStation.bookingDetailsModel.chargingStation!.image}"
+                        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNV2dimRVLDjbd9FtA7z4Qz8wJIVQ_UljnUiB6Zd-5TCWz8-5TFzTZf90&s",
                   ),
                 ),
               ],

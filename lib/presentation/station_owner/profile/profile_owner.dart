@@ -191,7 +191,7 @@ class ProfileOwner extends StatelessWidget {
                               'Edit Info',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: primaryColor,
+                                color: hostprimaryColor,
                                 fontSize: 14,
                                 fontFamily: 'Roboto',
                                 fontWeight: FontWeight.w400,
@@ -439,7 +439,7 @@ class ProfileOwner extends StatelessWidget {
                                           Text(
                                             'Verified',
                                             style: TextStyle(
-                                              color: primaryColor,
+                                              color: hostprimaryColor,
                                               fontSize: 16,
                                               fontFamily: 'Roboto',
                                               fontWeight: FontWeight.w400,
@@ -505,7 +505,7 @@ class ProfileOwner extends StatelessWidget {
                                 .subscriptionPlan!
                                 .currentPlan!,
                             style: TextStyle(
-                              color: primaryColor,
+                              color: hostprimaryColor,
                               fontSize: 16,
                               fontFamily: 'Roboto',
                               fontWeight: FontWeight.w400,
@@ -594,7 +594,7 @@ class ProfileOwner extends StatelessWidget {
                                     .toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: primaryColor,
+                                  color: hostprimaryColor,
                                   fontSize: 24,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -728,7 +728,7 @@ class ProfileOwner extends StatelessWidget {
                             decoration: ShapeDecoration(
                               color: Colors.black.withValues(alpha: 0),
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1, color: primaryColor),
+                                side: BorderSide(width: 1, color: hostprimaryColor),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
@@ -738,7 +738,7 @@ class ProfileOwner extends StatelessWidget {
                                 'View All Feedback',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: primaryColor,
+                                  color: hostprimaryColor,
                                   fontSize: 16,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w400,
@@ -778,7 +778,7 @@ Widget _buildFooter() {
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: primaryColor),
+            side: BorderSide(width: 1, color: hostprimaryColor),
             borderRadius: BorderRadius.circular(8),
           ),
         ),
@@ -787,7 +787,7 @@ Widget _buildFooter() {
             'Logout',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: primaryColor,
+              color: hostprimaryColor,
               fontSize: 16,
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w500,

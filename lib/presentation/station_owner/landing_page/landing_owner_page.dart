@@ -83,7 +83,7 @@ class _LandingOwnerPageState extends State<LandingOwnerPage> {
                                 context.push(_pages[index]);
                               },
                               child: SvgPicture.asset(
-                                color: bottomNavBarIconColor,
+                                color: hostprimaryColor,
                                 navItem[index].icon.toString(),
                               ),
                             ),

@@ -68,7 +68,7 @@ class _ChargerListOwnerState extends State<ChargerListOwner> {
     required String price,
     required bool isActive,
   }) {
-    Color statusColor = isActive ? primaryColor : const Color(0xFF888888);
+    Color statusColor = isActive ? hostprimaryColor : const Color(0xFF888888);
     String statusText = isActive ? 'Active' : 'Inactive';
 
     return Container(
@@ -104,7 +104,7 @@ class _ChargerListOwnerState extends State<ChargerListOwner> {
             ),
             child: SvgPicture.asset(
               "assets/icon/first_charger.svg",
-              color: primaryColor,
+              color: hostprimaryColor,
             ),
           ),
           const SizedBox(width: 16),
@@ -162,7 +162,7 @@ class _ChargerListOwnerState extends State<ChargerListOwner> {
                   Switch(
                     value: isActive,
                     onChanged: (bool value) {},
-                    activeColor: primaryColor,
+                    activeColor: hostprimaryColor,
                   ),
                 ],
               ),

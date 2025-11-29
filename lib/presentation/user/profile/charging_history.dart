@@ -12,7 +12,7 @@ class ChargingHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<StationProvider>();
+    final provider = context.watch<StationProvider>()..getCharingHistoryUser();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -29,54 +29,6 @@ class ChargingHistory extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'My Car',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: const Color(0xFFEDEDED),
-                fontSize: 22,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            vPad10,
-            DecoratedBox(
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 0.50, color: Colors.white),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      provider.bookingDetailsModel.vehicle!.model!,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: const Color(0xFFBEBEBE),
-                        fontSize: 20,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      provider.bookingDetailsModel.vehicle!.plugType!,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: const Color(0xFFD7D7D7),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            vPad15,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -90,161 +42,230 @@ class ChargingHistory extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      'Date',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: const Color(0xFF858585),
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    hPad5,
-                    Text(
-                      '15/09/25',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    hPad5,
-                    Icon(Icons.arrow_drop_down_sharp, color: Colors.green),
-                  ],
-                ),
               ],
             ),
+
             Column(
               children: List.generate(
                 provider.charingHistoryModel.history!.length,
 
                 (index) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: DecoratedBox(
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 1,
-                          color: const Color(0xFF9CA3AF),
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: AssetImage(
-                              "assets/image/station_details.png",
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Station',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                provider
-                                    .charingHistoryModel
-                                    .history![index]
-                                    .stationName!,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: const Color(0xFF9CA3AF),
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Usages',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                provider
-                                    .charingHistoryModel
-                                    .history![index]
-                                    .usageKwh!,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: const Color(0xFF9CA3AF),
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Price',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                '${provider.charingHistoryModel.history![index].price} \$',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: const Color(0xFF9CA3AF),
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              LoadingDialog.show(context);
-                              await provider.getCharingHistoryDetailsUser(
-                                provider
-                                    .charingHistoryModel
-                                    .history![index]
-                                    .bookingId!,
-                              );
-                              LoadingDialog.hide(context);
-                              context.push(RouterPath.chargingHistoryDetails);
-                            },
-                            child: Icon(
-                              Icons.arrow_forward,
-                              color: Colors.white,
-                            ),
-                          ),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color(0xFF1F2937),
+                          const Color(0xFF111827),
                         ],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: const Color(0xFF374151),
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          LoadingDialog.show(context);
+                          await provider.getCharingHistoryDetailsUser(
+                            provider
+                                .charingHistoryModel
+                                .history![index]
+                                .bookingId!,
+                          );
+                          LoadingDialog.hide(context);
+                          context.push(RouterPath.chargingHistoryDetails);
+                        },
+                        borderRadius: BorderRadius.circular(16),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              // Header Section with Station Info
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 56,
+                                    height: 56,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          const Color(0xFF10B981),
+                                          const Color(0xFF059669),
+                                        ],
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color(
+                                            0xFF10B981,
+                                          ).withOpacity(0.3),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.asset(
+                                        "assets/image/station_details.png",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          provider
+                                              .charingHistoryModel
+                                              .history![index]
+                                              .stationName!,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontFamily: 'Roboto',
+                                            fontWeight: FontWeight.w600,
+                                            letterSpacing: 0.5,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 4,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: const Color(
+                                                  0xFF10B981,
+                                                ).withOpacity(0.2),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: const Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(
+                                                    Icons.bolt,
+                                                    color: Color(0xFF10B981),
+                                                    size: 14,
+                                                  ),
+                                                  SizedBox(width: 4),
+                                                  Text(
+                                                    'Completed',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF10B981),
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 36,
+                                    height: 36,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF374151),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              // Divider
+                              Container(
+                                height: 1,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.transparent,
+                                      const Color(0xFF374151),
+                                      Colors.transparent,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              // Stats Section
+                              Row(
+                                children: [
+                                  // Usage
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      icon: Icons.electric_bolt,
+                                      iconColor: const Color(0xFFFBBF24),
+                                      label: 'Usage',
+                                      value: provider
+                                          .charingHistoryModel
+                                          .history![index]
+                                          .usageKwh!,
+                                      gradientColors: [
+                                        const Color(
+                                          0xFFFBBF24,
+                                        ).withOpacity(0.1),
+                                        const Color(
+                                          0xFFF59E0B,
+                                        ).withOpacity(0.05),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  // Price
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      icon: Icons.attach_money,
+                                      iconColor: const Color(0xFF10B981),
+                                      label: 'Price',
+                                      value:
+                                          '\$${provider.charingHistoryModel.history![index].price}',
+                                      gradientColors: [
+                                        const Color(
+                                          0xFF10B981,
+                                        ).withOpacity(0.1),
+                                        const Color(
+                                          0xFF059669,
+                                        ).withOpacity(0.05),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -256,4 +277,65 @@ class ChargingHistory extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildStatCard({
+  required IconData icon,
+  required Color iconColor,
+  required String label,
+  required String value,
+  required List<Color> gradientColors,
+}) {
+  return Container(
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: gradientColors,
+      ),
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: iconColor.withOpacity(0.2), width: 1),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: iconColor.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, color: iconColor, size: 16),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Color(0xFF9CA3AF),
+                fontSize: 12,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.5,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    ),
+  );
 }

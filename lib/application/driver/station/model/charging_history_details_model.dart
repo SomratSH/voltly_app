@@ -66,7 +66,7 @@ class VehicleInformation {
 class StationInformation {
   String? operator;
   String? stationName;
-  double? rating;
+  dynamic? rating;
   String? openStatus;
   String? openingTime;
   String? closingTime;

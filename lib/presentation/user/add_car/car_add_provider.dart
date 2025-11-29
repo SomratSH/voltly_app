@@ -90,7 +90,7 @@ class CarAddProvider extends ChangeNotifier {
     final reseponse = await VehicleRepo().addCar({
       "registration_number": registrationNumber,
       "selected_plug": 2,
-      "vehicle": 2,
+      "vehicle": 1,
       "custom_vehicle_name": carName,
       "vehicle_type": _selectedVehicleType.toUpperCase(),
       "battery_type": "lithium",

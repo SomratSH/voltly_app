@@ -70,10 +70,10 @@ class CarSelectorBottomSheet {
                         ),
                         margin: const EdgeInsets.only(bottom: 8),
                         decoration: BoxDecoration(
-                          color: isSelected ? primaryColor : Colors.transparent,
+                          color: isSelected ? driverPrimaryColor : Colors.transparent,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: isSelected ? primaryColor : Colors.white54,
+                            color: isSelected ? driverPrimaryColor : Colors.white54,
                           ),
                         ),
                         child: Text(

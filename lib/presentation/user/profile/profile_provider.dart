@@ -14,6 +14,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> getProfile() async {
     final reseponse = await ProfileRepo().fetchProfile();
     profileModel = reseponse;
+    print(profileModel.data!.fullName!);
     notifyListeners();
   }
 
@@ -50,8 +51,6 @@ class ProfileProvider extends ChangeNotifier {
 
     return response;
   }
-
-
 
   updateName(String data) {
     name = data;

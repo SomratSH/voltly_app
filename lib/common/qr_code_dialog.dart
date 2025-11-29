@@ -21,7 +21,7 @@ class QrPopupDialog {
           insetPadding: EdgeInsets.all(16),
           child: Container(
             decoration: BoxDecoration(
-              color: primaryColor,
+              color: hostprimaryColor,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(

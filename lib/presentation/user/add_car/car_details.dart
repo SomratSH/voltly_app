@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:voltly_app/application/driver/vehicle/model/vehicle_model.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/user/add_car/car_add_provider.dart';
 
 class VehicleDetails extends StatelessWidget {
-  const VehicleDetails({super.key});
+  final VehicleModel car;
+  const VehicleDetails({super.key, required this.car});
 
   @override
   Widget build(BuildContext context) {
-    final carProvider = context.watch<CarAddProvider>();
+    // final carProvider = context.watch<CarAddProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          carProvider.vechicleDetailsModel.vehicleName ?? "Vehicle Details",
+          car.vehicleDetails!.name ?? "Vehicle Details",
           style: TextStyle(color: Colors.white),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            context.pop();
+          },
+          icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -25,9 +34,9 @@ class VehicleDetails extends StatelessWidget {
             // Vehicle Image
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: carProvider.vechicleDetailsModel.image != null
+              child: car.vehicleDetails!.image != null
                   ? Image.network(
-                      "${AppUrls.imageUrl}${carProvider.vechicleDetailsModel.image}",
+                      "${AppUrls.imageUrl}${car.vehicleDetails!.image}",
                       width: double.infinity,
                       height: 200,
                       fit: BoxFit.cover,
@@ -53,13 +62,13 @@ class VehicleDetails extends StatelessWidget {
 
             // Vehicle Name
             Text(
-              carProvider.vechicleDetailsModel.vehicleName ?? "Unknown Vehicle",
+              car.vehicleDetails!.name ?? "Unknown Vehicle",
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 8),
             Text(
-              carProvider.vechicleDetailsModel.user ?? "",
+              car.vehicleDetails!.unitsPerTime ?? "",
               style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
 
@@ -70,28 +79,16 @@ class VehicleDetails extends StatelessWidget {
             const SizedBox(height: 10),
 
             // Info cards
-            _infoRow(
-              "Registration Number",
-              carProvider.vechicleDetailsModel.registrationNumber,
-            ),
-            _infoRow(
-              "Vehicle Type",
-              carProvider.vechicleDetailsModel.vehicleType!.isNotEmpty
-                  ? carProvider.vechicleDetailsModel.vehicleType
-                  : "N/A",
-            ),
-            _infoRow("Plug Type", carProvider.vechicleDetailsModel.plugType),
-            _infoRow(
-              "Battery Type",
-              carProvider.vechicleDetailsModel.batteryType!.isNotEmpty
-                  ? carProvider.vechicleDetailsModel.batteryType!
-                  : "N/A",
-            ),
+            _infoRow("Registration Number", car.registrationNumber ?? "N/A"),
+            // _infoRow(
+            //   "Vehicle Type",
+            //   carProvider.vechicleDetailsModel.vehicleType ?? "N/A",
+            // ),
+            _infoRow("Plug Type", car.selectedPlugName),
+            _infoRow("Battery Type", car.vehicleDetails!.batteryType ?? "N/A"),
             _infoRow(
               "Battery Capacity",
-              carProvider.vechicleDetailsModel.batteryCapacity!.isNotEmpty
-                  ? carProvider.vechicleDetailsModel.batteryCapacity!
-                  : "N/A",
+               car.vehicleDetails!.batteryCapacity ?? "N/A",
             ),
 
             const SizedBox(height: 20),

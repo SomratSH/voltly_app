@@ -5,26 +5,30 @@ class BookingDetailsModel {
   BookingDetails? bookingDetails;
   Pricing? pricing;
 
-  BookingDetailsModel(
-      {this.vehicle,
-      this.charger,
-      this.chargingStation,
-      this.bookingDetails,
-      this.pricing});
+  BookingDetailsModel({
+    this.vehicle,
+    this.charger,
+    this.chargingStation,
+    this.bookingDetails,
+    this.pricing,
+  });
 
   BookingDetailsModel.fromJson(Map<String, dynamic> json) {
-    vehicle =
-        json['vehicle'] != null ? new Vehicle.fromJson(json['vehicle']) : null;
-    charger =
-        json['charger'] != null ? new Charger.fromJson(json['charger']) : null;
+    vehicle = json['vehicle'] != null
+        ? new Vehicle.fromJson(json['vehicle'])
+        : null;
+    charger = json['charger'] != null
+        ? new Charger.fromJson(json['charger'])
+        : null;
     chargingStation = json['charging_station'] != null
         ? new ChargingStation.fromJson(json['charging_station'])
         : null;
     bookingDetails = json['booking_details'] != null
         ? new BookingDetails.fromJson(json['booking_details'])
         : null;
-    pricing =
-        json['pricing'] != null ? new Pricing.fromJson(json['pricing']) : null;
+    pricing = json['pricing'] != null
+        ? new Pricing.fromJson(json['pricing'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -77,12 +81,13 @@ class Charger {
   List<String>? plugTypes;
   String? powerRatingKw;
 
-  Charger(
-      {this.name,
-      this.scannerCode,
-      this.chargerType,
-      this.plugTypes,
-      this.powerRatingKw});
+  Charger({
+    this.name,
+    this.scannerCode,
+    this.chargerType,
+    this.plugTypes,
+    this.powerRatingKw,
+  });
 
   Charger.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -109,13 +114,16 @@ class ChargingStation {
   String? openTime;
   String? closeTime;
   String? rating;
+  String? image;
 
-  ChargingStation(
-      {this.stationName,
-      this.status,
-      this.openTime,
-      this.closeTime,
-      this.rating});
+  ChargingStation({
+    this.stationName,
+    this.status,
+    this.openTime,
+    this.image,
+    this.closeTime,
+    this.rating,
+  });
 
   ChargingStation.fromJson(Map<String, dynamic> json) {
     stationName = json['station_name'];
@@ -123,6 +131,7 @@ class ChargingStation {
     openTime = json['open_time'];
     closeTime = json['close_time'];
     rating = json['rating'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -143,12 +152,13 @@ class BookingDetails {
   String? chargingDuration;
   String? chargingSessionTiming;
 
-  BookingDetails(
-      {this.bookingId,
-      this.bookingDate,
-      this.status,
-      this.chargingDuration,
-      this.chargingSessionTiming});
+  BookingDetails({
+    this.bookingId,
+    this.bookingDate,
+    this.status,
+    this.chargingDuration,
+    this.chargingSessionTiming,
+  });
 
   BookingDetails.fromJson(Map<String, dynamic> json) {
     bookingId = json['booking_id'];

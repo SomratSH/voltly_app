@@ -12,9 +12,8 @@ import 'package:voltly_app/presentation/user/profile/charging_history.dart';
 import 'package:voltly_app/presentation/user/station/booking_details.dart';
 import 'package:voltly_app/presentation/user/station/station_details.dart';
 import 'package:geolocator/geolocator.dart';
-class StationRepo {
 
-  
+class StationRepo {
   Future<List<StationModel>> getStationList({
     required String lat,
     required String long,
@@ -43,6 +42,7 @@ class StationRepo {
   }
 
   Future<Map<String, dynamic>> createBooking(Map<String, dynamic> data) async {
+    print(data);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final response = await ApiService().postDataRegular(
       AppUrls.createBooking,

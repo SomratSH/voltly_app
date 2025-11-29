@@ -307,7 +307,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
       child: DecoratedBox(
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: primaryColor),
+            side: BorderSide(width: 1, color: hostprimaryColor),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
@@ -335,7 +335,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
                     value,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: primaryColor,
+                      color: hostprimaryColor,
                       fontSize: 24,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
@@ -382,7 +382,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
           onChanged: (bool value) {
             provider.updateTheStatusIsAvailable(value);
           },
-          activeColor: primaryColor,
+          activeColor: hostprimaryColor,
         ),
       ],
     );
@@ -544,7 +544,7 @@ class _AddChargerOwnerState extends State<AddChargerOwner> {
                 dashbaord.connectorType,
               );
               LoadingDialog.hide(context);
-
+              print(reseponse);
               if (reseponse["message"] != null) {
                 CustomSnackbar.show(context, message: reseponse["message"]);
                 providerider.getChargingList();

@@ -65,7 +65,7 @@ class ChargingPageOwner extends StatelessWidget {
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () => context.push(RouterPath.addChargerHost),
-      //   backgroundColor: primaryColor,
+      //   backgroundColor: hostprimaryColor,
       //   child: const Icon(Icons.add),
       // ),
     );
@@ -140,7 +140,7 @@ class ChargingPageOwner extends StatelessWidget {
     required ChargingProvider provider,
     required int index,
   }) {
-    final statusColor = isActive ? primaryColor : Colors.grey;
+    final statusColor = isActive ? hostprimaryColor : Colors.grey;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -172,7 +172,7 @@ class ChargingPageOwner extends StatelessWidget {
             ),
             child: SvgPicture.asset(
               "assets/icon/first_charger.svg",
-              color: primaryColor,
+              color: hostprimaryColor,
             ),
           ),
           const SizedBox(width: 16),
@@ -210,7 +210,7 @@ class ChargingPageOwner extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    statusColor == primaryColor ? 'Active' : 'Inactive',
+                    statusColor == hostprimaryColor ? 'Active' : 'Inactive',
                     style: TextStyle(color: statusColor),
                   ),
                   Switch(
@@ -219,7 +219,7 @@ class ChargingPageOwner extends StatelessWidget {
                       provider.chargerList[index].isActive = value;
                       provider.notifyListeners();
                     },
-                    activeColor: primaryColor,
+                    activeColor: hostprimaryColor,
                   ),
                 ],
               ),

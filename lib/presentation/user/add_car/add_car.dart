@@ -58,7 +58,7 @@ class AddCar extends StatelessWidget {
                           final vehicle = carProvider.carList[index];
                           return Card(
                             elevation: 3,
-                            color: AppColors.primaryColor,
+                            color: AppColors.driverPrimaryColor,
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -120,11 +120,12 @@ class AddCar extends StatelessWidget {
                                 color: Colors.white,
                               ),
                               onTap: () async {
-                                LoadingDialog.show(context);
-                                final status = await carProvider
-                                    .getDetailsVehicle(vehicle.id!);
-                                LoadingDialog.hide(context);
-                                context.push(RouterPath.carDetails);
+                                // LoadingDialog.show(context);
+
+                                context.push(
+                                  RouterPath.carDetails,
+                                  extra: vehicle,
+                                );
                               },
                             ),
                           );

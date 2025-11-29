@@ -99,7 +99,7 @@ Widget _buildUserInfoCard({
   return Container(
     padding: const EdgeInsets.all(16),
     decoration: ShapeDecoration(
-      color: primaryColor,
+      color: driverPrimaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
     child: Row(
@@ -306,7 +306,7 @@ Widget _buildFooter() {
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: primaryColor),
+            side: BorderSide(width: 1, color: driverPrimaryColor),
             borderRadius: BorderRadius.circular(8),
           ),
         ),
@@ -315,7 +315,7 @@ Widget _buildFooter() {
             'Logout',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: primaryColor,
+              color: driverPrimaryColor,
               fontSize: 16,
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w500,
@@ -346,7 +346,7 @@ Widget _buildMenuItem(String icon, String title, {bool showDivider = true}) {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: SvgPicture.asset(icon, color: primaryColor),
+                  child: SvgPicture.asset(icon, color: driverPrimaryColor),
                 ),
               ),
               const SizedBox(width: 16),
@@ -426,7 +426,7 @@ Widget _buildSwitchItem(IconData icon, String title) {
         Switch(
           value: true,
           onChanged: (bool value) {},
-          activeColor: primaryColor,
+          activeColor: driverPrimaryColor,
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Colors.white10,
         ),

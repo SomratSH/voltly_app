@@ -9,6 +9,7 @@ import 'package:voltly_app/common/station_custom_card.dart';
 import 'package:voltly_app/constant/app_colors.dart';
 import 'package:voltly_app/constant/app_urls.dart';
 import 'package:voltly_app/presentation/station_owner/profile/profile_provider.dart';
+import 'package:voltly_app/presentation/user/add_car/car_add_provider.dart';
 import 'package:voltly_app/presentation/user/ai_chat/ai_chat.dart';
 import 'package:voltly_app/presentation/user/home_page/home_provider.dart';
 import 'package:voltly_app/presentation/user/profile/profile_provider.dart';
@@ -22,6 +23,7 @@ class HomePage extends StatelessWidget {
     final profileProvider = context.watch<ProfileProvider>();
     final stationProvider = context.watch<StationProvider>();
     final homeprovider = context.watch<HomeProvider>();
+    // final carProvider = context.watch<CarAddProvider>();
     return Scaffold(
       backgroundColor: const Color(0xFF121C24),
       appBar: AppBar(
@@ -151,41 +153,61 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'My Car',
-                        style: TextStyle(
-                          color: const Color(0xFFD1D5DB),
-                          fontSize: 16,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,
-                          height: 1.50,
+                  homeprovider.isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              homeprovider.carList.isNotEmpty
+                                  ? homeprovider
+                                        .carList
+                                        .first
+                                        .vehicleDetails!
+                                        .name!
+                                  : 'My Car',
+                              style: TextStyle(
+                                color: const Color(0xFFD1D5DB),
+                                fontSize: 16,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w700,
+                                height: 1.50,
+                              ),
+                            ),
+                            vPad5,
+                            Text(
+                              homeprovider.carList.isNotEmpty
+                                  ? homeprovider
+                                        .carList
+                                        .first
+                                        .registrationNumber!
+                                  : 'Tesla CS23',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            vPad10,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: homeprovider.carList.isNotEmpty
+                                  ? Image.network(
+                                      "${AppUrls.imageUrl}${homeprovider.carList.first.vehicleDetails!.image}",
+                                      width: 200,
+                                      height: 120,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      "assets/image/home_car.png",
+                                      width: 200,
+                                      height: 120,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                          ],
                         ),
-                      ),
-                      vPad5,
-                      Text(
-                        'Tesla CS23',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      vPad10,
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          "assets/image/home_car.png",
-                          width: 200,
-                          height: 120,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
-                  ),
                   hPad10,
                   Expanded(
                     child: SizedBox(
@@ -229,7 +251,7 @@ class HomePage extends StatelessWidget {
                     child: Text(
                       'See all',
                       style: TextStyle(
-                        color: primaryColor,
+                        color: driverPrimaryColor,
                         fontSize: 12,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w500,
@@ -302,7 +324,7 @@ class HomePage extends StatelessWidget {
                           gradient: LinearGradient(
                             begin: Alignment(0.50, 0.10),
                             end: Alignment(0.50, 0.50),
-                            colors: [primaryColor, Color(0xFF121C24)],
+                            colors: [driverPrimaryColor, Color(0xFF121C24)],
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(44)),
@@ -348,7 +370,7 @@ class HomePage extends StatelessWidget {
                   Text(
                     'See all',
                     style: TextStyle(
-                      color: primaryColor,
+                      color: driverPrimaryColor,
                       fontSize: 12,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
@@ -379,7 +401,7 @@ class HomePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
-                                color: primaryColor,
+                                color: driverPrimaryColor,
                                 "assets/icon/standard+charge.svg",
                               ),
                             ),
@@ -389,7 +411,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Standard Charger',
                           style: TextStyle(
-                            color: primaryColor,
+                            color: driverPrimaryColor,
                             fontSize: 10,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
@@ -416,7 +438,7 @@ class HomePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
-                                color: primaryColor,
+                                color: driverPrimaryColor,
                                 "assets/icon/first_charger.svg",
                               ),
                             ),
@@ -426,7 +448,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Fast Charger',
                           style: TextStyle(
-                            color: primaryColor,
+                            color: driverPrimaryColor,
                             fontSize: 10,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
@@ -454,7 +476,7 @@ class HomePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
-                                color: primaryColor,
+                                color: driverPrimaryColor,
                                 "assets/icon/rapid_charger.svg",
                               ),
                             ),
@@ -464,7 +486,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Rapid Charger',
                           style: TextStyle(
-                            color: primaryColor,
+                            color: driverPrimaryColor,
                             fontSize: 10,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
@@ -492,7 +514,7 @@ class HomePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: SvgPicture.asset(
-                                color: primaryColor,
+                                color: driverPrimaryColor,
                                 "assets/icon/tesla_chargers.svg",
                               ),
                             ),
@@ -502,7 +524,7 @@ class HomePage extends StatelessWidget {
                         Text(
                           'Tesla chargers',
                           style: TextStyle(
-                            color: primaryColor,
+                            color: driverPrimaryColor,
                             fontSize: 10,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,

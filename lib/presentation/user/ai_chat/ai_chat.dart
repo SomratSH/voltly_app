@@ -56,7 +56,7 @@ class _Layout extends StatelessWidget {
                           gradient: LinearGradient(
                             begin: Alignment(0.50, 0.10),
                             end: Alignment(0.50, 0.50),
-                            colors: [primaryColor, const Color(0xFF121C24)],
+                            colors: [driverPrimaryColor, const Color(0xFF121C24)],
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(44)),

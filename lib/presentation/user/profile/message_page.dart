@@ -11,7 +11,7 @@ class MessagesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<MessagingProvider>();
+    final provider = context.watch<MessagingProvider>()..getChatListMessage();
     return Scaffold(
       // dark background
       appBar: AppBar(
@@ -107,7 +107,7 @@ class MessagesScreen extends StatelessWidget {
                         Text(
                           msg.lastMessageTime == null
                               ? ""
-                              : msg.lastMessageTime!,
+                              : convertToAmPm(msg.lastMessageTime!),
                           style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 12,
@@ -136,5 +136,17 @@ class MessagesScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+String convertToAmPm(String timestamp) {
+  try {
+    final dt = DateTime.parse(timestamp);
+    final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
+    final minute = dt.minute.toString().padLeft(2, '0');
+    final period = dt.hour >= 12 ? 'PM' : 'AM';
+    return "$hour:$minute $period";
+  } catch (e) {
+    return "";
   }
 }

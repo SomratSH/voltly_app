@@ -234,7 +234,7 @@ class HomePageOwner extends StatelessWidget {
               Text(
                 'Go Now',
                 style: TextStyle(
-                  color: primaryColor,
+                  color: hostprimaryColor,
                   fontSize: 14,
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
@@ -343,7 +343,7 @@ class HomePageOwner extends StatelessWidget {
         Text(
           amount,
           style: TextStyle(
-            color: primaryColor,
+            color: hostprimaryColor,
             fontSize: 20,
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w700,
@@ -366,7 +366,7 @@ class HomePageOwner extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: primaryColor),
+          side: BorderSide(width: 1, color: hostprimaryColor),
           borderRadius: BorderRadius.circular(12),
         ),
         shadows: [
@@ -475,7 +475,7 @@ class HomePageOwner extends StatelessWidget {
               child: Text(
                 'See all',
                 style: TextStyle(
-                  color: primaryColor,
+                  color: hostprimaryColor,
                   fontSize: 12,
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.w700,
@@ -511,7 +511,7 @@ class HomePageOwner extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: isActive ? primaryColor : Colors.grey,
+                              color: isActive ? hostprimaryColor : Colors.grey,
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -547,7 +547,7 @@ class HomePageOwner extends StatelessWidget {
                                         height: 8,
                                         decoration: BoxDecoration(
                                           color: isActive
-                                              ? primaryColor
+                                              ? hostprimaryColor
                                               : Colors.grey,
                                           shape: BoxShape.circle,
                                         ),
@@ -557,7 +557,7 @@ class HomePageOwner extends StatelessWidget {
                                         isActive ? 'Active' : 'Inactive',
                                         style: TextStyle(
                                           color: isActive
-                                              ? primaryColor
+                                              ? hostprimaryColor
                                               : Colors.grey,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -573,7 +573,7 @@ class HomePageOwner extends StatelessWidget {
                                 // Call provider method to toggle charger status
                                 // provider.toggleCharger(charger.id, value);
                               },
-                              activeColor: primaryColor,
+                              activeColor: hostprimaryColor,
                               inactiveThumbColor: Colors.white,
                               inactiveTrackColor: Colors.white10,
                             ),

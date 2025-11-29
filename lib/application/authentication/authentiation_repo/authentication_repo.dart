@@ -58,4 +58,14 @@ class AuthenticationRepo {
     debugPrint("Response from resetPassword: $response");
     return response;
   }
+
+    Future<Map<String, dynamic>> loginGoogle(Map<String, String> map) async {
+    print(map);
+    final response = await _apiService.postDataRegular(
+      AppUrls.loginGoogle,
+      map,
+    );
+    debugPrint("Response from login: $response");
+    return response;
+  }
 }

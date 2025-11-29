@@ -8,6 +8,7 @@ class VehicleModel {
   String? unitsValue;
   String? timeValue;
   bool? isDefault;
+  String? image;
 
   VehicleModel({
     this.id,
@@ -19,6 +20,7 @@ class VehicleModel {
     this.unitsValue,
     this.timeValue,
     this.isDefault,
+    this.image,
   });
 
   VehicleModel.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,7 @@ class VehicleModel {
     unitsValue = json['units_value'];
     timeValue = json['time_value'];
     isDefault = json['is_default'];
+    image = json["image"];
   }
 
   Map<String, dynamic> toJson() {

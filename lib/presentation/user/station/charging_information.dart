@@ -50,7 +50,7 @@ class ChargingInformation extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Divider(color: primaryColor),
+            Divider(color: driverPrimaryColor),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -86,7 +86,7 @@ class ChargingInformation extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Divider(color: primaryColor),
+            Divider(color: driverPrimaryColor),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -148,7 +148,7 @@ class ChargingInformation extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Divider(color: primaryColor),
+            Divider(color: driverPrimaryColor),
 
             hPad5,
             Row(

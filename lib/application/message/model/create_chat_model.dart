@@ -46,7 +46,7 @@ class Driver {
   String? role;
   String? picture;
   bool? isOnline;
-  Null? lastSeen;
+  String? lastSeen;
   bool? isActive;
 
   Driver({

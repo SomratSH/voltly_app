@@ -8,7 +8,7 @@ import 'package:voltly_app/common/custom_sanckbar.dart';
 class HostSignUpStep2 extends StatelessWidget {
   HostSignUpStep2({super.key});
 
-  // ✅ Keep the key here, not inside build()
+  
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -31,7 +31,7 @@ class HostSignUpStep2 extends StatelessWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Form(
-            key: _formKey, // ✅ Use the persistent key here
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

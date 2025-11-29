@@ -32,7 +32,7 @@ class EvStationCard extends StatelessWidget {
           children: [
             DecoratedBox(
               decoration: BoxDecoration(
-                border: Border.all(color: primaryColor, width: 1),
+                border: Border.all(color: hostprimaryColor, width: 1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(

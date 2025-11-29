@@ -78,7 +78,7 @@ class StationDetails extends StatelessWidget {
 
                             Row(
                               children: [
-                                Icon(Icons.star, color: primaryColor, size: 16),
+                                Icon(Icons.star, color: driverPrimaryColor, size: 16),
                                 SizedBox(width: 4),
                                 Text(
                                   'High score ${provider.stationDetailsModel.averageRating}/5',
@@ -97,7 +97,7 @@ class StationDetails extends StatelessWidget {
                                 Text(
                                   'Open',
                                   style: TextStyle(
-                                    color: primaryColor,
+                                    color: driverPrimaryColor,
                                     fontSize: 18,
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w500,
@@ -129,7 +129,7 @@ class StationDetails extends StatelessWidget {
                   vPad10,
                   Row(
                     children: [
-                      Icon(Icons.location_on, color: primaryColor, size: 16),
+                      Icon(Icons.location_on, color: driverPrimaryColor, size: 16),
                       SizedBox(width: 8),
                       Text(
                         '${provider.stationDetailsModel.distanceKm} Km.',
@@ -170,16 +170,24 @@ class StationDetails extends StatelessWidget {
                     },
                     onTapMessage: () async {
                       final data = await providerMessage.createChat(
-                        provider.stationDetailsModel.id!,
+                        provider.stationDetailsModel.host!.id!,
                       );
-                      if (data) {
-                        MaterialPageRoute(
-                          builder: (_) => ChatPage(
-                            chatId: providerMessage.createChatModel.id!,
-                            name:
-                                providerMessage.createChatModel.host!.fullName!,
-                            picture:
-                                providerMessage.createChatModel.host!.picture!,
+                      print(data);
+                      if (data == true) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChatPage(
+                              chatId: providerMessage.createChatModel.id!,
+                              name: providerMessage
+                                  .createChatModel
+                                  .host!
+                                  .fullName!,
+                              picture: providerMessage
+                                  .createChatModel
+                                  .host!
+                                  .picture!,
+                            ),
                           ),
                         );
                       } else {
@@ -195,7 +203,7 @@ class StationDetails extends StatelessWidget {
             vPad15,
 
             _buildSectionTitle('Connector Type'),
-            Divider(color: primaryColor),
+            Divider(color: driverPrimaryColor),
 
             Column(
               children: List.generate(
@@ -358,7 +366,7 @@ class StationDetails extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          SvgPicture.asset("assets/icon/arrow.svg", color: primaryColor),
+          SvgPicture.asset("assets/icon/arrow.svg", color: driverPrimaryColor),
         ],
       ),
     );
@@ -441,7 +449,7 @@ class StationDetails extends StatelessWidget {
           ),
           Icon(Icons.photo_library_outlined, color: Colors.white70),
           SizedBox(width: 8),
-          SvgPicture.asset("assets/icon/send-2.svg", color: primaryColor),
+          SvgPicture.asset("assets/icon/send-2.svg", color: driverPrimaryColor),
         ],
       ),
     );
@@ -483,7 +491,7 @@ class _ScanToChargeButton extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16),
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: primaryColor,
+          color: driverPrimaryColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: const Row(

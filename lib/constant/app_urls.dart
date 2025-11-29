@@ -2,8 +2,9 @@ class AppUrls {
   // static String baseUrl = "http://10.10.13.20:8005/api/v1";
   // static String imageUrl = "http://10.10.13.20:8005";
 
-  static String baseUrl = "https://614e5eb880a8.ngrok-free.app/api/v1";
-  static String imageUrl = "https://614e5eb880a8.ngrok-free.app";
+  static String baseUrl =
+      "https://api.admin.dockploy.89.116.157.176.sslip.io/api/v1";
+  static String imageUrl = "https://api.admin.dockploy.89.116.157.176.sslip.io";
   //authetication
   static String login = "/login/";
   static String signUp = "/signup/";
@@ -59,4 +60,6 @@ class AppUrls {
 
   //CREATE CHAT
   static String createChat = "/chat/create/";
+
+  static String loginGoogle = "/google-login/";
 }

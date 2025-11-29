@@ -11,7 +11,7 @@ void main() async {
   // await dotenv.load(fileName: ".env");
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

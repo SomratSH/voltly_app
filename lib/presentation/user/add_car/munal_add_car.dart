@@ -81,7 +81,7 @@ class MunalAddCar extends StatelessWidget {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: primaryColor,
+                                  color: driverPrimaryColor,
                                   blurRadius: 100,
                                   spreadRadius: 50,
                                 ),
@@ -113,7 +113,7 @@ class MunalAddCar extends StatelessWidget {
                         icon: const Icon(Icons.add_photo_alternate_outlined),
                         label: const Text('Add Car Image'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor,
+                          backgroundColor: driverPrimaryColor,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -191,7 +191,7 @@ class MunalAddCar extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? primaryColor : const Color(0xFF293933),
+          color: isSelected ? driverPrimaryColor : const Color(0xFF293933),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
             color: isSelected ? Colors.transparent : const Color(0xFF8B9B95),

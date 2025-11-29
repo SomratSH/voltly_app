@@ -140,7 +140,7 @@ class EarningPage extends StatelessWidget {
         Text(
           amount,
           style: TextStyle(
-            color: primaryColor,
+            color: hostprimaryColor,
             fontSize: 20,
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w700,
@@ -209,7 +209,7 @@ class EarningPage extends StatelessWidget {
               Text(
                 provider.earningPayoutModel.nextPayout!.scheduledDate ?? "N/A",
                 style: TextStyle(
-                  color: primaryColor,
+                  color: hostprimaryColor,
                   fontSize: 16,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w700,
@@ -268,7 +268,7 @@ class EarningPage extends StatelessWidget {
         icon: const Icon(Icons.download, color: Color(0xFF01CC01)),
         label: Text(
           'Export Report',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+          style: TextStyle(color: hostprimaryColor, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -331,7 +331,7 @@ class EarningPage extends StatelessWidget {
                   child: Text(
                     status,
                     style: TextStyle(
-                      color: primaryColor,
+                      color: hostprimaryColor,
                       fontSize: 14,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold,

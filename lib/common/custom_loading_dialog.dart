@@ -9,7 +9,7 @@ class LoadingDialog {
       builder: (context) {
         final theme = Theme.of(context);
         return Dialog(
-          backgroundColor: primaryColor,
+          backgroundColor: hostprimaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),

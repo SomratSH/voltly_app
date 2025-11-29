@@ -14,7 +14,7 @@ import 'package:voltly_app/presentation/user/station/station_provider.dart';
 class ProviderList {
   static List<SingleChildWidget> get providers => [
     ChangeNotifierProvider(create: (_) => AuthProvider()),
-    ChangeNotifierProvider(create: (_) => HomeProvider()),
+    ChangeNotifierProvider(create: (_) => HomeProvider()..getVehicleList()),
     ChangeNotifierProvider(
       create: (_) => ReservationProvider()..getBooking("all"),
     ),

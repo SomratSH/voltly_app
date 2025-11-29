@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:voltly_app/application/driver/vehicle/model/vehicle_model.dart'
+    hide VehicleDetails;
 import 'package:voltly_app/demo_map.dart';
 import 'package:voltly_app/presentation/common_page/authentication/forgot_password.dart';
 import 'package:voltly_app/presentation/common_page/authentication/host_sign_up_step_1.dart';
@@ -114,7 +116,10 @@ class AppRouter {
       ),
       GoRoute(
         path: RouterPath.carDetails,
-        builder: (context, state) => VehicleDetails(),
+        builder: (context, state) {
+          final car = state.extra as VehicleModel; // <-- Cast here
+          return VehicleDetails(car: car);
+        },
       ),
       GoRoute(
         path: RouterPath.stationDetails,
@@ -185,16 +190,16 @@ class AppRouter {
         builder: (context, state) => MessagingHost(),
       ),
       GoRoute(
-        path: RouterPath.connectSuccess,
-        builder: (context, state) => ConnectSuccess(),
+        path: RouterPath.connectSuccessDriver,
+        builder: (context, state) => ConnectSuccessDriver(),
       ),
       GoRoute(
         path: RouterPath.messaginHost,
         builder: (context, state) => MessagingHost(),
       ),
       GoRoute(
-        path: RouterPath.connectSuccess,
-        builder: (context, state) => ConnectSuccess(),
+        path: RouterPath.connectSuccessHost,
+        builder: (context, state) => ConnectSuccessHost(),
       ),
       // Shell routing for protected pages driver
       ShellRoute(
@@ -293,7 +298,7 @@ class RouterPath {
   static String chargingHistory = "/charging-history";
   static String chargingHistoryDetails = "/charging-history-details";
 
-  static String connectSuccess = "/connect-success";
-
+  static String connectSuccessDriver = "/connect-success-driver";
+  static String connectSuccessHost = "/connect-success-host";
   static String helpSupport = "/help-support";
 }
